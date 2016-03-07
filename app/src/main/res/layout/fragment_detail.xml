@@ -1,0 +1,172 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/detail_background"
+    android:orientation="vertical">
+
+    <!-- Parte superior -->
+    <ImageView
+        android:id="@+id/cabecera"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="50"
+        android:scaleType="centerCrop"
+        android:src="@drawable/google_maps_dummy" />
+
+    <!-- Hero View -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/ciudad_text"
+            style="@style/TextAppearance.AppCompat.Title.Inverse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Dummy"
+            android:textIsSelectable="true" />
+
+    </LinearLayout>
+
+    <!-- Contenido -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="70">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/detail"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <!-- Card 1                   aqui decia .../apk/res-auto-->
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/android"
+                android:id="@+id/card1"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                card_view:cardElevation="@dimen/card_elevation"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:id="@+id/content1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/activity_horizontal_margin">
+                    <!-- Etiqueta de la estado -->
+                    <TextView
+                        android:id="@+id/descripcio_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/descripcio_text"
+                        android:layout_centerVertical="true"
+                        android:text="@string/estado_label"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    <!-- Texto de la estado -->
+                    <TextView
+                        android:id="@+id/descripcio_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="Dummy"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/primary" />
+
+
+                    <!-- Label del técnico -->
+                    <TextView
+                        android:id="@+id/nom_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/nom_text"
+                        android:text="@string/tecnico_label"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    <TextView
+                        android:id="@+id/nom_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/descripcio_label"
+                        android:layout_alignStart="@+id/descripcio_label"
+                        android:layout_below="@+id/descripcio_label"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="16dp"
+                        android:text="Dummy"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/primary" />
+
+                    <TextView
+                        android:id="@+id/valoracio_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/nom_label"
+                        android:text="@string/prioridad_label"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    <TextView
+                        android:id="@+id/callenum_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/nom_label"
+                        android:text="Dummy"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/primary" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- Card 2               aqui decia .../apk/res-auto-->
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/android"
+                android:id="@+id/card2"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_below="@+id/card1"
+                android:layout_marginTop="@dimen/margin_top_between_cards"
+                card_view:cardElevation="@dimen/card_elevation"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <!-- Etiqueta de la descripción -->
+                    <TextView
+                        android:id="@+id/ciudad_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:text="@string/descripcio_label"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/primary" />
+
+                    <!-- Texto de la descripción -->
+                    <TextView
+                        android:id="@+id/descripcio_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/ciudad_label"
+                        android:text="Dummy"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

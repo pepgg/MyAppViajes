@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">My AppViajes</string>
+    <string name="title_activity_main_">Main_Activity</string>
+    <string name="action_settings">Settings</string>
+    <string name="categor_label">Nueva Categoria:</string>
+    <string name="description_input">Categoria</string>
+    <string name="action_edit">Editar</string>
+    <string name="action_delete">Suprimir</string>
+    <string name="descripcio_label">Descripcion</string>
+    <string name="nom_label">nombre</string>
+    <string name="ciudad_label">ciudad</string>
+    <string name="action_discard">Descartar</string>
+    <string name="estado_label">estadito</string>
+    <string name="tecnico_label">tecniquito</string>
+    <string name="prioridad_label">prioridita</string>
+    <string name="title_activity_detail">Detalle</string>
+    <string name="title_activity_insert">nuevo</string>
+    <string name="title_activity_update">actualiza</string>
+</resources>
+
