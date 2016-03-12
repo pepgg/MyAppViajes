@@ -19,9 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
            </activity>
+        <!--   android:name="gg.pp.myappviajes.modelo.ViajesProvider" -->
         <provider
-            android:name="gg.pp.myappviajes.modelo.ViajesProvider"
-            android:authorities="gg.pp.myappviajes.modelo.ViajesProvider"
+            android:name=".modelo.ViajesProvider"
+            android:authorities="gg.pp.myappviajes"
             android:exported="false" />
 
 

@@ -7,11 +7,13 @@ import android.net.Uri;
  * Created by pepe on 4/03/16.
  */
 public class ViajesContract {
+
     public static final String TAG = "Provider";
 
     // [URIS]
 
-    public static final String AUTORIDAD = "gg.pp.myappviajes.modelo.ViajesProvider";
+ //   public static final String AUTORIDAD = "gg.pp.myappviajes.modelo.ViajesProvider";
+    public static final String AUTORIDAD = "gg.pp.myappviajes";
 
     public static final Uri URI_BASE = Uri.parse("content://" + AUTORIDAD);
 
@@ -21,6 +23,8 @@ public class ViajesContract {
     private static final String RUTA_MONEDAS = "monedas";
     private static final String RUTA_MPAGO = "mpago";
     private static final String RUTA_TIPOV = "tipov";
+
+
 
     // [URI_MATCHER]
     public static final UriMatcher uriMatcher;
@@ -51,24 +55,24 @@ public class ViajesContract {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         uriMatcher.addURI(AUTORIDAD, "viajes", VIAJES);
-        uriMatcher.addURI(AUTORIDAD, "viajes/#", VIAJES_ID);
+        uriMatcher.addURI(AUTORIDAD, "viajes/*", VIAJES_ID);
  //       uriMatcher.addURI(AUTORIDAD, "viajes/*/detalles", VIAJES_DET);
 
         uriMatcher.addURI(AUTORIDAD, "eventos", EVENTOS);
-        uriMatcher.addURI(AUTORIDAD, "eventos/#", EVENTOS_ID);
+        uriMatcher.addURI(AUTORIDAD, "eventos/*", EVENTOS_ID);
 //        uriMatcher.addURI(AUTORIDAD, "eventos/*/detalles", EVENTOS_DET);
 
         uriMatcher.addURI(AUTORIDAD, "categorias", CATEGORIAS);
-        uriMatcher.addURI(AUTORIDAD, "categorias/#", CATEGORIAS_ID);
+        uriMatcher.addURI(AUTORIDAD, "categorias/*", CATEGORIAS_ID);
 
         uriMatcher.addURI(AUTORIDAD, "monedas", MONEDAS);
-        uriMatcher.addURI(AUTORIDAD, "monedas/#", MONEDAS_ID);
+        uriMatcher.addURI(AUTORIDAD, "monedas/*", MONEDAS_ID);
 
         uriMatcher.addURI(AUTORIDAD, "m_pago", M_PAGO);
-        uriMatcher.addURI(AUTORIDAD, "m_pago/#", M_PAGO_ID);
+        uriMatcher.addURI(AUTORIDAD, "m_pago/*", M_PAGO_ID);
 
         uriMatcher.addURI(AUTORIDAD, "tipo_v", TIPO_V);
-        uriMatcher.addURI(AUTORIDAD, "tipo_v/#", TIPO_V_ID);
+        uriMatcher.addURI(AUTORIDAD, "tipo_v/*", TIPO_V_ID);
     }
     // [/URI_MATCHER]
 
@@ -166,6 +170,11 @@ public class ViajesContract {
         public static final String TABLE_NAME = RUTA_EVENTOS;
 
         public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_EVENTOS).build();
+
+
+       // Log.i(TAG, "ViajecitContract EventosEntry un poquito");
+
+
         public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
                 + URI_CONTENIDO + "/" + RUTA_EVENTOS;
         public static final String TIPO_CONTENIDO_ITEM = "vnd.android.cursor.item/vnd."
@@ -275,7 +284,9 @@ public class ViajesContract {
 */
     public static class MPagoEntry implements ColumnasMPago {
     public static final String TABLE_NAME = RUTA_MPAGO;
+
     public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_MPAGO).build();
+
     public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
             + URI_CONTENIDO + "/" + RUTA_MPAGO;
     public static final String TIPO_CONTENIDO_ITEM = "vnd.android.cursor.item/vnd."

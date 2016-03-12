@@ -20,6 +20,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                           int version) {
         super(context, name, factory, version);
     }
+
+
+    /////////////////////////////esta interface no esta en techs
     interface Tablas {
         String EVENTOS = "eventos";
         String VIAJES = "viajes";

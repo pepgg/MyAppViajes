@@ -4,8 +4,10 @@ import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
@@ -17,33 +19,73 @@ public class ViajesProvider extends ContentProvider {
     private static final int VERSION_ACTUAL = 1;
     private DatabaseHelper databaseHelper;
     private ContentResolver resolver;
+    // del moviedatabase
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
+
     public static final String TAG = "Provider";
     long id;
 
      @Override
     public boolean onCreate() {
-         Log.i(TAG, "ViajecitosProvider onCreate un poquito");
+         //Log.i(TAG, "ViajecitosProvider onCreate un poquit<<<<<o " + ViajesContract.EventosEntry.URI_CONTENIDO);//este es bueno
          databaseHelper = new DatabaseHelper(getContext(), NOMBRE_BASE_DATOS, null, VERSION_ACTUAL);
         return true;
     }
+    //copiado de MovieDatabase:
+    /**
+     * Builds a UriMatcher that is used to determine witch database request is being made.
+     */
+    public static UriMatcher buildUriMatcher(){
+        String content = ViajesContract.AUTORIDAD;
+
+        // All paths to the UriMatcher have a corresponding code to return
+        // when a match is found (the ints above).
+        UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        matcher.addURI(content, ViajesContract.EventosEntry.TABLE_NAME, ViajesContract.EVENTOS);
+       /// Log.i(TAG, "ViajecitosProvider matcher un poquit<<<<<o " + matcher);
+        matcher.addURI(content, ViajesContract.EventosEntry.TABLE_NAME + "/#", ViajesContract.EVENTOS_ID);
+        matcher.addURI(content, ViajesContract.ViajesEntry.TABLE_NAME, ViajesContract.VIAJES);
+        matcher.addURI(content, ViajesContract.ViajesEntry.TABLE_NAME + "/#", ViajesContract.VIAJES_ID);
+        matcher.addURI(content, ViajesContract.CategoriasEntry.TABLE_NAME, ViajesContract.CATEGORIAS);
+        matcher.addURI(content, ViajesContract.CategoriasEntry.TABLE_NAME + "/#", ViajesContract.CATEGORIAS_ID);
+        matcher.addURI(content, ViajesContract.MonedasEntry.TABLE_NAME, ViajesContract.MONEDAS);
+        matcher.addURI(content, ViajesContract.MonedasEntry.TABLE_NAME + "/#", ViajesContract.MONEDAS_ID);
+        matcher.addURI(content, ViajesContract.MPagoEntry.TABLE_NAME, ViajesContract.M_PAGO);
+        matcher.addURI(content, ViajesContract.MPagoEntry.TABLE_NAME + "/#", ViajesContract.M_PAGO_ID);
+        matcher.addURI(content, ViajesContract.TipoVEntry.TABLE_NAME, ViajesContract.TIPO_V);
+        matcher.addURI(content, ViajesContract.TipoVEntry.TABLE_NAME + "/#", ViajesContract.TIPO_V_ID);
+
+
+
+        return matcher;
+    }
+    ///////////////////////////////////////////////////
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
+        Log.i(TAG, "ViajecitosProvider primero query uri un poquito: " + uri);
         // Abrir base de datos
         SQLiteDatabase bd = databaseHelper.getReadableDatabase();
+    //   final SQLiteDatabase db = databaseHelper.getWritableDatabase();
         // Comparar Uri
-        int match = ViajesContract.uriMatcher.match(uri);
+       // int match = ViajesContract.uriMatcher.match(uri);
+
+
         // string auxiliar para los ids
-
+        Long id;
         Cursor c;
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder(); //esto no lo usa
 
-        switch (match) {
+        Log.i(TAG, "ViajecitosProvider query uri un poquito: " + uri); //el uri llega
+       // switch (match) {
+        switch(sUriMatcher.match(uri)){
+
             case ViajesContract.EVENTOS:
                 // Consultando todos los eventos
                 c = bd.query(ViajesContract.EventosEntry.TABLE_NAME, projection,
-                    selection, selectionArgs, null, null, sortOrder);
-                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.URI_BASE);
+                        selection, selectionArgs, null, null, sortOrder);
+                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.EventosEntry.URI_CONTENIDO);
                 break;
             case ViajesContract.EVENTOS_ID:
                 // Consultando un evento
@@ -54,9 +96,9 @@ public class ViajesProvider extends ContentProvider {
                 break;
             case ViajesContract.VIAJES:
                 c = bd.query(ViajesContract.ViajesEntry.TABLE_NAME, projection,
-                        selection, selectionArgs,
-                        null, null, sortOrder);
-                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.URI_BASE);
+                        selection, selectionArgs, null, null, sortOrder);
+                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.ViajesEntry.URI_CONTENIDO);
+                break;
             case ViajesContract.VIAJES_ID:
                 // Consultando un viaje
                 id = ContentUris.parseId(uri);
@@ -67,12 +109,12 @@ public class ViajesProvider extends ContentProvider {
 
             case ViajesContract.CATEGORIAS:
                 c = bd.query(ViajesContract.CategoriasEntry.TABLE_NAME, projection,
-                        selection, selectionArgs,
-                        null, null, sortOrder);
+                        selection, selectionArgs, null, null, sortOrder);
+                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.CategoriasEntry.URI_CONTENIDO);
                 break;
             case ViajesContract.CATEGORIAS_ID:
                 id = ContentUris.parseId(uri);
-                c = bd.query(ViajesContract.EventosEntry.TABLE_NAME, projection,
+                c = bd.query(ViajesContract.CategoriasEntry.TABLE_NAME, projection,
                         ViajesContract.CategoriasEntry.CAT_ID + " = ?",
                         new String[]{String.valueOf(id)}, null, null, sortOrder);
                 break;
@@ -80,6 +122,7 @@ public class ViajesProvider extends ContentProvider {
             case ViajesContract.MONEDAS:
                 c = bd.query(ViajesContract.MonedasEntry.TABLE_NAME, projection,
                         selection, selectionArgs, null, null, sortOrder);
+                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.MonedasEntry.URI_CONTENIDO);
                 break;
             case ViajesContract.MONEDAS_ID:
                 id = ContentUris.parseId(uri);
@@ -91,6 +134,7 @@ public class ViajesProvider extends ContentProvider {
             case ViajesContract.M_PAGO:
                 c = bd.query(ViajesContract.MPagoEntry.TABLE_NAME, projection,
                         selection, selectionArgs, null, null, sortOrder);
+                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.MPagoEntry.URI_CONTENIDO);
                 break;
             case ViajesContract.M_PAGO_ID:
                 id = ContentUris.parseId(uri);
@@ -102,6 +146,7 @@ public class ViajesProvider extends ContentProvider {
             case ViajesContract.TIPO_V:
                 c = bd.query(ViajesContract.TipoVEntry.TABLE_NAME, projection,
                         selection, selectionArgs, null, null, sortOrder);
+                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.TipoVEntry.URI_CONTENIDO);
                 break;
             case ViajesContract.TIPO_V_ID:
                 id = ContentUris.parseId(uri);
@@ -113,7 +158,8 @@ public class ViajesProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("URI NO SOPORTADA = " + uri);
         }
-        c.setNotificationUri(resolver, uri);
+        // Tell the cursor what uri to watch, so it knows when its source data changes
+       // c.setNotificationUri(getContext().getContentResolver(), uri);
 
         return c;
 

@@ -83,7 +83,7 @@ public class MainFragment extends ListFragment implements
         // Consultar todos los registros
         return new CursorLoader(
                 getActivity(),
-                ViajesContract.URI_BASE,
+                ViajesContract.CategoriasEntry.URI_CONTENIDO,
                 null, null, null, null);
     }
 
@@ -97,7 +97,7 @@ public class MainFragment extends ListFragment implements
         adaptador.swapCursor(null);
     }
 
-    @Override
+    @Override   //on list item click se va con el id a DetilActivityyyyyyyyyyyyyyyyyyyyyyy<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long id) {
         getActivity().startActivity(new Intent(getActivity(), DetailActivity.class)
                 .putExtra(ViajesContract.CategoriasEntry.CAT_ID, id));

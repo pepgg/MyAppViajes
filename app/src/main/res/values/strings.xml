@@ -11,10 +11,11 @@
     <string name="ciudad_label">ciudad</string>
     <string name="action_discard">Descartar</string>
     <string name="estado_label">estadito</string>
-    <string name="tecnico_label">tecniquito</string>
-    <string name="prioridad_label">prioridita</string>
+    <string name="tecnico_label">Gastado €</string>
+    <string name="prioridad_label">Total Km</string>
     <string name="title_activity_detail">Detalle</string>
     <string name="title_activity_insert">nuevo</string>
     <string name="title_activity_update">actualiza</string>
+    <string name="viaje_label">Estás en el viaje a:</string>
 </resources>
 

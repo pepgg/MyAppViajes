@@ -2,12 +2,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/detail_background"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivityFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <!-- Card 1 -->
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        card_view:cardElevation="@dimen/card_elevation"
+        card_view:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:id="@+id/content1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/activity_horizontal_margin">
+            <!-- Etiqueta de la estado -->
+            <TextView
+                android:id="@+id/viaje_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/estado_text"
+                android:layout_centerVertical="true"
+                android:text="@string/viaje_label"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <!-- Texto de la estado -->
+            <TextView
+                android:id="@+id/estado_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="Viaje actual:"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/primary" />
+
+
+            <!-- Label del técnico -->
+            <TextView
+                android:id="@+id/tecnico_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tecnico_text"
+                android:text="@string/tecnico_label"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/tecnico_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/estado_label"
+                android:layout_alignStart="@+id/estado_label"
+                android:layout_below="@+id/estado_label"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="16dp"
+                android:text="Total Gastado:"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/primary" />
+
+            <TextView
+                android:id="@+id/proridad_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/tecnico_label"
+                android:text="@string/prioridad_label"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/prioridad_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/tecnico_text"
+                android:text="Total Km:"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/primary" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
     <!-- Lista de actividades -->
     <ListView
@@ -16,7 +103,7 @@
         android:id="@android:id/list" />
 
     <!-- Texto emergente por si no hay elementos -->
-    <TextView android:id="@id/android:empty"
+    <TextView android:id="@+id/android:empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="No hay datos"/>
@@ -42,14 +129,27 @@
         android:layout_alignLeft="@+id/fab"
         android:layout_alignStart="@+id/fab" />
 -->
+        <!-- Floating Action Button de adición
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@mipmap/ic_add"
+            fab:fab_colorNormal="@color/accent"
+            fab:fab_colorPressed="@color/accent"
+            fab:fab_colorRipple="@color/background"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true" />
+-->
 
-    <!--
-    quito esta punyeta de momentoooooooooooooooooooooooooooooooooo
+
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/fab"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true" />
--->
+
+    </LinearLayout>
 </RelativeLayout>

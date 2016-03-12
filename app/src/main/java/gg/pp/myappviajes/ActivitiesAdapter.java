@@ -3,7 +3,6 @@ package gg.pp.myappviajes;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,7 @@ public class ActivitiesAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Log.i(TAG, "enn ActivitiesAdapter bindView un poquito");
+       // Log.i(TAG, "enn ActivitiesAdapter bindView un poquito");
         TextView categ_list_text = (TextView) view.findViewById(R.id.categ_list_text);
         categ_list_text.setText(cursor.getString(
                 cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)));
@@ -55,7 +54,7 @@ public class ActivitiesAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        Log.i(TAG, "enn ActivitiesAdapter newView un poquito");
+      //  Log.i(TAG, "enn ActivitiesAdapter newView un poquito");
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return inflater.inflate(R.layout.item_layout, parent, false);
     }
