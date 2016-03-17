@@ -1,126 +1,181 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/activity_horizontal_margin"
-    tools:context="com.herprogramacion.mytechs.ui.InsertFragment">
-
-    <!-- Etiqueta de la categoria -->
-    <TextView
-        android:id="@+id/descripcion_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="@string/categor_label"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <!-- Texto de la categoria -->
-    <EditText
-        android:id="@+id/categor_input"
+    tools:context="gg.pp.myappviajes.ui.InsertFragment">
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/descripcion_label"
-        android:hint="@string/description_input"
-        android:maxLength="120" />
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"		>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+            <!-- nom evento -->
+            <EditText
+                android:id="@+id/nom_e"
+                android:hint="@string/nomeven"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <!-- descripcio -->
+            <EditText
+                android:id="@+id/descripcio_e"
+                android:hint="@string/descripcio_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-    <!-- Divisor-->
-    <View
-        android:id="@+id/divider1"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/categor_input"
-        android:layout_marginTop="@dimen/margin_divider"
-        android:background="@color/divider_color" />
+            <!-- Divisor-->
+            <View
+                android:id="@+id/divider1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_color" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+            <Spinner
+                android:id="@+id/spinner_mod_pag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:drawSelectorOnTop="true" />
+            <EditText
+                android:id="@+id/preu_e"
+                android:hint="@string/precio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Spinner
+                android:id="@+id/spinner_moned"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:drawSelectorOnTop="true" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+            <TextView
+                android:id="@+id/tot_eur"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_eur" />
+            <EditText
+                android:id="@+id/total_eur"
+                android:hint="@string/total_eur"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+            <EditText
+                android:id="@+id/direccio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/direccio" />
+            <EditText
+                android:id="@+id/cp"
+                android:hint="@string/codP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+                <EditText
+                    android:id="@+id/ciudad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ciudad_label" />
+                <EditText
+                    android:id="@+id/telef"
+                    android:hint="@string/telef"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+                <EditText
+                    android:id="@+id/mail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ciudad_label" />
+                <EditText
+                    android:id="@+id/web"
+                    android:hint="@string/telef"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+                <TextView
+                    android:id="@+id/longi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/longi" />
+                <EditText
+                    android:id="@+id/longitud"
+                    android:hint="@string/longi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+                <TextView
+                    android:id="@+id/latitud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lati" />
+                <EditText
+                    android:id="@+id/lati"
+                    android:hint="@string/longi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+                <TextView
+                    android:id="@+id/alti"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/alti" />
+                <EditText
+                    android:id="@+id/altitud"
+                    android:hint="@string/alti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-    <!-- Etiqueta del estado-->
-    <TextView
-        android:id="@+id/estado_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tecnico_spinner"
-        android:paddingTop="@dimen/padding_top_form"
-        android:text="@string/estado_label"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <!-- Etiqueta del técnico asignado-->
-    <TextView
-        android:id="@+id/tecnico_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/divider1"
-        android:paddingTop="@dimen/padding_top_form"
-        android:text="@string/tecnico_label"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <!-- Etiqueta de la categoría-->
-    <TextView
-        android:id="@+id/categoria_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/prioridad_spinner"
-        android:paddingTop="@dimen/padding_top_form"
-        android:text="@string/prioridad_label"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <!-- Etiqueta de la prioridad-->
-    <TextView
-        android:id="@+id/prioridad_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/estado_label"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="@dimen/padding_top_form"
-        android:text="@string/prioridad_label"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <!-- Selección de prioridad
-    <Spinner
-        android:id="@+id/prioridad_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/prioridad_label"
-        android:layout_alignStart="@+id/prioridad_label"
-        android:layout_below="@+id/prioridad_label"
-        android:entries="@array/prioridad" />
--->
-    <!-- Selección del técnico
-    <Spinner
-        android:id="@+id/tecnico_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tecnico_label"
-        android:entries="@array/tecnico" />
--->
-    <!-- Selección de la categoría
-    <Spinner
-        android:id="@+id/categoria_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/categoria_label"
-        android:entries="@array/categoria" />
--->
-    <!-- Selección del estado
-    <Spinner
-        android:id="@+id/estado_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/estado_label"
-        android:layout_marginRight="@dimen/margin_right_form"
-        android:layout_toLeftOf="@+id/prioridad_label"
-        android:entries="@array/estado" />
--->
-</RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

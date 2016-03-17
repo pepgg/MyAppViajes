@@ -7,7 +7,7 @@
     <string name="action_edit">Editar</string>
     <string name="action_delete">Suprimir</string>
     <string name="descripcio_label">Descripcion</string>
-    <string name="nom_label">nombre</string>
+    <string name="nom_label">Nombre</string>
     <string name="ciudad_label">ciudad</string>
     <string name="action_discard">Descartar</string>
     <string name="estado_label">estadito</string>
@@ -20,7 +20,9 @@
     <string name="viaje_label">Estás en el viaje a:</string>
     <string name="nuevo_viaje">Nuevo viaje</string>
     <string name="nom_viaje">Viaje: </string>
-    <string name="longitud">Longitud: </string>
+    <string name="lati">Latitud: </string>
+    <string name="longi">Longitud: </string>
+    <string name="alti">Altitud: </string>
     <string name="categor">categoria</string>
     <string name="nomeven">nombre: </string>
     <string name="direccio">Dirección: </string>
@@ -31,7 +33,11 @@
     <string name="kmini">Km inicio: </string>
     <string name="kmfi">Km final: </string>
     <string name="guardar">Guardar </string>
-
+    <string name="precio">precio </string>
+    <string name="total_eur">Total €: </string>
+    <string name="telef">teléfono: </string>
+    <string name="mail">mail: </string>
+    <string name="web">web: </string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
