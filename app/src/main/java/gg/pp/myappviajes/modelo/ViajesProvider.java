@@ -2,7 +2,6 @@ package gg.pp.myappviajes.modelo;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -11,30 +10,102 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
+import gg.pp.myappviajes.modelo.DatabaseHelper.Tablas;
+import gg.pp.myappviajes.modelo.ViajesContract.CategoriasEntry;
+import gg.pp.myappviajes.modelo.ViajesContract.EventosEntry;
+import gg.pp.myappviajes.modelo.ViajesContract.MPagoEntry;
+import gg.pp.myappviajes.modelo.ViajesContract.MonedasEntry;
+import gg.pp.myappviajes.modelo.ViajesContract.TipoVEntry;
+import gg.pp.myappviajes.modelo.ViajesContract.ViajesEntry;
+
 /**
  * Created by pepe on 4/03/16.
  */
 public class ViajesProvider extends ContentProvider {
-    public static final String NOMBRE_BASE_DATOS = "cpviajes.db";
-    private static final int VERSION_ACTUAL = 1;
+   // public static final String NOMBRE_BASE_DATOS = "cpviajes.db";
+   // private static final int VERSION_ACTUAL = 1;
     private DatabaseHelper databaseHelper;
     private ContentResolver resolver;
+    public ViajesProvider(){
+    }
+    //////////////////los que estaban el contract:
+    public static final UriMatcher uriMatcher;
+
+    // Casos
+    public static final int VIAJES = 100;
+    public static final int VIAJES_ID = 101;
+    //    public static final int VIAJES_DET = 102;
+    public static final int VIAJES_NOM = 103;
+
+    public static final int EVENTOS = 200;
+    public static final int EVENTOS_ID = 201;
+//    public static final int EVENTOS_DET= 202;
+
+    public static final int CATEGORIAS = 300;
+    public static final int CATEGORIAS_ID = 301;
+
+    public static final int MONEDAS = 400;
+    public static final int MONEDAS_ID = 401;
+
+    public static final int M_PAGO = 500;
+    public static final int M_PAGO_ID = 501;
+
+    public static final int TIPO_V = 600;
+    public static final int TIPO_V_ID = 601;
+
+    static {
+        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "viajes", VIAJES);
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "viajes/*", VIAJES_ID);
+        //       uriMatcher.addURI(AUTORIDAD, "viajes/*/detalles", VIAJES_DET);
+
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "eventos", EVENTOS);
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "eventos/*", EVENTOS_ID);
+//        uriMatcher.addURI(AUTORIDAD, "eventos/*/detalles", EVENTOS_DET);
+
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "categorias", CATEGORIAS);
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "categorias/*", CATEGORIAS_ID);
+
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "monedas", MONEDAS);
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "monedas/*", MONEDAS_ID);
+
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "m_pago", M_PAGO);
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "m_pago/*", M_PAGO_ID);
+
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "tipo_v", TIPO_V);
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "tipo_v/*", TIPO_V_ID);
+    }
+    // [/URI_MATCHER]
+
+    // [/URIS]
+
+    ///////////////////
+
+
+
+
     // del moviedatabase
-    private static final UriMatcher sUriMatcher = buildUriMatcher();
+  //  private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     public static final String TAG = "Provider";
-    long id;
+   // long id;
 
      @Override
     public boolean onCreate() {
-         //Log.i(TAG, "ViajecitosProvider onCreate un poquit<<<<<o " + ViajesContract.EventosEntry.URI_CONTENIDO);//este es bueno
-         databaseHelper = new DatabaseHelper(getContext(), NOMBRE_BASE_DATOS, null, VERSION_ACTUAL);
+         Log.i(TAG, "ViajecitosProvider onCreate un poquit<<<<<o " + ViajesContract.EventosEntry.URI_CONTENIDO);//este es bueno
+
+         //databaseHelper = new DatabaseHelper(getContext(), NOMBRE_BASE_DATOS, null, VERSION_ACTUAL);
+         databaseHelper = new DatabaseHelper(getContext());
+         resolver = getContext().getContentResolver();
         return true;
     }
     //copiado de MovieDatabase:
     /**
      * Builds a UriMatcher that is used to determine witch database request is being made.
      */
+
+    /*
     public static UriMatcher buildUriMatcher(){
         String content = ViajesContract.AUTORIDAD;
 
@@ -42,7 +113,6 @@ public class ViajesProvider extends ContentProvider {
         // when a match is found (the ints above).
         UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(content, ViajesContract.EventosEntry.TABLE_NAME, ViajesContract.EVENTOS);
-       /// Log.i(TAG, "ViajecitosProvider matcher un poquit<<<<<o " + matcher);
         matcher.addURI(content, ViajesContract.EventosEntry.TABLE_NAME + "/#", ViajesContract.EVENTOS_ID);
         matcher.addURI(content, ViajesContract.ViajesEntry.TABLE_NAME, ViajesContract.VIAJES);
         matcher.addURI(content, ViajesContract.ViajesEntry.TABLE_NAME + "/#", ViajesContract.VIAJES_ID);
@@ -59,107 +129,109 @@ public class ViajesProvider extends ContentProvider {
 
         return matcher;
     }
+    */
     ///////////////////////////////////////////////////
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
+        /////////////////////////////////////////aqui cambiaba la uri y pone categorias  por qué¿¿¿¿¿¿¿¿¿¿¿¿
         Log.i(TAG, "ViajecitosProvider primero query uri un poquito: " + uri);
         // Abrir base de datos
         SQLiteDatabase bd = databaseHelper.getReadableDatabase();
     //   final SQLiteDatabase db = databaseHelper.getWritableDatabase();
         // Comparar Uri
-       // int match = ViajesContract.uriMatcher.match(uri);
-
-
+        int match = uriMatcher.match(uri);
+        Log.i(TAG, "ViajecitosProvider el mathc de la URRRRRRIIIIII query uri un poquito: " + match);
+////////////////////////////////////////////////el match que llega es el 300, el de categorias
         // string auxiliar para los ids
-        Long id;
+        String id;
         Cursor c;
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder(); //esto no lo usa
 
-        Log.i(TAG, "ViajecitosProvider query uri un poquito: " + uri); //el uri llega
-       // switch (match) {
-        switch(sUriMatcher.match(uri)){
+        Log.i(TAG, "ViajecitosProvider query uri un poquito: " + uri); //el uri llega categoriasssssssssssssssss
+        /////////////////////este sswitch fallaaaaaaaaaaaaaaaaaaaaaaa
+        switch (match) {
+      //  switch(sUriMatcher.match(uri)){
 
-            case ViajesContract.EVENTOS:
+            case EVENTOS:
                 // Consultando todos los eventos
-                c = bd.query(ViajesContract.EventosEntry.TABLE_NAME, projection,
+                c = bd.query(Tablas.EVENTOS, projection,
                         selection, selectionArgs, null, null, sortOrder);
-                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.EventosEntry.URI_CONTENIDO);
+               // c.setNotificationUri(getContext().getContentResolver(), ViajesContract.EventosEntry.URI_CONTENIDO);
                 break;
-            case ViajesContract.EVENTOS_ID:
+            case EVENTOS_ID:
                 // Consultando un evento
-                id = ContentUris.parseId(uri);
-                c = bd.query(ViajesContract.EventosEntry.TABLE_NAME, projection,
-                    ViajesContract.EventosEntry.E_ID + " = ?",
-                    new String[]{String.valueOf(id)}, null, null, sortOrder);
+                id = EventosEntry.obtenerIdEvento(uri);
+                c = bd.query(Tablas.EVENTOS, projection,
+                    EventosEntry.E_ID + " = ?",
+                    new String[]{id}, null, null, null);
                 break;
-            case ViajesContract.VIAJES:
-                c = bd.query(ViajesContract.ViajesEntry.TABLE_NAME, projection,
+            case VIAJES:
+                c = bd.query(Tablas.VIAJES, projection,
                         selection, selectionArgs, null, null, sortOrder);
-                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.ViajesEntry.URI_CONTENIDO);
+                //c.setNotificationUri(getContext().getContentResolver(), ViajesContract.ViajesEntry.URI_CONTENIDO);
                 break;
-            case ViajesContract.VIAJES_ID:
-                // Consultando un viaje
-                id = ContentUris.parseId(uri);
-                c = bd.query(ViajesContract.ViajesEntry.TABLE_NAME, projection,
-                        ViajesContract.ViajesEntry.V_ID + " = ?",
-                        new String[]{String.valueOf(id)}, null, null, sortOrder);
+            case VIAJES_ID:
+                id = ViajesEntry.obtenerIdViaje(uri);
+                c = bd.query(Tablas.VIAJES, projection,
+                        ViajesEntry.V_ID + " = ?",
+                        new String[]{id}, null, null, null);
                 break;
 
-            case ViajesContract.CATEGORIAS:
-                c = bd.query(ViajesContract.CategoriasEntry.TABLE_NAME, projection,
+            case CATEGORIAS:
+                c = bd.query(Tablas.CATEGORIAS, projection,
                         selection, selectionArgs, null, null, sortOrder);
-                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.CategoriasEntry.URI_CONTENIDO);
+                //c.setNotificationUri(getContext().getContentResolver(), ViajesContract.CategoriasEntry.URI_CONTENIDO);
                 break;
-            case ViajesContract.CATEGORIAS_ID:
-                id = ContentUris.parseId(uri);
-                c = bd.query(ViajesContract.CategoriasEntry.TABLE_NAME, projection,
-                        ViajesContract.CategoriasEntry.CAT_ID + " = ?",
-                        new String[]{String.valueOf(id)}, null, null, sortOrder);
+            case CATEGORIAS_ID:
+                id = CategoriasEntry.obtenerIdCategoria(uri);
+                c = bd.query(Tablas.CATEGORIAS, projection,
+                        CategoriasEntry.CAT_ID + " = ?",
+                        new String[]{id}, null, null, null);
                 break;
 
-            case ViajesContract.MONEDAS:
-                c = bd.query(ViajesContract.MonedasEntry.TABLE_NAME, projection,
+            case MONEDAS:
+                c = bd.query(Tablas.MONEDAS, projection,
                         selection, selectionArgs, null, null, sortOrder);
-                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.MonedasEntry.URI_CONTENIDO);
+                //c.setNotificationUri(getContext().getContentResolver(), ViajesContract.MonedasEntry.URI_CONTENIDO);
                 break;
-            case ViajesContract.MONEDAS_ID:
-                id = ContentUris.parseId(uri);
-                c = bd.query(ViajesContract.MonedasEntry.TABLE_NAME, projection,
-                        ViajesContract.MonedasEntry.MON_ID + " = ?",
-                        new String[]{String.valueOf(id)}, null, null, sortOrder);
+            case MONEDAS_ID:
+                id = MonedasEntry.obtenerIdMoneda(uri);
+                c = bd.query(Tablas.MONEDAS, projection,
+                        MonedasEntry.MON_ID + " = ?",
+                        new String[]{id}, null, null, null);
                 break;
 
-            case ViajesContract.M_PAGO:
-                c = bd.query(ViajesContract.MPagoEntry.TABLE_NAME, projection,
+            case M_PAGO:
+                c = bd.query(Tablas.MPAGO, projection,
                         selection, selectionArgs, null, null, sortOrder);
-                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.MPagoEntry.URI_CONTENIDO);
+                //c.setNotificationUri(getContext().getContentResolver(), ViajesContract.MPagoEntry.URI_CONTENIDO);
                 break;
-            case ViajesContract.M_PAGO_ID:
-                id = ContentUris.parseId(uri);
-                c = bd.query(ViajesContract.MPagoEntry.TABLE_NAME, projection,
-                        ViajesContract.MPagoEntry.MPAG_ID + " = ?",
-                        new String[]{String.valueOf(id)}, null, null, sortOrder);
+            case M_PAGO_ID:
+                id = MPagoEntry.obtenerIdMPago(uri);
+                c = bd.query(Tablas.MPAGO, projection,
+                        MPagoEntry.MPAG_ID + " = ?",
+                        new String[]{id}, null, null, null);
                 break;
 
-            case ViajesContract.TIPO_V:
-                c = bd.query(ViajesContract.TipoVEntry.TABLE_NAME, projection,
+            case TIPO_V:
+                c = bd.query(Tablas.TIPOVIAJE, projection,
                         selection, selectionArgs, null, null, sortOrder);
-                c.setNotificationUri(getContext().getContentResolver(), ViajesContract.TipoVEntry.URI_CONTENIDO);
+                //c.setNotificationUri(getContext().getContentResolver(), ViajesContract.TipoVEntry.URI_CONTENIDO);
                 break;
-            case ViajesContract.TIPO_V_ID:
-                id = ContentUris.parseId(uri);
-                c = bd.query(ViajesContract.TipoVEntry.TABLE_NAME, projection,
-                        ViajesContract.TipoVEntry.TIPO_ID + " = ?",
-                        new String[]{String.valueOf(id)}, null, null, sortOrder);
+            case TIPO_V_ID:
+                id = TipoVEntry.obtenerIdTipoV(uri);
+                c = bd.query(Tablas.TIPOVIAJE, projection,
+                        TipoVEntry.TIPO_ID + " = ?",
+                        new String[]{id}, null, null, null);
                 break;
 
             default:
-                throw new IllegalArgumentException("URI NO SOPORTADA = " + uri);
+                throw new UnsupportedOperationException("URI NO SOPORTADA = " + uri);
         }
         // Tell the cursor what uri to watch, so it knows when its source data changes
-       // c.setNotificationUri(getContext().getContentResolver(), uri);
+        c.setNotificationUri(resolver, uri);
 
         return c;
 
@@ -167,36 +239,37 @@ public class ViajesProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        switch (ViajesContract.uriMatcher.match(uri)) {
-            case ViajesContract.EVENTOS:
-                return ViajesContract.EventosEntry.TIPO_CONTENIDO;
-            case ViajesContract.EVENTOS_ID:
-                return ViajesContract.EventosEntry.TIPO_CONTENIDO_ITEM;
+        Log.d(TAG, "Esty en getType con " + uri );
+        switch (uriMatcher.match(uri)) {
+            case EVENTOS:
+                return ViajesContract.generarMime("Eventos");
+            case EVENTOS_ID:
+                return ViajesContract.generarMimeItem("Eventos");
 
-            case ViajesContract.VIAJES:
-                return ViajesContract.ViajesEntry.TIPO_CONTENIDO;
-            case ViajesContract.VIAJES_ID:
-                return ViajesContract.ViajesEntry.TIPO_CONTENIDO_ITEM;
+            case VIAJES:
+                return ViajesContract.generarMime("Viajes");
+            case VIAJES_ID:
+                return ViajesContract.generarMimeItem("Viajes");
 
-            case ViajesContract.CATEGORIAS:
-                return ViajesContract.CategoriasEntry.TIPO_CONTENIDO;
-            case ViajesContract.CATEGORIAS_ID:
-                return ViajesContract.ViajesEntry.TIPO_CONTENIDO_ITEM;
+            case CATEGORIAS:
+                return ViajesContract.generarMime("Categorias");
+            case CATEGORIAS_ID:
+                return ViajesContract.generarMimeItem("Categorias");
 
-            case ViajesContract.MONEDAS:
-                return ViajesContract.MonedasEntry.TIPO_CONTENIDO;
-            case ViajesContract.MONEDAS_ID:
-                return ViajesContract.MonedasEntry.TIPO_CONTENIDO_ITEM;
+            case MONEDAS:
+                return ViajesContract.generarMime("Monedas");
+            case MONEDAS_ID:
+                return ViajesContract.generarMimeItem("Monedas");
 
-            case ViajesContract.M_PAGO:
-                return ViajesContract.MPagoEntry.TIPO_CONTENIDO;
-            case ViajesContract.M_PAGO_ID:
-                return ViajesContract.MPagoEntry.TIPO_CONTENIDO_ITEM;
+            case M_PAGO:
+                return ViajesContract.generarMime("MPago");
+            case M_PAGO_ID:
+                return ViajesContract.generarMimeItem("MPago");
 
-            case ViajesContract.TIPO_V:
-                return ViajesContract.TipoVEntry.TIPO_CONTENIDO;
-            case ViajesContract.TIPO_V_ID:
-                return ViajesContract.TipoVEntry.TIPO_CONTENIDO_ITEM;
+            case TIPO_V:
+                return ViajesContract.generarMime("TipoV");
+            case TIPO_V_ID:
+                return ViajesContract.generarMimeItem("TipoV");
 
             default:
                 throw new UnsupportedOperationException("Uri desconocida =>" + uri);
@@ -205,36 +278,42 @@ public class ViajesProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        Log.d(TAG, "Inserción en " + uri + "( " + values.toString() + " )\n");
+        ///////////////////////////////////////////////////aquí siiiii llegaaaaaaaaaaaaaaaaaaaaaaaaaa
+        Log.d(TAG, "Inserción en " + uri );
         SQLiteDatabase bd = databaseHelper.getWritableDatabase();
-        //String id = null;
-        Uri returnUri;
-        switch (ViajesContract.uriMatcher.match(uri)) {
+        String id = null;
 
-            case ViajesContract.VIAJES:
-                id = bd.insertOrThrow(ViajesContract.ViajesEntry.TABLE_NAME, null, values);
-                notificarCambio(uri);
-               // return ViajesContract.ViajesEntry.crearUriViajes(values.getAsString(DatabaseHelper.Tablas.VIAJES));
+        switch (uriMatcher.match(uri)) {
 
-            case ViajesContract.EVENTOS:
-                id = bd.insertOrThrow(ViajesContract.EventosEntry.TABLE_NAME, null, values);
+            case VIAJES:
+                bd.insertOrThrow(Tablas.VIAJES, null, values);
                 notificarCambio(uri);
+                return ViajesEntry.crearUriViajes(values.getAsString(Tablas.VIAJES));
 
-            case ViajesContract.CATEGORIAS:
-                id = bd.insertOrThrow(ViajesContract.CategoriasEntry.TABLE_NAME, null, values);
+            case EVENTOS:
+                bd.insertOrThrow(Tablas.EVENTOS, null, values);
                 notificarCambio(uri);
+                return EventosEntry.crearUriEvento(values.getAsString(Tablas.EVENTOS));
 
-            case ViajesContract.MONEDAS:
-                id = bd.insertOrThrow(ViajesContract.MonedasEntry.TABLE_NAME, null, values);
+            case CATEGORIAS:
+                bd.insertOrThrow(Tablas.CATEGORIAS, null, values);
                 notificarCambio(uri);
+                return CategoriasEntry.crearUriCategorias(values.getAsString(Tablas.CATEGORIAS));
 
-            case ViajesContract.M_PAGO:
-                id = bd.insertOrThrow(ViajesContract.MPagoEntry.TABLE_NAME, null, values);
+            case MONEDAS:
+                bd.insertOrThrow(Tablas.MONEDAS, null, values);
                 notificarCambio(uri);
+                return MonedasEntry.crearUriMonedas(values.getAsString(Tablas.MONEDAS));
 
-            case ViajesContract.TIPO_V:
-                id = bd.insertOrThrow(ViajesContract.TipoVEntry.TABLE_NAME, null, values);
+            case M_PAGO:
+                bd.insertOrThrow(Tablas.MPAGO, null, values);
                 notificarCambio(uri);
+                return MPagoEntry.crearUriMPago(values.getAsString(Tablas.MPAGO));
+
+            case TIPO_V:
+                bd.insertOrThrow(Tablas.TIPOVIAJE, null, values);
+                notificarCambio(uri);
+                return TipoVEntry.crearUriTipoV(values.getAsString(Tablas.TIPOVIAJE));
 
             default:
                 throw new UnsupportedOperationException("URI_NO_SOPORTADA" + uri);
@@ -247,37 +326,38 @@ public class ViajesProvider extends ContentProvider {
         Log.d(TAG, "delete: " + uri);
 
         SQLiteDatabase bd = databaseHelper.getWritableDatabase();
-
+        String id = null;
         int afectados;
 
-        switch (ViajesContract.uriMatcher.match(uri)) {
-            case ViajesContract.EVENTOS:
-                afectados = bd.delete(ViajesContract.EventosEntry.TABLE_NAME, selection, selectionArgs);
+        switch (uriMatcher.match(uri)) {
+            case EVENTOS_ID:
+                id = EventosEntry.obtenerIdEvento(uri);
+                afectados = bd.delete(Tablas.EVENTOS, EventosEntry.E_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
-            case ViajesContract.VIAJES:
-                afectados = bd.delete(ViajesContract.ViajesEntry.TABLE_NAME, selection, selectionArgs);
+            case VIAJES_ID:
+                afectados = bd.delete(Tablas.VIAJES, ViajesEntry.V_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
-            case ViajesContract.CATEGORIAS:
-                afectados = bd.delete(ViajesContract.CategoriasEntry.TABLE_NAME, selection, selectionArgs);
+            case CATEGORIAS_ID:
+                afectados = bd.delete(Tablas.CATEGORIAS, CategoriasEntry.CAT_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
-            case ViajesContract.MONEDAS:
-                afectados = bd.delete(ViajesContract.MonedasEntry.TABLE_NAME, selection, selectionArgs);
+            case TIPO_V_ID:
+                afectados = bd.delete(Tablas.TIPOVIAJE, TipoVEntry.TIPO_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
-            case ViajesContract.M_PAGO:
-                afectados = bd.delete(ViajesContract.MPagoEntry.TABLE_NAME, selection, selectionArgs);
+            case MONEDAS_ID:
+                afectados = bd.delete(Tablas.MONEDAS, MonedasEntry.MON_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
-            case ViajesContract.TIPO_V:
-                afectados = bd.delete(ViajesContract.TipoVEntry.TABLE_NAME, selection, selectionArgs);
+            case M_PAGO_ID:
+                afectados = bd.delete(Tablas.MPAGO, MPagoEntry.MPAG_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
@@ -285,60 +365,59 @@ public class ViajesProvider extends ContentProvider {
                 throw new UnsupportedOperationException("URI_NO_SOPORTADA" + uri);
         }
         return afectados;
-        //return 0;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         SQLiteDatabase bd = databaseHelper.getWritableDatabase();
         int afectados;
+        String id = null;
+        Log.d(TAG, "Esty en UPDATE con " + uri );
+        switch (uriMatcher.match(uri)) {
 
-        switch (ViajesContract.uriMatcher.match(uri)) {
-            case ViajesContract.EVENTOS:
-                afectados = bd.update(ViajesContract.EventosEntry.TABLE_NAME, values,
-                        selection, selectionArgs);
+            case EVENTOS_ID:
+                afectados = bd.update(Tablas.EVENTOS, values,
+                        EventosEntry.E_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
-            case ViajesContract.VIAJES:
-                afectados = bd.update(ViajesContract.ViajesEntry.TABLE_NAME, values,
-                        selection, selectionArgs);
+            case VIAJES_ID:
+                afectados = bd.update(Tablas.VIAJES, values,
+                        ViajesEntry.V_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
-            case ViajesContract.CATEGORIAS:
-                afectados = bd.update(ViajesContract.CategoriasEntry.TABLE_NAME, values,
-                        selection, selectionArgs);
+            case CATEGORIAS_ID:
+                afectados = bd.update(Tablas.CATEGORIAS, values,
+                        CategoriasEntry.CAT_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
-            case ViajesContract.MONEDAS:
-                afectados = bd.update(ViajesContract.MonedasEntry.TABLE_NAME, values,
-                        selection, selectionArgs);
+            case MONEDAS_ID:
+                afectados = bd.update(Tablas.MONEDAS, values,
+                        MonedasEntry.MON_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
-            case ViajesContract.M_PAGO:
-                afectados = bd.update(ViajesContract.MPagoEntry.TABLE_NAME, values,
-                        selection, selectionArgs);
+            case M_PAGO_ID:
+                afectados = bd.update(Tablas.MPAGO, values,
+                        MPagoEntry.MPAG_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
-            case ViajesContract.TIPO_V:
-                afectados = bd.update(ViajesContract.TipoVEntry.TABLE_NAME, values,
-                        selection, selectionArgs);
+            case TIPO_V_ID:
+                afectados = bd.update(Tablas.TIPOVIAJE, values,
+                        TipoVEntry.TIPO_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
             default:
-                throw new UnsupportedOperationException("URI_NO_SOPORTADA" + uri);
+                throw new UnsupportedOperationException("URI NO SOPORTADA" + uri);
         }
 
         return afectados;
     }
-
-
-    private void notificarCambio(Uri uri) {
+      private void notificarCambio(Uri uri) {
         resolver.notifyChange(uri, null);
     }
 }

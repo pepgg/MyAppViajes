@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">My AppViajes</string>
     <string name="title_activity_main_">Main_Activity</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Preferencias</string>
     <string name="categor_label">Nueva Categoria:</string>
     <string name="description_input">Categoria</string>
     <string name="action_edit">Editar</string>
@@ -16,6 +16,24 @@
     <string name="title_activity_detail">Detalle</string>
     <string name="title_activity_insert">nuevo</string>
     <string name="title_activity_update">actualiza</string>
+    <string name="title_insert_evento">Nuevo evento</string>
     <string name="viaje_label">Estás en el viaje a:</string>
+    <string name="nuevo_viaje">Nuevo viaje</string>
+    <string name="nom_viaje">Viaje: </string>
+    <string name="longitud">Longitud: </string>
+    <string name="categor">categoria</string>
+    <string name="nomeven">nombre: </string>
+    <string name="direccio">Dirección: </string>
+    <string name="codP">CP: </string>
+    <string name="data_in">fecha inicio: </string>
+    <string name="data_fi">fecha final: </string>
+    <string name="tipo_v">tipo viaje: </string>
+    <string name="kmini">Km inicio: </string>
+    <string name="kmfi">Km final: </string>
+    <string name="guardar">Guardar </string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+
 </resources>
 

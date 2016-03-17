@@ -13,12 +13,13 @@ import android.util.Log;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    private static final String NOMBRE_BASE_DATOS = "cpviajes.db";
+    private static final int VERSION_ACTUAL = 1;
+    private final Context contexto;
 
-    public DatabaseHelper(Context context,
-                          String name,
-                          SQLiteDatabase.CursorFactory factory,
-                          int version) {
-        super(context, name, factory, version);
+    public DatabaseHelper(Context contexto) {
+        super(contexto, NOMBRE_BASE_DATOS, null, VERSION_ACTUAL);
+        this.contexto = contexto;
     }
 
 

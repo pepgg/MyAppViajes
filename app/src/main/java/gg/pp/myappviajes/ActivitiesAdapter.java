@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.util.Log;
 
 import gg.pp.myappviajes.modelo.ViajesContract;
+
 
 
 /**
@@ -21,14 +23,55 @@ public class ActivitiesAdapter extends CursorAdapter {
     }
     public static final String TAG = "Provider";
 
+    /**
+     * Elimina la actividad actual
+     */
+    private void deleteData() {
+        // Uri uri = ContentUris.withAppendedId(TechsContract.CONTENT_URI, id);
+        //  getActivity().getContentResolver().delete(
+        //         uri,
+        //          null,
+        //          null
+        //  );
+    }
+
+    /**
+     * Envía todos los datos de la actividad hacia el formulario
+     * de actualización
+     */
+    private void beginUpdate() {
+        /*
+        getActivity()
+                .startActivity(
+
+                        new Intent(getActivity(), UpdateActivity.class)
+                                .putExtra(TechsContract.Columnas._ID, id)
+                                .putExtra(TechsContract.Columnas.DESCRIPCION, descripcion.getText())
+                                .putExtra(TechsContract.Columnas.CATEGORIA, categoria.getText())
+                                .putExtra(TechsContract.Columnas.TECNICO, entidad.getText())
+                                .putExtra(TechsContract.Columnas.PRIORIDAD, prioridad.getText())
+                                .putExtra(TechsContract.Columnas.ESTADO, estado.getText())
+
+                );
+                */
+    }
+
+
+
 
 
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-       // Log.i(TAG, "enn ActivitiesAdapter bindView un poquito");
-        TextView categ_list_text = (TextView) view.findViewById(R.id.categ_list_text);
-        categ_list_text.setText(cursor.getString(
+        Log.i(TAG, "enn ActivitiesAdapter bindView un poquito");
+        ////////////////
+        //aqui pndre los spinners de modopago y monedas
+        //creo que sera util para editar y updatesssssssssssssssssssss
+        ////////////////
+        ///////////
+        ///////////
+        TextView categ_list = (TextView) view.findViewById(R.id.categ_list_text);
+        categ_list.setText(cursor.getString(
                 cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)));
 
        
@@ -54,8 +97,13 @@ public class ActivitiesAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-      //  Log.i(TAG, "enn ActivitiesAdapter newView un poquito");
+        Log.i(TAG, "enn ActivitiesAdapter newView un poquito");
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return inflater.inflate(R.layout.item_layout, parent, false);
+
+
+
+
+
     }
 }
