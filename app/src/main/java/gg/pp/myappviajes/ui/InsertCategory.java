@@ -17,7 +17,7 @@ public class InsertCategory extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
 
         if (savedInstanceState == null) {
-            InsertFragment fragment = new InsertFragment();
+            InsertFragmentEv fragment = new InsertFragmentEv();
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(android.R.id.content, fragment, fragment.getClass().getSimpleName())

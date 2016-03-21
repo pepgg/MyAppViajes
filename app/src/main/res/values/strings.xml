@@ -34,10 +34,15 @@
     <string name="kmfi">Km final: </string>
     <string name="guardar">Guardar </string>
     <string name="precio">precio </string>
-    <string name="total_eur">Total €: </string>
+    <string name="eur_"> € </string>
     <string name="telef">teléfono: </string>
     <string name="mail">mail: </string>
     <string name="web">web: </string>
+    <string name="llevas">Llevas: </string>
+    <string name="km_">Km </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

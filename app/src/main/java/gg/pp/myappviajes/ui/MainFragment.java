@@ -38,8 +38,11 @@ public class MainFragment extends ListFragment implements
         super.onCreate(savedInstanceState);
         // Habilitar al fragmento para contribuir en la action bar
         setHasOptionsMenu(true);
+        /////añado esto por la barra de titulo y actionbar
 
+        ///////////////////
     }
+
     //////////////////////////////////////////////las cards se intercambian
     //final CardView card1 = new CardView(this);
     //card1.setVisibility(View.INVISIBLE);
@@ -48,7 +51,8 @@ public class MainFragment extends ListFragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i(TAG, "MainFragmentito OnCrete view un poquito");
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+      //  View view = inflater.inflate(R.layout.fragment_main_old, container, false);
+        View view = inflater.inflate(R.layout.layout_provi, container, false);
 
         ImageButton fab = (ImageButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(
@@ -66,6 +70,15 @@ public class MainFragment extends ListFragment implements
 
         return view;
     }
+    /////añado esto por la barra de titulo y actionbar pero no funciona
+    /*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    ////
+    */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
