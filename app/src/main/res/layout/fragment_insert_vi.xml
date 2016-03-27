@@ -29,39 +29,42 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/data_in"
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center" >
                 <TextView
+                    android:layout_width="0dip"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/data_in" />
 
-                    android:layout_width="fill_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="@string/data_in"
-                    />
-                <Button
-                    android:id="@+id/change_data_in"
-                    android:layout_width="fill_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/data_fi"
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center" >
-                <TextView
-                    android:layout_width="0dip"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="@string/data_fi"	/>
-                <Button
-                    android:id="@+id/change_data_fi"
-                    android:layout_width="0dip"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+               <Button
+                   android:id="@+id/change_data_in"
+                   android:layout_width="0dip"
+                   android:layout_weight="1"
+                   android:layout_height="wrap_content" />
+
+           </LinearLayout>
+           <LinearLayout
+               android:id="@+id/data_fi"
+               android:orientation="horizontal"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center" >
+               <TextView
+                   android:layout_width="0dip"
+                   android:layout_weight="1"
+                   android:layout_height="wrap_content"
+                   android:text="@string/data_fi"	/>
+
+               <Button
+                   android:id="@+id/change_data_fi"
+                   android:layout_width="0dip"
+                   android:layout_weight="1"
+                   android:layout_height="wrap_content" />
+
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -77,9 +80,10 @@
 
 
                 <Spinner
-                    android:id="@+id/spinner1"
+                    android:id="@+id/spinner_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:prompt="@string/spin_tv"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:drawSelectorOnTop="true" />
@@ -143,6 +147,7 @@
 
 
     </ScrollView>
+    <!--
     <Button
         android:id="@+id/btnAddViaje"
         android:layout_width="fill_parent"
@@ -150,5 +155,5 @@
         android:text="@string/guardar"
         android:onClick="onClickAddViaje"
         />
-
+-->
 </LinearLayout>

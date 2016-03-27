@@ -24,7 +24,6 @@ public class InsertViaje extends AppCompatActivity {
                     .beginTransaction()
                     .add(android.R.id.content, fragment, fragment.getClass().getSimpleName())
                     .commit();
-
         }
     }
 

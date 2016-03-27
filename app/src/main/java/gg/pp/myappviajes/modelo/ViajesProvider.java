@@ -100,36 +100,7 @@ public class ViajesProvider extends ContentProvider {
          resolver = getContext().getContentResolver();
         return true;
     }
-    //copiado de MovieDatabase:
-    /**
-     * Builds a UriMatcher that is used to determine witch database request is being made.
-     */
 
-    /*
-    public static UriMatcher buildUriMatcher(){
-        String content = ViajesContract.AUTORIDAD;
-
-        // All paths to the UriMatcher have a corresponding code to return
-        // when a match is found (the ints above).
-        UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        matcher.addURI(content, ViajesContract.EventosEntry.TABLE_NAME, ViajesContract.EVENTOS);
-        matcher.addURI(content, ViajesContract.EventosEntry.TABLE_NAME + "/#", ViajesContract.EVENTOS_ID);
-        matcher.addURI(content, ViajesContract.ViajesEntry.TABLE_NAME, ViajesContract.VIAJES);
-        matcher.addURI(content, ViajesContract.ViajesEntry.TABLE_NAME + "/#", ViajesContract.VIAJES_ID);
-        matcher.addURI(content, ViajesContract.CategoriasEntry.TABLE_NAME, ViajesContract.CATEGORIAS);
-        matcher.addURI(content, ViajesContract.CategoriasEntry.TABLE_NAME + "/#", ViajesContract.CATEGORIAS_ID);
-        matcher.addURI(content, ViajesContract.MonedasEntry.TABLE_NAME, ViajesContract.MONEDAS);
-        matcher.addURI(content, ViajesContract.MonedasEntry.TABLE_NAME + "/#", ViajesContract.MONEDAS_ID);
-        matcher.addURI(content, ViajesContract.MPagoEntry.TABLE_NAME, ViajesContract.M_PAGO);
-        matcher.addURI(content, ViajesContract.MPagoEntry.TABLE_NAME + "/#", ViajesContract.M_PAGO_ID);
-        matcher.addURI(content, ViajesContract.TipoVEntry.TABLE_NAME, ViajesContract.TIPO_V);
-        matcher.addURI(content, ViajesContract.TipoVEntry.TABLE_NAME + "/#", ViajesContract.TIPO_V_ID);
-
-
-
-        return matcher;
-    }
-    */
     ///////////////////////////////////////////////////
 
     @Override
@@ -149,7 +120,7 @@ public class ViajesProvider extends ContentProvider {
         Cursor c;
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder(); //esto no lo usa
 
-        Log.i(TAG, "ViajecitosProvider query uri un poquito: " + uri); //el uri llega categoriasssssssssssssssss
+        Log.i(TAG, "ViajecitosProvider query uri un poquito: " + uri); //el uri llega bien
         /////////////////////este sswitch fallaaaaaaaaaaaaaaaaaaaaaaa
         switch (match) {
       //  switch(sUriMatcher.match(uri)){
@@ -204,6 +175,7 @@ public class ViajesProvider extends ContentProvider {
                 break;
 
             case M_PAGO:
+                Log.i(TAG, "VIIIIajes Provider case MMPPPagoOOOOO");
                 c = bd.query(Tablas.MPAGO, projection,
                         selection, selectionArgs, null, null, sortOrder);
                 //c.setNotificationUri(getContext().getContentResolver(), ViajesContract.MPagoEntry.URI_CONTENIDO);

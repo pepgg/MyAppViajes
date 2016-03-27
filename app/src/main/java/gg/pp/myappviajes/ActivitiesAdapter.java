@@ -66,11 +66,12 @@ public class ActivitiesAdapter extends CursorAdapter {
         Log.i(TAG, "enn ActivitiesAdapter bindView un poquito");
         ////////////////
         //aqui pndre los spinners de modopago y monedas
-        //creo que sera util para editar y updatesssssssssssssssssssss
+        //
         ////////////////
         ///////////
         ///////////
         TextView categ_list = (TextView) view.findViewById(R.id.categ_list_text);
+        Log.i(TAG, "enn ActivitiesAdapter bindView haciendo la lista de categorias");
         categ_list.setText(cursor.getString(
                 cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)));
 
@@ -99,6 +100,7 @@ public class ActivitiesAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         Log.i(TAG, "enn ActivitiesAdapter newView un poquito");
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        Log.i(TAG, "enn ActivitiesAdapter newView INFLATERRRR");
         return inflater.inflate(R.layout.item_layout, parent, false);
 
 

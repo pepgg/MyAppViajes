@@ -53,41 +53,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String ID_VIAJES = String.format("REFERENCES %s(%s)",
                 Tablas.VIAJES, ViajesContract.ViajesEntry.V_ID);
     }
-/*
-******quito esto que venia del viejooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-    public DatabaseHelper(Context context1, String nomBaseDatos, Context context, int versionActual) {
-        super(context, ViajesProvider.NOMBRE_BASE_DATOS, null, VERSION_ACTUAL);
-        this.context = context;
-    }
-    */
-///////////////////////////////////////
-
-    /**
-     * Constructor - pren el context per a permetre obrir/tancar la database
-     * @param ctx el Context dintre del qual treballar
-     */
-    ///   public MiDbAdapter(Context ctx) {
-    ///      this.mCtx = ctx;
-    ///   }
-    /**
-     * Obre la database. Si no la pot obrir, intenta crear una instancia de la database. Si no pot crear la instancia,
-     * throw an exception to signal the failure
-     */
-    ///   public MiDbAdapter open() throws SQLException {
-    ///       mDbHelper = new DatabaseHelper(mCtx);
-    ///       mDb = mDbHelper.getWritableDatabase();
-///        return this;
-///    }
-    //este para llenar el spiner de EditViaje:
-    ///   public Cursor buscaTotTipov() {
-///        return mDb.query(TABLE_TIPO, new String[] {TIPO_ID, TIPO_TIPO}, null, null, null, null, null);
-///    }
-
-
-
-
-
-
 
 
     ///////////////////////////////////////////
@@ -264,13 +229,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         onCreate(db);   //crearlas de nuevo
     }
-    /*
-        public static BaseDatosViajes open() throws SQLException {
-            mDbHelper = new BaseDatosViajes(contexto);
-            mDb = mDbHelper.getWritableDatabase();
-            return this;
-        }
-    */
+
+    public DatabaseHelper open() throws SQLException {
+        mDbHelper = new DatabaseHelper(contexto);
+        mDb = mDbHelper.getWritableDatabase();
+        return this;
+    }
 ///esto que sygue no funcionaba en MyCPViajes::::::::::::::::::::::::::::::::::::::::: para buscar el viaje activo
     public Cursor buscaViaje(long mId) throws SQLException {
         Log.i(TAG, "En <miDbadapter buscaViaje El MiD viajes " + mId); //este recibe el id del que vamos a editar. podria estar acabado
@@ -315,8 +279,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (nomVactiv.moveToFirst()) {
             nomViajeA = nomVactiv.getString(0); //para conseguir el nombre
         }
-        Log.i(TAG, "en BaseDatosViajesrrrrr, el nomviaje consulta nomViaje es " + nomViajeA);  //  LO tiene<<<<<
-        return nomViajeA;
+        Log.i(TAG, "en BaseDatosViajesrrrrr, el nomviaje consulta nomViaje es " + nomViajeA);  //  LO tiene??
+               return nomViajeA;
     }
+    //////////tngo que arreglar estooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+    /////////////////////////////////////////////////////////////ooooooooooooooooooooooooooooooooooooooo
+    public Cursor buscaTotMpago(){ //para llenar el spinner de gastos
+        ///////////////////////// mDb tiene que ser la base de datossssssssssssssssssssss
+        Log.i(TAG, " elestoy en buscaTotMpago ");
+        Cursor mCursor = mDb.rawQuery("SELECT * FROM mpago ", null);
+        int numpago;
+        numpago = mCursor.getCount();
+        Log.i(TAG, " en buscaTotMpago dice que tengo " + numpago);
+        return mDb.query(Tablas.MPAGO, new String[] {MPAG_ID, MPAG_MP}, null, null, null, null, null);
+    }
+    public Cursor buscaTotMonedas(){ //para llenar el spinner de gastos
+        Log.i(TAG, " elestoy en buscaTotMonedas ");
+        Cursor mCursor = mDb.rawQuery("SELECT * FROM monedas ", null);
+        int nummonedas;
+        nummonedas = mCursor.getCount();
+        Log.i(TAG, " en buscaTotMonedas dice que tengo " + nummonedas);
+        return mDb.query(Tablas.MONEDAS, new String[] {MON_ID, MON_NOM}, null, null, null, null, null);
+    }
+    public Cursor buscaTotTipov(){ //para llenar el spinner de tipoV
+        Log.i(TAG, " elestoy en buscaTotTipov ");
+        Cursor mCursor = mDb.rawQuery("SELECT * FROM tipov ", null);
+        int numtipov;
+        numtipov = mCursor.getCount();
+        Log.i(TAG, " en buscaTotTipov dice que tengo " + numtipov);
+        return mDb.query(Tablas.TIPOVIAJE, new String[] {TIPO_ID, TIPO_TIPO}, null, null, null, null, null);
+    }
+/*
+    public List<ViajesContract.TipoVEntry> getAll() {
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        String selectQuery = "SELECT  *  FROM " + TABLE_TIPO;
 
+        List<ViajesContract.TipoVEntry> tipovList = new ArrayList<ViajesContract.TipoVEntry>() ;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                ViajesContract.TipoVEntry tipov  = new ViajesContract.TipoVEntry();
+               // student.setAge(cursor.getInt(cursor.getColumnIndex(Student.KEY_age)));
+               // student.setEmail(cursor.getString(cursor.getColumnIndex(Student.KEY_email)));
+               // student.setName(cursor.getString(cursor.getColumnIndex(Student.KEY_name)));
+               // student.setStudent_ID(cursor.getInt(cursor.getColumnIndex(Student.KEY_ID)));
+                tipovList.add(tipov);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return tipovList;
+
+    }
+    */
 }

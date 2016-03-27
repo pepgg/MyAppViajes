@@ -18,7 +18,7 @@
     <string name="title_activity_update">actualiza</string>
     <string name="title_insert_evento">Nuevo evento</string>
     <string name="viaje_label">Estás en el viaje a:</string>
-    <string name="nuevo_viaje">Nuevo viaje</string>
+    <string name="nuevo_viaje">Nuevo vviaje</string>
     <string name="nom_viaje">Viaje: </string>
     <string name="lati">Latitud: </string>
     <string name="longi">Longitud: </string>
@@ -28,7 +28,9 @@
     <string name="direccio">Dirección: </string>
     <string name="codP">CP: </string>
     <string name="data_in">fecha inicio: </string>
+    <string name="data_i">fecha inicio </string>
     <string name="data_fi">fecha final: </string>
+    <string name="data_f">fecha final </string>
     <string name="tipo_v">tipo viaje: </string>
     <string name="kmini">Km inicio: </string>
     <string name="kmfi">Km final: </string>
@@ -39,7 +41,11 @@
     <string name="mail">mail: </string>
     <string name="web">web: </string>
     <string name="llevas">Llevas: </string>
-    <string name="km_">Km </string>
+    <string name="km_">Km </string>spin_tv
+    <string name="spin_tv">Tipo de viaje</string>
+    <string name="spin_mp">Modo de pago</string>
+    <string name="spin_mon">Moneda</string>
+    <string name="f_vi_toast_text">Etoy con el spinner tv </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

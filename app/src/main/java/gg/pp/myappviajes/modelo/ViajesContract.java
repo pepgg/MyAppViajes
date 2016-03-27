@@ -222,6 +222,7 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
     public static class MPagoEntry implements ColumnasMPago {
     public static final String TABLE_NAME = RUTA_MPAGO;
     public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_MPAGO).build();
+        public static final String[] TAG_COLUMNS = {"_id","mpago"};
 /*
     public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
             + URI_CONTENIDO + "/" + RUTA_MPAGO;
@@ -243,6 +244,8 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
 
     public static class TipoVEntry implements ColumnasTipoV {
         public static final String TABLE_NAME = RUTA_TIPOV;
+        public static final String NAME_TIPO = TIPO_TIPO;
+        public static final String COLUMN_NAME = "tipov";
         public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_TIPOV).build();
        /*
         public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
@@ -257,9 +260,15 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
         public static String generarIdTipoV() {
             return "TV-" + UUID.randomUUID().toString();
         }
-
         public static String obtenerIdTipoV(Uri uri) {
             return uri.getPathSegments().get(1);
+        }
+        public void setName(String name){
+            this.getName();
+        }
+
+        public String getName(){
+            return this.TIPO_TIPO;
         }
     }
 

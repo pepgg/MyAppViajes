@@ -76,6 +76,7 @@
             android:layout_height="wrap_content"
             android:text="@string/nuevo_viaje"
             android:id="@+id/button"
+            android:onClick="iraNouViaje"
             android:layout_gravity="center"
             android:textColor="@color/primary"/>
     </LinearLayout>

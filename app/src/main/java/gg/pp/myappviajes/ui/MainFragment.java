@@ -12,23 +12,34 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import gg.pp.myappviajes.ActivitiesAdapter;
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
 /**
- * Created by pepe on 5/03/16.
+ * Created by pepe on 5/03/16.  ListFragment FragmentActivity
  */
 public class MainFragment extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
+
     public static final String TAG = "Provider";
     /**
      * Adaptador
      */
     private ActivitiesAdapter adaptador;
+    private static final int V_CREA = 0;
+    private TextView nomViaje;
+    private TextView totalKm;
+    private TextView totalGast;
+    private Button btnViajes;
+
+
+
 
     public MainFragment() {
     }
@@ -40,7 +51,7 @@ public class MainFragment extends ListFragment implements
         setHasOptionsMenu(true);
         /////añado esto por la barra de titulo y actionbar
 
-        ///////////////////
+
     }
 
     //////////////////////////////////////////////las cards se intercambian
@@ -54,6 +65,13 @@ public class MainFragment extends ListFragment implements
       //  View view = inflater.inflate(R.layout.fragment_main_old, container, false);
         View view = inflater.inflate(R.layout.layout_provi, container, false);
 
+        //inicialica instancia los elementos del View: nomViaje totalKm totalGast btnViajes
+        btnViajes = (Button) view.findViewById(R.id.buttnviaje);
+        nomViaje = (TextView) view.findViewById(R.id.nom_viaje);
+        totalKm = (TextView) view.findViewById(R.id.totalkm);
+        totalGast = (TextView) view.findViewById(R.id.totalg);
+
+
         ImageButton fab = (ImageButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(
                 new View.OnClickListener() {
@@ -65,20 +83,28 @@ public class MainFragment extends ListFragment implements
                                 );
 
                     }
-                }
-        );
+
+                });
+
+
+
+        Button button = (Button) view.findViewById(R.id.buttnviaje);
+        button.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity()
+                                .startActivity(
+                                        //////////////////////////////////////////////////
+                                        new Intent(getActivity(), InsertViaje.class)
+                                        //////////////////////////////////////////////////
+                                );
+                    }
+                });
 
         return view;
     }
-    /////añado esto por la barra de titulo y actionbar pero no funciona
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-    ////
-    */
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -162,11 +188,21 @@ public class MainFragment extends ListFragment implements
         adaptador.swapCursor(null);
     }
 
-    @Override   //on list item click se va con el id a InsertCategory<<<<<<<<<<<<
+    @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long id) {
         getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
                 .putExtra(ViajesContract.CategoriasEntry.CAT_ID, id));
     }
+
+
+    public void iraNouViaje(View view) {
+        Log.i(TAG, "Ahora en iraNouViaje de MainViajes) ");
+       // getActivity().startActivity(new Intent(getActivity(), InsertViaje.class));
+
+     ////->   Intent i = new Intent(getContext(), InsertViaje.class);
+       /////>- startActivityForResult(i, V_CREA);
+    }
+
 
     @Override
     public void onDestroy() {

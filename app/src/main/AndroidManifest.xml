@@ -60,6 +60,15 @@
                 android:value=".ui.DetailActivity" />
         </activity>
 
+        <activity
+            android:name=".ui.InsertViaje"
+            android:label="@string/title_insert_evento"
+            android:parentActivityName=".ui.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.DetailActivity" />
+        </activity>
+
     </application>
 
 </manifest>
