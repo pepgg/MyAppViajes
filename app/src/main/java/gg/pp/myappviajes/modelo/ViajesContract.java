@@ -246,6 +246,7 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
         public static final String TABLE_NAME = RUTA_TIPOV;
         public static final String NAME_TIPO = TIPO_TIPO;
         public static final String COLUMN_NAME = "tipov";
+        public static final String[] TAG_COLUMNS = {"_id","tipov"};
         public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_TIPOV).build();
        /*
         public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."

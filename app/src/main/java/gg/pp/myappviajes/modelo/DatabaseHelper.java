@@ -165,11 +165,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String MON_TABLE =
             "create table " + TABLE_MON + " (_id integer primary key autoincrement, "
                     + MON_NOM + " text, " + MON_VAL + " float);";
-
-
-
-
-
     //////
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -250,7 +245,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return mCursor;
     }
 
-
     public Integer idViaje() { //busca el viaje activo
         //esto funciona?
         //  Cursor idVactiv = mDb.rawQuery("SELECT " + V_ID + " from "+ TABLE_V + " where "+ V_DATAFI +"=''", null);
@@ -270,7 +264,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.i(TAG, "en MiDbAdapter, el idviaje activo después del if es " + idViajeA);
         return idViajeA;
     }
-
 
     public String nomViaje() {
 

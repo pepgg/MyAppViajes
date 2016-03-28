@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -30,27 +31,20 @@ import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.DatabaseHelper;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
-//import android.app.LoaderManager;
-//import android.support.v4.app.Fragment;
-
 /**
- * Fragmento con formulario de inserción de viajes
- *
- *
- *
+ * Fragment con formulario de inserción de viajes
  */
-//public class InsertFragmentVi extends Fragment implements View.OnClickListener, LoaderCallbacks<Cursor>, LoaderManager.LoaderCallbacks<Object> {   //, AdapterView.OnItemSelectedListener {
-public class InsertFragmentVi extends android.support.v4.app.Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class InsertFragmentVi extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
+
+//public class InsertFragmentVi extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
 
     /**
      * Views del formulario
      */
 
     private EditText mNomText;
-   // private EditText etDataIn;
    private Button btDataIn;
     private Button btDataFi;
- //   private Button btAddViaje;
     private int mYear;
     private int mMonth;
     private int mDay;
@@ -64,69 +58,61 @@ public class InsertFragmentVi extends android.support.v4.app.Fragment implements
     java.util.Date datafinal;
     java.util.Date datactual;
     private String fecha;
-  ///////////// /////////// DateFormat fmtdata = DateFormat.getDateInstance();  21-3 lo quito por si acaso
-    Spinner mTipoV;
+  ///////////// ///////////
+  Spinner mTipoV;
     //////////////////////
     private EditText mkmini;
     private EditText mkmfi;
     private EditText mDescrip;
-//	private LinearLayout mLDatafi;  // mDataFI mDataIN mkmini mkmfi mDescrip
     public int fecha1;
     static final int DATE_DIALOG_IN = 0;
     static final int DATE_DIALOG_FI = 1;
     public Long mId;
     private Long mIdviaje;
     private Long mIdMod;
+    private String id_tipov;
 
     public static final int LOADER_TIPOV = 2; // Loader identifier for Tipov
 
     protected final static int DIALOG_CREATING_C = 3;
     private ProgressDialog dialog;
     private DatabaseHelper mDbHelper;
-    private static final String TAG = "En InsertFragmentVi---aje";
+    private static final String TAG = "En InsertFragmentVi: ";
 
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
-            "dd-MM-yyyy", Locale.FRENCH);//  . .US);
+            "dd-MM-yyyy", Locale.getDefault()); //.FRENCH);//  . .US);
     DatePickerDialog datePickerDialog;
     Calendar dateCalendar;
-   // Viaje viaje = null;
     ///////////////////////////////
    SimpleCursorAdapter mTipoVAdapter; // Adapters for spinners
-    SimpleCursorAdapter mModPagAdapter, mMonedAdapter, sAdapter; // Adapters for both spinne
-    ////////////////////////////////
+     ////////////////////////////////
     private OnFragmentInteractionListener mListener;
-
 
     public InsertFragmentVi() {
         // Required empty public constructor
     }
-
-
-
-
-
+    //TODO: poner la fecha actual al boton datain
+    //TODO: El calendario en español. primer dia de la semana el lunes
+    //TODO: activar desactivar el spinner
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        Log.i("TAG", "ViajecitosssssssInsertFragmentVIIIII primero onCreate un poquito: "); // aquí llega
+        Log.i(TAG, "ViajecitosssssssInsertFragmentVIIIII primero onCreate un poquito: "); // aquí llega
 
        // Loader
-getLoaderManager().initLoader(LOADER_TIPOV, null, this);
+        getLoaderManager().initLoader(LOADER_TIPOV, null, this);
      //   getSupportLoaderManager().initLoader(LOADER_TIPOV, null, this);
-
     }
 
  //   @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_insert_vi, container, false);
-
-
         findViewsById(view);
 
-        mTipoV.setEnabled(false);
+     //   mTipoV.setEnabled(false);  //TODO:<<<<<<<>>>>>>>>>>>>>tengo que arrglar esto de los enabled
         mTipoVAdapter = new SimpleCursorAdapter(
                 getContext(), android.R.layout.simple_spinner_item,
                 null,
@@ -134,27 +120,23 @@ getLoaderManager().initLoader(LOADER_TIPOV, null, this);
                 new int[] { android.R.id.text1 }, 2);
         mTipoVAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mTipoV.setAdapter(mTipoVAdapter);
-        // Provinces spinner selection event
-
         mTipoV.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("TAG", "onItemSelected(...) -> position = " + position);
-
+                Log.d(TAG, "onItemSelected(...) -> position: " + position + "id: = " + id);
 
                 Cursor tipv = (Cursor) parent.getItemAtPosition(position);
-                ///-  String provinceCode = tipv.getString(tipv.getColumnIndexOrThrow(Provinces.COLUMN_CODE));
+                id_tipov = tipv.getString(tipv.getColumnIndexOrThrow(ViajesContract.TipoVEntry.TIPO_ID));
 
+                Log.d(TAG, "onItemSelected(...) -> MIidtipov: " + mIdMod + "id_tipov: = " + id_tipov);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Log.d("TAG", "onNothingSelected");
+                Log.d(TAG, "onNothingSelected");
             }
         });
-
-
 
         setListeners();
 
@@ -168,100 +150,32 @@ getLoaderManager().initLoader(LOADER_TIPOV, null, this);
         return view;
     }
 
-/* quito esto el 26-3 pqaraq probarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args)
-    {
-                Log.d("TAG", "onCreateLoader tipov");
-                return new CursorLoader(this, ViajesContract.TipoVEntry.URI_CONTENIDO, new String[] { ViajesContract.TipoVEntry.TIPO_ID,  ViajesContract.TipoVEntry.COLUMN_NAME }, null, null, null);
-                return null;
-    }
-
-    *///////////////////
-
-
-
-    //////pruebo con este
-    //////////////////////////////////////////////////////////////////////////////////////////////
-
     public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-
+        Log.d(TAG, "onCreateLoader TIPOV");
         android.support.v4.content.CursorLoader cursorLoader = new CursorLoader(
        // return new cursorLoader(
                 getActivity(),
-                ViajesContract.MPagoEntry.URI_CONTENIDO,
-                ViajesContract.MPagoEntry.TAG_COLUMNS,
+                ViajesContract.TipoVEntry.URI_CONTENIDO,
+                ViajesContract.TipoVEntry.TAG_COLUMNS,
                 null,
                 null,
                 null);
         return cursorLoader;
 
     }
-
-
-
 /////////////////////////
-public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
-    mTipoVAdapter.swapCursor(arg1);
+    public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
+        Log.d(TAG, "onLoadFinished<> " + arg0 + " " + arg1  );
+        mTipoVAdapter.swapCursor(arg1);
+        //el valor del idtipov tiene que ir a mTipoV
 }
-
     public void onLoaderReset(Loader<Cursor> arg0) {
         mTipoVAdapter.swapCursor(null);
     }
-/*
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(), ViajesContract.TipoVEntry.URI_CONTENIDO,
-                new String[] { ViajesContract.TipoVEntry.TIPO_ID,  ViajesContract.TipoVEntry.COLUMN_NAME }, null, null, null);
-
-        return null;
-    }
-*/
-
-
-    /*
-        @Override
-        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-        }
-
-        @Override
-        public void onLoaderReset(Loader<Object> loader) {
-
-        }
-
-        //   @Override
-        public void onLoadFinished(Loader<Cursor> loader, Cursor data)
-        {
-                    Log.d("TAG", "onLoadFinished<Provinces>");
-                    onLoadFinishedTipov(data);
-        }
-        */
-
-/*
-    private void onLoadFinishedTipov(Cursor data)
-    {
-        mTipoVAdapter.swapCursor(data);
-        int rowCount = data.getCount();
-        Log.d("TAG", "onLoadFinishedProvinces(...) -> Provinces data loaded. " + rowCount + " rows available");
-        if (rowCount > 0)
-        {
-            mTipoV.setEnabled(true);
-        }
-        else
-        {
-            // Both Spinners (provinces and cities) must be disabled
-            mTipoV.setEnabled(false);
-        }
-    }
-
-*/
-
-
 
     private void setListeners() {
-        btDataIn.setOnClickListener((View.OnClickListener) getContext()); //.setOnClickListener(this);
-        btDataFi.setOnClickListener((View.OnClickListener) getActivity()); //.setOnClickListener(this);
+        btDataIn.setOnClickListener(this);
+        btDataFi.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
 
         datePickerDialog = new DatePickerDialog(getContext(),
@@ -271,52 +185,29 @@ public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
                                           int monthOfYear, int dayOfMonth) {
                         dateCalendar = Calendar.getInstance();
                         dateCalendar.set(year, monthOfYear, dayOfMonth);
-                        Log.i("TAG", " antes delllll switch(viewgetId change_data__ " + view);
+                        Log.i(TAG, " antes delllll switch(viewgetId change_data__ " + view);
 
                         switch(fecha1){
                             case DATE_DIALOG_IN: //R.id.change_data_in:
-                                Log.i("TAG", " switch(viewgetId change_data_in " + fecha);
+                                Log.i(TAG, " switch(viewgetId change_data_in " + fecha);
                                 btDataIn.setText(formatter.format(dateCalendar
                                         .getTime()));
                                 break;
                             case DATE_DIALOG_FI:
-                                Log.i("TAG", " switch(view.getId change_data_fi " + fecha);
+                                Log.i(TAG, " switch(view.getId change_data_fi " + fecha);
                                 btDataFi.setText(formatter.format(dateCalendar
                                         .getTime()));
                                 break;
                         }
-
                     }
 
                 }, newCalendar.get(Calendar.YEAR),
                 newCalendar.get(Calendar.MONTH),
                 newCalendar.get(Calendar.DAY_OF_MONTH));
-
     }
- /*
-    protected void resetAllFields() {
-        mNomText.setText("");
-        mkmini.setText("");
-        mkmfi.setText("");
-        mDescrip.setText("");
-        if (mTipoV.getAdapter().getCount() > 0)
-            mTipoV.setSelection(0);
-    }
-*/
-    /*
-        private void setViaje() {  //esto es lo que guarda
-            viaje = new Viaje();
-            viaje.setName(mNomText.getText().toString());
-            viaje.setSalary(Double.parseDouble(mDescrip.getText()
-                    .toString()));
-            if (dateCalendar != null)
-                viaje.setDateOfBirth(dateCalendar.getTime());
-            MiTipov selectedTipov = (TipoV) miTipoV.getSelectedItem();
-            viaje.setTipoV(selectedTipov);
-        }
-    */
     @Override
     public void onResume() {
+        // TODO: Ver passa con esto onResume()
        // getActivity().setTitle(R.string.tipo_v);
        // getActivity().getActionBar().setTitle(R.string.tipo_v);
         super.onResume();
@@ -356,21 +247,16 @@ public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
 
     }
 
- //   @Override
+    @Override
     public void onClick(View view) {
         if (view == btDataIn) {
             fecha1 = DATE_DIALOG_IN;
-            Log.i("TAG", " onClick andando voy -- " + view);
+            Log.i(TAG, " onClick andando voy -- " + view);
             datePickerDialog.show();
         } else if (view == btDataFi) {
             fecha1 = DATE_DIALOG_FI;
-            Log.i("TAG", " onClick estandando vengo -- " + view);
+            Log.i(TAG, " onClick estandando vengo -- " + view);
             datePickerDialog.show();
-       // } else if (view == btAddViaje) {
-       //     saveData();
-
-       // } else if (view == resetButton) {
-         //   resetAllFields();
         }
     }
 
@@ -388,10 +274,7 @@ public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
                   return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
-
-
     }
 
     private void saveData() {
@@ -403,15 +286,15 @@ public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
         values.put(ViajesContract.ViajesEntry.V_KMIN, mkmini.getText().toString());
         values.put(ViajesContract.ViajesEntry.V_KMFI, mkmfi.getText().toString());
         values.put(ViajesContract.ViajesEntry.V_DESC, mDescrip.getText().toString());
-        values.put(ViajesContract.ViajesEntry.V_TIPO, mTipoV.toString());
 
+        values.put(ViajesContract.ViajesEntry.V_TIPO, id_tipov.toString());
 
         getActivity().getContentResolver().insert(
                 ViajesContract.ViajesEntry.URI_CONTENIDO,
                 values
         );
     }
-
+    // TODO: Ver que passa con este onAttach:
   /*
     *quito esto porque protesta:  Caused by: java.lang.RuntimeException: gg.pp.myappviajes.ui.InsertViaje@2673da8 must implement OnFragmentInteractionListener
                                                                      at gg.pp.myappviajes.ui.InsertFragmentVi.onAttach(InsertFragmentVi.java:273)
@@ -426,33 +309,23 @@ public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
         }
     }
 */
-  //  @Override
+   @Override
     public void onDetach() {
-  //      super.onDetach();
+        super.onDetach();
         mListener = null;
     }
 
  //   @Override
     public void onClick(DialogInterface dialog, int which) {
-
     }
-
-
-
 
   //  @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
-
      public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-
-
-
-
 }

@@ -27,7 +27,7 @@ import gg.pp.myappviajes.modelo.ViajesContract;
 public class MainFragment extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static final String TAG = "Provider";
+    public static final String TAG = "En MainFragment: ";
     /**
      * Adaptador
      */
@@ -47,10 +47,11 @@ public class MainFragment extends ListFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "MainFragmentito OnCreate UNO ");
         // Habilitar al fragmento para contribuir en la action bar
         setHasOptionsMenu(true);
         /////añado esto por la barra de titulo y actionbar
-
+        Log.i(TAG, "MainFragmentito OnCrete DOS");
 
     }
 
@@ -61,7 +62,7 @@ public class MainFragment extends ListFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i(TAG, "MainFragmentito OnCrete view un poquito");
+        Log.i(TAG, "MainFragmentito OnCrete view TRES");
       //  View view = inflater.inflate(R.layout.fragment_main_old, container, false);
         View view = inflater.inflate(R.layout.layout_provi, container, false);
 
@@ -159,7 +160,7 @@ public class MainFragment extends ListFragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.i(TAG, "MainFragmentito onActivityCreated un poquito");
+        Log.i(TAG, "MainFragmentito onActivityCreated CUATRO ");
         // Iniciar adaptador
         adaptador = new ActivitiesAdapter(getActivity());
         // Relacionar adaptador a la lista
@@ -170,12 +171,13 @@ public class MainFragment extends ListFragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.i(TAG, "MainFragmentito onCreateLoader un poquito");
+        Log.i(TAG, "MainFragmentito onCreateLoader CINCO");
         // Consultar todos los registros
         return new CursorLoader(
                 getActivity(),
                 ViajesContract.CategoriasEntry.URI_CONTENIDO,
                 null, null, null, null);
+
     }
 
     @Override
@@ -190,6 +192,7 @@ public class MainFragment extends ListFragment implements
 
     @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long id) {
+        Log.i(TAG, "MainFragmentito onListItemClick SEIS");
         getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
                 .putExtra(ViajesContract.CategoriasEntry.CAT_ID, id));
     }

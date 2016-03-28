@@ -11,7 +11,7 @@ import gg.pp.myappviajes.R;
  * Created by pepe on 5/03/16.
  */
 public class MainActivity extends AppCompatActivity {
-    public static final String TAG = "Provider";
+    public static final String TAG = "En MainActivity: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

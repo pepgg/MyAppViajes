@@ -41,16 +41,18 @@
     <string name="mail">mail: </string>
     <string name="web">web: </string>
     <string name="llevas">Llevas: </string>
-    <string name="km_">Km </string>spin_tv
+    <string name="km_">Km </string>
+    <string name="gps">GPS</string>
+    <string name="fecha">fecha</string>
     <string name="spin_tv">Tipo de viaje</string>
     <string name="spin_mp">Modo de pago</string>
     <string name="spin_mon">Moneda</string>
+    <string name="km_actual">Km actual</string>
     <string name="f_vi_toast_text">Etoy con el spinner tv </string>
+    <string name="coment">Comentarios</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
 
 </resources>
 

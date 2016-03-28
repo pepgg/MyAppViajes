@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
+    android:padding="@dimen/activity_vertical_margin"
     tools:context=".ui.InsertFragmentEv">
     <ScrollView
         android:layout_width="match_parent"
@@ -22,19 +22,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/categor_input"/>
-            <!-- nom evento -->
-            <EditText
-                android:id="@+id/nom_e"
-                android:hint="@string/nomeven"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <!-- descripcio -->
-            <EditText
-                android:id="@+id/descripcio_e"
-                android:hint="@string/descripcio_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                <!-- nom evento -->
+                <EditText
+                    android:id="@+id/nom_e"
+                    android:hint="@string/nomeven"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <!-- descripcio -->
+                <EditText
+                    android:id="@+id/descripcio_e"
+                    android:hint="@string/descripcio_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
             <!-- Divisor-->
             <View
@@ -42,64 +42,76 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/divider_color" />
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
-            <Spinner
-                android:id="@+id/spinner_mod_pag"
-                android:prompt="@string/spin_mp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:drawSelectorOnTop="true" />
-            <EditText
-                android:id="@+id/preu_e"
-                android:hint="@string/precio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <Spinner
-                android:id="@+id/spinner_moned"
-                android:prompt="@string/spin_mon"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:drawSelectorOnTop="true" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
-            <TextView
-                android:id="@+id/tot_eur"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/eur_" />
-            <EditText
-                android:id="@+id/total_eur"
-                android:hint="@string/eur_"
+                android:gravity="center" >
+                <EditText
+                    android:id="@+id/preu_e"
+                    android:hint="@string/precio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Spinner
+                    android:id="@+id/spinner_mod_pag"
+                    android:prompt="@string/spin_mp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawSelectorOnTop="true" />
+                <Spinner
+                    android:id="@+id/spinner_moned"
+                    android:prompt="@string/spin_mon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawSelectorOnTop="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
-            <EditText
-                android:id="@+id/direccio"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/direccio" />
-            <EditText
-                android:id="@+id/cp"
-                android:hint="@string/codP"
+                android:gravity="center" >
+                <TextView
+                    android:id="@+id/tot_eur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/eur_"
+                    android:layout_weight="1" />
+                <EditText
+                    android:id="@+id/total_eur"
+                    android:hint="@string/eur_"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <Button
+                    android:id="@+id/fecha_e"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fecha"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+                <EditText
+                    android:id="@+id/direccio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="@string/direccio" />
+                <EditText
+                    android:id="@+id/cp"
+                    android:hint="@string/codP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -110,12 +122,14 @@
                     android:id="@+id/ciudad"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ciudad_label" />
+                    android:hint="@string/ciudad_label"
+                    android:layout_weight="2" />
                 <EditText
                     android:id="@+id/telef"
                     android:hint="@string/telef"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -126,62 +140,84 @@
                     android:id="@+id/mail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mail" />
+                    android:hint="@string/mail"
+                    android:layout_weight="1" />
                 <EditText
                     android:id="@+id/web"
                     android:hint="@string/web"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center" >
-                <TextView
-                    android:id="@+id/longi"
+                <Button
+                    android:id="@+id/gps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/longi" />
+                    android:text="@string/gps"
+                    android:layout_weight="1" />/>
                 <EditText
                     android:id="@+id/longitud"
                     android:hint="@string/longi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />/>
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center" >
-                <TextView
-                    android:id="@+id/latitud"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lati" />
                 <EditText
-                    android:id="@+id/lati"
-                    android:hint="@string/longi"
+                    android:id="@+id/latitud"
+                    android:hint="@string/lati"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center" >
-                <TextView
-                    android:id="@+id/alti"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/alti" />
+                    android:layout_weight="1" />/>
                 <EditText
                     android:id="@+id/altitud"
                     android:hint="@string/alti"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />/>
 
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ratingBar"
+                    android:numStars="3" />
+
+                <EditText
+                    android:id="@+id/Km_p"
+                    android:hint="@string/km_actual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+
+                <EditText
+                    android:id="@+id/coment"
+                    android:hint="@string/coment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

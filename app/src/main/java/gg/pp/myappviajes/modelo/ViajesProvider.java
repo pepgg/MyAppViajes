@@ -70,11 +70,11 @@ public class ViajesProvider extends ContentProvider {
         uriMatcher.addURI(ViajesContract.AUTORIDAD, "monedas", MONEDAS);
         uriMatcher.addURI(ViajesContract.AUTORIDAD, "monedas/*", MONEDAS_ID);
 
-        uriMatcher.addURI(ViajesContract.AUTORIDAD, "m_pago", M_PAGO);
-        uriMatcher.addURI(ViajesContract.AUTORIDAD, "m_pago/*", M_PAGO_ID);
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "mpago", M_PAGO);
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "mpago/*", M_PAGO_ID);
 
-        uriMatcher.addURI(ViajesContract.AUTORIDAD, "tipo_v", TIPO_V);
-        uriMatcher.addURI(ViajesContract.AUTORIDAD, "tipo_v/*", TIPO_V_ID);
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "tipov", TIPO_V);
+        uriMatcher.addURI(ViajesContract.AUTORIDAD, "tipov/*", TIPO_V_ID);
     }
     // [/URI_MATCHER]
 
@@ -88,14 +88,13 @@ public class ViajesProvider extends ContentProvider {
     // del moviedatabase
   //  private static final UriMatcher sUriMatcher = buildUriMatcher();
 
-    public static final String TAG = "Provider";
+    public static final String TAG = "ViajesProvider";
    // long id;
 
      @Override
     public boolean onCreate() {
-         Log.i(TAG, "ViajecitosProvider onCreate un poquit<<<<<o " + ViajesContract.EventosEntry.URI_CONTENIDO);//este es bueno
+         Log.i(TAG, "ViajecitosProvider onCreate un poquit<<<<<o PRUEBA DE URI " + ViajesContract.EventosEntry.URI_CONTENIDO);//este es bueno
 
-         //databaseHelper = new DatabaseHelper(getContext(), NOMBRE_BASE_DATOS, null, VERSION_ACTUAL);
          databaseHelper = new DatabaseHelper(getContext());
          resolver = getContext().getContentResolver();
         return true;
@@ -107,7 +106,7 @@ public class ViajesProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         /////////////////////////////////////////aqui cambiaba la uri y pone categorias  por qué¿¿¿¿¿¿¿¿¿¿¿¿
-        Log.i(TAG, "ViajecitosProvider primero query uri un poquito: " + uri);
+        Log.i(TAG, "ViajecitosProvider primero QUERY 109 uri un poquito: " + uri);
         // Abrir base de datos
         SQLiteDatabase bd = databaseHelper.getReadableDatabase();
     //   final SQLiteDatabase db = databaseHelper.getWritableDatabase();
@@ -120,13 +119,14 @@ public class ViajesProvider extends ContentProvider {
         Cursor c;
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder(); //esto no lo usa
 
-        Log.i(TAG, "ViajecitosProvider query uri un poquito: " + uri); //el uri llega bien
-        /////////////////////este sswitch fallaaaaaaaaaaaaaaaaaaaaaaa
+        Log.i(TAG, "ViajecitosProvider query uri un poquito: " + uri + " " + match); //el uri llega bien
+        /////////////////////EN este sswitch fallaaaaaaaaaaaaaaaaaaaaaaa
         switch (match) {
       //  switch(sUriMatcher.match(uri)){
 
             case EVENTOS:
                 // Consultando todos los eventos
+                Log.i(TAG, "ViajecitosProvider query uri un EVENTOS: " + uri + " " + match);
                 c = bd.query(Tablas.EVENTOS, projection,
                         selection, selectionArgs, null, null, sortOrder);
                // c.setNotificationUri(getContext().getContentResolver(), ViajesContract.EventosEntry.URI_CONTENIDO);
@@ -153,6 +153,7 @@ public class ViajesProvider extends ContentProvider {
             case CATEGORIAS:
                 c = bd.query(Tablas.CATEGORIAS, projection,
                         selection, selectionArgs, null, null, sortOrder);
+                Log.i(TAG, "ViajecitosProvider query uri un CATEGORIAS: " + uri + " " + match);
                 //c.setNotificationUri(getContext().getContentResolver(), ViajesContract.CategoriasEntry.URI_CONTENIDO);
                 break;
             case CATEGORIAS_ID:
