@@ -34,12 +34,6 @@ import gg.pp.myappviajes.modelo.ViajesContract;
  * Fragment con formulario de inserción de eventos
  */
 public class InsertFragmentEv extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
-    @Override
-    public void onClick(View v) {
-
-    }
-    //   public class InsertFragmentEv extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-
     /**
      * Views del formulario
      */
@@ -48,7 +42,8 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
   private EditText descripcio;
   private EditText totaleur;
     ///////////////////////////////
-    private Spinner modpag, monedas;
+  //  private
+  Spinner modpag, monedas;
     ////////////////////////////////
     private TextView eur;
     private Button datae;
@@ -65,23 +60,26 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     private EditText kmactual;
     private RatingBar valoracio;
     private EditText comentaris;
+    public int fecha1;
     static final int DATE_DIALOG = 0;
     Calendar c = Calendar.getInstance();
     private long id_categ;
     long idcat;
     private String id_modopag;
+    private String id_monedas;
+
+    private String idviaje;
 
     public static final int LOADER_MODPAG = 1; // Loader identifier for ModPag
     public static final int LOADER_MONED = 2; // Loader identifier for Monedas
 
     SimpleCursorAdapter mModPagAdapter, mMonedAdapter, sAdapter; // Adapters for both spinners
     public static final String TAG = "En InsertFragmentEv: ";
-  //  public static final String[] TAG_COLUMNS = {"_id","mpago"};
+
   private static final SimpleDateFormat formatter = new SimpleDateFormat(
           "dd-MM-yyyy", Locale.getDefault()); //.FRENCH);//  . .US);
     DatePickerDialog datePickerDialog;
     Calendar dateCalendar;
-
 
     public InsertFragmentEv() {
         // Required empty public constructor
@@ -93,6 +91,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         id_categ = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
         setHasOptionsMenu(true);
         Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un poquitokkkkkkkkkkkkkkkkkkkkkkkkkkkkkk: " + id_categ); // lo tienexxxxxxxxbvn
+
     }
 
     @Override
@@ -130,25 +129,52 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         idcat = id_categ;
 
         Log.i(TAG, "InsertFragmentTT T TT onCreateView 139 un poquito: " + id_categ); //Si lo tiene
+
 //////////// los spinnerssssssssssssssssssssssssss modopag, monedas
         //   mTipoV.setEnabled(false);  //TODO:<<<<<<<>>>>>>>>>>>>>tengo que arrglar esto de los enabled
+
+        //aqui Modopago
+
         mModPagAdapter = new SimpleCursorAdapter(
                 getContext(), android.R.layout.simple_spinner_item,
                 null,
-                new String[] { ViajesContract.TipoVEntry.COLUMN_NAME },
+                new String[] { ViajesContract.MPagoEntry.COLUMN_NAME },
                 new int[] { android.R.id.text1 }, 2);
         mModPagAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         modpag.setAdapter(mModPagAdapter);
         modpag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemSelected EV...) -> position: " + position + "id: = " + id);
+                Log.d(TAG, "onItemSelected EV...)modopag -> position: " + position + " id: = " + id);
 
                 Cursor tipv = (Cursor) parent.getItemAtPosition(position);
                 id_modopag = tipv.getString(tipv.getColumnIndexOrThrow(ViajesContract.MPagoEntry.MPAG_ID));
 
                 Log.d(TAG, "onItemSelected(.EV..) -> id_modopag: = " + id_modopag);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d(TAG, "onNothingSelected");
+            }
+        });
+        //aqui MONEDAS
+
+        mMonedAdapter = new SimpleCursorAdapter(
+                getContext(), android.R.layout.simple_spinner_item,
+                null,
+                new String[] { ViajesContract.MonedasEntry.COLUMN_NAME },
+                new int[] { android.R.id.text1 }, 2);
+        mMonedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        monedas.setAdapter(mMonedAdapter);
+        monedas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemSelected EV...)monedas -> position: " + position + " id: = " + id);
+
+                Cursor mop = (Cursor) parent.getItemAtPosition(position);
+                id_monedas = mop.getString(mop.getColumnIndexOrThrow(ViajesContract.MonedasEntry.MON_ID));
+//id_monedas = id;
+                Log.d(TAG, "onItemSelected(.EV..) -> id_monedas: = " + id_monedas);
             }
 
             @Override
@@ -156,6 +182,9 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
                 Log.d(TAG, "onNothingSelected");
             }
         });
+
+        ///////////// hasta aquí a, pag 1 - 2
+
 
         setListeners();
 
@@ -165,80 +194,157 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
                 dateCalendar.setTime(new Date(savedInstanceState
                         .getLong("dateCalendar")));
         }
-
-
-
         /////////////
+        getLoaderManager().initLoader(LOADER_MODPAG, null, this);
+        getLoaderManager().initLoader(LOADER_MONED, null, this);
         return view;
+
+        //
     }
 ///////////////////////////la fecha/////////////////////////////////////////////////
-private void setListeners() {
-    datae.setOnClickListener(this);
+    private void setListeners() {
+        datae.setOnClickListener(this);
             Calendar newCalendar = Calendar.getInstance();
 
-    datePickerDialog = new DatePickerDialog(getContext(),
+        datePickerDialog = new DatePickerDialog(getContext(),
             new DatePickerDialog.OnDateSetListener() {
 
                 public void onDateSet(DatePicker view, int year,
                                       int monthOfYear, int dayOfMonth) {
                     dateCalendar = Calendar.getInstance();
                     dateCalendar.set(year, monthOfYear, dayOfMonth);
-                    Log.i(TAG, " antes delllll datae change_data__ " + view);
+                    Log.i(TAG, " antes delllll datae change_data__209 " );
                     datae.setText(formatter.format(dateCalendar
                             .getTime()));
                 }
             }, newCalendar.get(Calendar.YEAR),
             newCalendar.get(Calendar.MONTH),
             newCalendar.get(Calendar.DAY_OF_MONTH));
-}
-////////
-@Override
-public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    Log.i(TAG, "InsertFragmentEVV onActivityCreated un poquito"); //lega
-
-    getLoaderManager().initLoader(0, null, this);
-    //modpag.setEnabled(false);
-    mModPagAdapter = new SimpleCursorAdapter(
+    }
+    ////////
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.i(TAG, "InsertFragmentEVV onActivityCreated un poquito"); //lega
+/*
+        getLoaderManager().initLoader(0, null, this);
+        //modpag.setEnabled(false);
+        mModPagAdapter = new SimpleCursorAdapter(
             getContext(),
             android.R.layout.simple_spinner_item,
             null,
             new String[] {ViajesContract.MPagoEntry.MPAG_MP},
             new int[] {android.R.id.text1},
             0);
-    mModPagAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-    modpag.setAdapter(mModPagAdapter);
+        mModPagAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        modpag.setAdapter(mModPagAdapter);
+        */
+    }
+
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id){
+            case LOADER_MODPAG:
+                Log.i(TAG, "InsertFragmentEVV onCreateLoader AAAAA-modopag-AAAAA un poquito");
+            //    android.support.v4.content.CursorLoader cursorLoader = new CursorLoader(
+                return new CursorLoader(
+                    getActivity(),                              // Parent activity context
+                    ViajesContract.MPagoEntry.URI_CONTENIDO,    // Table to query
+                    ViajesContract.MPagoEntry.TAG_COLUMNS,      // Projection to return
+                    null,                                       // No selection clause
+                    null,                                       // No selection arguments
+                    null);                                      // Default sort order
+           // Log.i(TAG, "InsertFragmentEVV onCreateLoader cccccccccccc un poquito"); //aqui llega
+       // return cursorLoader;
+            case LOADER_MONED:
+                Log.i(TAG, "InsertFragmentEVV onCreateLoader AAAA-MONEDAS-AAA un poquito");
+          //      cursorLoader = new CursorLoader(
+                return new CursorLoader(
+                    getActivity(),                              // Parent activity context
+                    ViajesContract.MonedasEntry.URI_CONTENIDO,    // Table to query
+                    ViajesContract.MonedasEntry.TAG_COLUMNS,      // Projection to return
+                    null,                                       // No selection clause
+                    null,                                       // No selection arguments
+                    null);                                      // Default sort order
+        //    Log.i(TAG, "InsertFragmentEVV onCreateLoader cccccccccccc un poquito"); //aqui llega
+            default:
+                return null;
+        }
+    }
 
 
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        switch (loader.getId())
+        {
+            case LOADER_MODPAG:
+                onLoadFinishedModopag(data);
+                break;
+            case LOADER_MONED:
+                onLoadFinishedMonedas(data);
+                break;
+        }
+      //  mModPagAdapter.swapCursor(arg1);
+    }
+private void onLoadFinishedModopag(Cursor data) {
+    // se puede usar para deshabilitar el spinner
+    Log.d(TAG, "----onLoadFinishedModopag<> "   );
+    mModPagAdapter.swapCursor(data);
+    /*
+    mProvincesAdapter.swapCursor(data);
+		int rowCount = data.getCount();
+		Log.d(TAG, "onLoadFinishedProvinces(...) -> Provinces data loaded. " + rowCount + " rows available");
+		if (rowCount > 0)
+		{
+			provinces.setEnabled(true);
+		}
+		else
+		{
+			// Both Spinners (provinces and cities) must be disabled
+			provinces.setEnabled(false);
+			cities.setEnabled(false);
+		}
+    */
 }
-
-     //   public Loader<? extends Object> onCreateLoader(int id, Bundle args) {
-        public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-            Log.i(TAG, "InsertFragmentEVV onCreateLoader AAAAAAAAAAAAAAAAAA un poquito");
-        android.support.v4.content.CursorLoader cursorLoader = new CursorLoader(
-
-                getActivity(),                              // Parent activity context
-                ViajesContract.MPagoEntry.URI_CONTENIDO,    // Table to query
-                ViajesContract.MPagoEntry.TAG_COLUMNS,      // Projection to return
-                null,                                       // No selection clause
-                null,                                       // No selection arguments
-                null);                                      // Default sort order
-            Log.i(TAG, "InsertFragmentEVV onCreateLoader cccccccccccc un poquito"); //aqui llega
-
-            return cursorLoader;
+    private void onLoadFinishedMonedas(Cursor data)
+    {
+        Log.d(TAG, "------onLoadFinishedMonedas<> "   );
+        mMonedAdapter.swapCursor(data);
+        /*
+        mCitiesAdapter.swapCursor(data);
+        int rowCount = data.getCount();
+        Log.d(TAG, "onLoadFinishedCities(...) -> Cities data loaded. " + rowCount + " rows available");
+        if (rowCount > 0)
+        {
+            if (mSavedCityPosition != AdapterView.INVALID_POSITION)
+            {
+                cities.setSelection(mSavedCityPosition);
+                mSavedCityPosition = AdapterView.INVALID_POSITION;
+            }
+            else
+            {
+                cities.setSelection(0);
+            }
+            cities.setEnabled(true);
+        }
+        else
+        {
+            cities.setEnabled(false);
+        }
+        */
     }
 
-    public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
-        mModPagAdapter.swapCursor(arg1);
+    public void onLoaderReset(Loader<Cursor> loader) {
+       // mModPagAdapter.swapCursor(null);
+        switch (loader.getId())
+        {
+            case LOADER_MODPAG:
+                mMonedAdapter.swapCursor(null);
+                break;
+            case LOADER_MONED:
+                mMonedAdapter.swapCursor(null);
+                break;
+        }
     }
-
-    public void onLoaderReset(Loader<Cursor> arg0) {
-        mModPagAdapter.swapCursor(null);
-    }
-///////////////////////
-
-
-    //////////////////////////////////////////////
+////////////////////////////////
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -253,31 +359,29 @@ public void onActivityCreated(Bundle savedInstanceState) {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
-
-
+    }
+    @Override
+    public void onClick(View view) {
+        if (view == datae) {
+            fecha1 = DATE_DIALOG;
+            Log.i(TAG, " onClick andando voy -- 357--");
+            datePickerDialog.show();
+        }
     }
 
-/*
-    Calendar c = Calendar.getInstance();
-    System.out.println("Current time => " + c.getTime());
-
-    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-    String formattedDate = df.format(c.getTime());
-*/
     private void saveData() {
         // Obtención de valores actuales
         ContentValues values = new ContentValues();
         //values.put(ViajesContract.EventosEntry.E_IDV, idviaje.getText().toString());
         values.put(ViajesContract.EventosEntry.E_IDCGT, idcat);
-        values.put(ViajesContract.EventosEntry.E_DATAH, datae.toString());
+        values.put(ViajesContract.EventosEntry.E_DATAH, datae.getText().toString());
         values.put(ViajesContract.EventosEntry.E_KMP, kmactual.getText().toString());
         values.put(ViajesContract.EventosEntry.E_NOM, nombre.getText().toString());
         values.put(ViajesContract.EventosEntry.E_DESC, descripcio.getText().toString());
-        values.put(ViajesContract.EventosEntry.E_MPAG, id_modopag);
+        values.put(ViajesContract.EventosEntry.E_MPAG, id_modopag.toString());
         values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
-     //   values.put(ViajesContract.EventosEntry.E_MON, monedas.getDropDownWidth());
+        values.put(ViajesContract.EventosEntry.E_MON, id_monedas.toString());
         values.put(ViajesContract.EventosEntry.E_VAL, valoracio.getNumStars());
         values.put(ViajesContract.EventosEntry.E_DIR, direccio.getText().toString());
         values.put(ViajesContract.EventosEntry.E_CP, cp.getText().toString());
@@ -295,21 +399,5 @@ public void onActivityCreated(Bundle savedInstanceState) {
                 values
         );
     }
-/*
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
-
-*/
 }

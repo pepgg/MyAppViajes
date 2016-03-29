@@ -35,9 +35,6 @@ import gg.pp.myappviajes.modelo.ViajesContract;
  * Fragment con formulario de inserción de viajes
  */
 public class InsertFragmentVi extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
-
-//public class InsertFragmentVi extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
-
     /**
      * Views del formulario
      */
@@ -78,14 +75,14 @@ public class InsertFragmentVi extends android.support.v4.app.Fragment implements
     private ProgressDialog dialog;
     private DatabaseHelper mDbHelper;
     private static final String TAG = "En InsertFragmentVi: ";
-
+    ///////////////////////////////
+    SimpleCursorAdapter mTipoVAdapter; // Adapters for spinners
+    ////////////////////////////////
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
             "dd-MM-yyyy", Locale.getDefault()); //.FRENCH);//  . .US);
     DatePickerDialog datePickerDialog;
     Calendar dateCalendar;
-    ///////////////////////////////
-   SimpleCursorAdapter mTipoVAdapter; // Adapters for spinners
-     ////////////////////////////////
+
     private OnFragmentInteractionListener mListener;
 
     public InsertFragmentVi() {
@@ -163,7 +160,7 @@ public class InsertFragmentVi extends android.support.v4.app.Fragment implements
         return cursorLoader;
 
     }
-/////////////////////////
+
     public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
         Log.d(TAG, "onLoadFinished<> " + arg0 + " " + arg1  );
         mTipoVAdapter.swapCursor(arg1);

@@ -198,6 +198,8 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
     public static class MonedasEntry implements ColumnasMonedas {
     public static final String TABLE_NAME = RUTA_MONEDAS;
     public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_MONEDAS).build();
+        public static final String[] TAG_COLUMNS = {"_id","nom"};
+        public static final String COLUMN_NAME = "nom";
 
         /*
         public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
@@ -223,6 +225,8 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
     public static final String TABLE_NAME = RUTA_MPAGO;
     public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_MPAGO).build();
         public static final String[] TAG_COLUMNS = {"_id","mpago"};
+        public static final String COLUMN_NAME = "mpago";
+
 /*
     public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
             + URI_CONTENIDO + "/" + RUTA_MPAGO;
