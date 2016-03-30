@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.ViajesContract;
@@ -22,7 +22,7 @@ public class InsertFragmentCateg extends Fragment {
     /**
      * Views del formulario
      */
-    private EditText categoria;
+    private TextView categoria;
   //  private Spinner prioridad;
   //  private Spinner entidad;
   //  private Spinner estado;
@@ -47,7 +47,7 @@ public class InsertFragmentCateg extends Fragment {
         View view = inflater.inflate(R.layout.fragment_insert, container, false);
 
         // Obtener views
-        categoria = (EditText) view.findViewById(R.id.categor_input);
+        categoria = (TextView) view.findViewById(R.id.categor_input);
     //    prioridad = (Spinner) view.findViewById(R.id.prioridad_spinner);
     //    entidad = (Spinner) view.findViewById(R.id.tecnico_spinner);
     //    estado = (Spinner) view.findViewById(R.id.estado_spinner);

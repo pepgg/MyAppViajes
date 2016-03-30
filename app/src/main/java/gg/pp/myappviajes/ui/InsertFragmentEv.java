@@ -1,10 +1,17 @@
 package gg.pp.myappviajes.ui;
 
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -34,29 +41,44 @@ import gg.pp.myappviajes.modelo.ViajesContract;
  * Fragment con formulario de inserción de eventos
  */
 public class InsertFragmentEv extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
+
+    private static final String[] INITIAL_PERMS={
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_CONTACTS
+    };
     /**
      * Views del formulario
      */
+    //////////
+    Context mContext;
+
+  //  public InsertFragmentEv(Context mContext) {
+   //     this.mContext = mContext;
+  //  }
+
+    ///////////////////
     private TextView nomcateg;
-  private EditText nombre;
-  private EditText descripcio;
-  private EditText totaleur;
+    private EditText nombre;
+    private EditText descripcio;
+    private EditText totaleur;
     ///////////////////////////////
-  //  private
-  Spinner modpag, monedas;
+    //  private
+    Spinner modpag, monedas;
     ////////////////////////////////
     private TextView eur;
     private Button datae;
-  private EditText direccio;
-  private EditText cp;
+    private EditText direccio;
+    private EditText cp;
     private EditText ciudad;
     private EditText telef;
     private EditText mail;
     private EditText web;
+
     private Button gps;
-    private EditText longi;
-    private EditText latit;
-    private EditText altit;
+    private TextView longi;
+    private TextView latit;
+    private TextView altit;
+
     private EditText kmactual;
     private RatingBar valoracio;
     private EditText comentaris;
@@ -67,19 +89,21 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     long idcat;
     private String id_modopag;
     private String id_monedas;
-
     private String idviaje;
-
     public static final int LOADER_MODPAG = 1; // Loader identifier for ModPag
     public static final int LOADER_MONED = 2; // Loader identifier for Monedas
-
     SimpleCursorAdapter mModPagAdapter, mMonedAdapter, sAdapter; // Adapters for both spinners
-    public static final String TAG = "En InsertFragmentEv: ";
 
-  private static final SimpleDateFormat formatter = new SimpleDateFormat(
-          "dd-MM-yyyy", Locale.getDefault()); //.FRENCH);//  . .US);
+    private LocationManager locManager;
+    private LocationListener locListener;
+
+    private static final SimpleDateFormat formatter = new SimpleDateFormat(
+            "dd-MM-yyyy", Locale.getDefault()); //.FRENCH);//  . .US);
     DatePickerDialog datePickerDialog;
     Calendar dateCalendar;
+
+
+    public static final String TAG = "En InsertFragmentEv: ";
 
     public InsertFragmentEv() {
         // Required empty public constructor
@@ -117,16 +141,28 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         telef = (EditText) view.findViewById(R.id.telef);
         mail = (EditText) view.findViewById(R.id.mail);
         web = (EditText) view.findViewById(R.id.web);
-        gps = (Button) view.findViewById(R.id.gps);
 
-        longi = (EditText) view.findViewById(R.id.longitud);
-        latit = (EditText) view.findViewById(R.id.latitud);
-        altit = (EditText) view.findViewById(R.id.altitud);
+        gps = (Button) view.findViewById(R.id.gps);
+        longi = (TextView) view.findViewById(R.id.longitud);
+        latit = (TextView) view.findViewById(R.id.latitud);
+        altit = (TextView) view.findViewById(R.id.altitud);
         kmactual = (EditText) view.findViewById(R.id.Km_p);
+
 
         valoracio = (RatingBar) view.findViewById(R.id.ratingBar);
         comentaris = (EditText) view.findViewById(R.id.coment);
+
         idcat = id_categ;
+
+        ///// EL GPSSSSSSSSSSSSSSSSSSS
+        gps.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "EL GPSSSSSSSSSSSSSSSSSSS"); //Si lo tiene
+                        comenzarLocalizacion();
+            }
+        });
 
         Log.i(TAG, "InsertFragmentTT T TT onCreateView 139 un poquito: " + id_categ); //Si lo tiene
 
@@ -138,8 +174,8 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         mModPagAdapter = new SimpleCursorAdapter(
                 getContext(), android.R.layout.simple_spinner_item,
                 null,
-                new String[] { ViajesContract.MPagoEntry.COLUMN_NAME },
-                new int[] { android.R.id.text1 }, 2);
+                new String[]{ViajesContract.MPagoEntry.COLUMN_NAME},
+                new int[]{android.R.id.text1}, 2);
         mModPagAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         modpag.setAdapter(mModPagAdapter);
         modpag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -152,6 +188,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
 
                 Log.d(TAG, "onItemSelected(.EV..) -> id_modopag: = " + id_modopag);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 Log.d(TAG, "onNothingSelected");
@@ -162,8 +199,8 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         mMonedAdapter = new SimpleCursorAdapter(
                 getContext(), android.R.layout.simple_spinner_item,
                 null,
-                new String[] { ViajesContract.MonedasEntry.COLUMN_NAME },
-                new int[] { android.R.id.text1 }, 2);
+                new String[]{ViajesContract.MonedasEntry.COLUMN_NAME},
+                new int[]{android.R.id.text1}, 2);
         mMonedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         monedas.setAdapter(mMonedAdapter);
         monedas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -183,8 +220,6 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
             }
         });
 
-        ///////////// hasta aquí a, pag 1 - 2
-
 
         setListeners();
 
@@ -199,29 +234,138 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         getLoaderManager().initLoader(LOADER_MONED, null, this);
         return view;
 
-        //
     }
-///////////////////////////la fecha/////////////////////////////////////////////////
+
+
+    ///////////////////////////la fecha/////////////////////////////////////////////////
     private void setListeners() {
         datae.setOnClickListener(this);
-            Calendar newCalendar = Calendar.getInstance();
+        Calendar newCalendar = Calendar.getInstance();
 
         datePickerDialog = new DatePickerDialog(getContext(),
-            new DatePickerDialog.OnDateSetListener() {
+                new DatePickerDialog.OnDateSetListener() {
 
-                public void onDateSet(DatePicker view, int year,
-                                      int monthOfYear, int dayOfMonth) {
-                    dateCalendar = Calendar.getInstance();
-                    dateCalendar.set(year, monthOfYear, dayOfMonth);
-                    Log.i(TAG, " antes delllll datae change_data__209 " );
-                    datae.setText(formatter.format(dateCalendar
-                            .getTime()));
-                }
-            }, newCalendar.get(Calendar.YEAR),
-            newCalendar.get(Calendar.MONTH),
-            newCalendar.get(Calendar.DAY_OF_MONTH));
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        dateCalendar = Calendar.getInstance();
+                        dateCalendar.set(year, monthOfYear, dayOfMonth);
+                        Log.i(TAG, " antes delllll datae change_data__209 ");
+                        datae.setText(formatter.format(dateCalendar
+                                .getTime()));
+                    }
+                }, newCalendar.get(Calendar.YEAR),
+                newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH));
     }
-    ////////
+
+
+    /////////////// el GPSSSSSSSSSSSSSSSSSS
+
+
+
+    private void comenzarLocalizacion() {
+/*
+        //Si el GPS no está habilitado
+        if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            //  mostrarAvisoGpsDeshabilitado();
+            Log.i(TAG, "ElGPSSS NNNO eSta activado¡¡¡¡");
+        }
+        */
+        //Obtenemos una referencia al LocationManager
+        Log.i(TAG, "Provider Status: ppSSSSSSSSSS" );
+
+        locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        Log.i(TAG, "Provider Status: ppSSSS22222222SSSSSS" );
+        //Obtenemos la �ltima posici�n conocida
+
+        if (ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+            Log.i(TAG, "Provider Status: dentron del ifff" );
+           // return;
+        }
+
+/*
+        if (!canAccessLocation() ) {
+            requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
+        }
+        private boolean canAccessLocation() {
+            return(hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
+        }
+        private boolean hasPermission(String perm) {
+            return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(perm));
+        }
+*/
+        Log.i(TAG, "Provider Status: fuera del ifff" );
+        Location loc =
+                locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+    //    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener)loc);
+
+        Log.i(TAG, "Provider Status: ppSSS33333333SS" );
+
+        //Mostramos la �ltima posici�n conocida
+        mostrarPosicion(loc);
+
+        //Nos registramos para recibir actualizaciones de la posici�n
+        locListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                mostrarPosicion(location);
+
+                Log.i(TAG, "Provider Status: onLocationChanged");
+            }
+
+            public void onProviderDisabled(String provider){
+                Log.i(TAG, "Provider Status: Disabled" );
+                //lblEstado.setText("Provider OFF");
+            }
+            public void onProviderEnabled(String provider){
+                Log.i(TAG, "Provider Status: ON" );
+                //lblEstado.setText("Provider ON ");
+            }
+            public void onStatusChanged(String provider, int status, Bundle extras){
+                Log.i(TAG, "Provider Status: " + status);
+             ///   lblEstado.setText("Provider Status: " + status);
+            }
+        };
+
+        locManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER, 10000, 0, locListener);
+    }
+
+    private void mostrarPosicion(Location loc) {
+        if(loc != null)
+        {
+            latit.setText(String.valueOf(loc.getLatitude()));
+            longi.setText(String.valueOf(loc.getLongitude()));
+            //lblPrecision.setText("Precision: " + String.valueOf(loc.getAccuracy()));
+            altit.setText(String.valueOf(loc.getAltitude()));
+
+            Log.i(TAG, "!GPSSS posicion: " + loc.getLongitude());
+                    //+ String.valueOf(loc.getLatitude() + " - " + String.valueOf(loc.getLongitude())));
+        }
+        else
+        {
+            Log.i(TAG, "GPSSSSS sindatossssssssssss");
+            latit.setText("Latitud: (sin_datos)");
+            longi.setText("Longitud: (sin_datos)");
+            altit.setText("Altitud: (sin_datos)");
+        }
+    }
+
+
+
+    /////////////////////////////
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
