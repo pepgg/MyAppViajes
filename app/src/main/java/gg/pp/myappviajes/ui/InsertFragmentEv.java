@@ -114,7 +114,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         super.onCreate(savedInstanceState);
         id_categ = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
         setHasOptionsMenu(true);
-        Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un poquitokkkkkkkkkkkkkkkkkkkkkkkkkkkkkk: " + id_categ); // lo tienexxxxxxxxbvn
+        Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un poquitokkkkkkkkkkkkkkkkkkkkk idCAT: " + id_categ); // lo tienexxxxxxxxbvn
 
     }
 
@@ -122,7 +122,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_insert, container, false);
+        View view = inflater.inflate(R.layout.fragment_insert_ev, container, false);
 
         // Obtener views
         nomcateg = (TextView) view.findViewById(R.id.categor_input);
@@ -308,8 +308,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         }
 */
         Log.i(TAG, "Provider Status: fuera del ifff" );
-        Location loc =
-                locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location loc = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     //    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener)loc);
 
         Log.i(TAG, "Provider Status: ppSSS33333333SS" );

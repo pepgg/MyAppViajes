@@ -37,11 +37,13 @@ public class MainFragment extends ListFragment implements
     private TextView totalKm;
     private TextView totalGast;
     private Button btnViajes;
+    public static final String nomTabla = null;
 
 
 
 
     public MainFragment() {
+        // Required empty public constructor
     }
 
     @Override
@@ -80,7 +82,7 @@ public class MainFragment extends ListFragment implements
                     public void onClick(View v) {
                         getActivity()
                                 .startActivity(
-                                        new Intent(getActivity(), InsertCategory.class)
+                                        new Intent(getActivity(), ListCategor.class)
                                 );
 
                     }
@@ -117,6 +119,30 @@ public class MainFragment extends ListFragment implements
             case R.id.action_delete:
                 deleteData(); // Eliminar
                 getActivity().finish();
+                return true;
+            case R.id.m_catgor:
+                String nomTabla = ViajesContract.CategoriasEntry.TABLE_NAME.toString();
+                  Intent intent = new Intent(getContext(), ListCategor.class);
+                intent.putExtra("NombreTabla", nomTabla);
+                startActivity(intent);
+                return true;
+            case R.id.m_modopag:
+                nomTabla = ViajesContract.MPagoEntry.TABLE_NAME.toString();
+                Intent inten = new Intent(getContext(), ListCategor.class);
+                inten.putExtra("NombreTabla", nomTabla);
+                startActivity(inten);
+                return true;
+            case R.id.m_moneda:
+                nomTabla = ViajesContract.MonedasEntry.TABLE_NAME.toString();
+                Intent inte = new Intent(getContext(), ListCategor.class);
+                inte.putExtra("NombreTabla", nomTabla);
+                startActivity(inte);
+                return true;
+            case R.id.m_tipov:
+                nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
+                Intent intn = new Intent(getContext(), ListCategor.class);
+                intn.putExtra("NombreTabla", nomTabla);
+                startActivity(intn);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

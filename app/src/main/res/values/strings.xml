@@ -50,9 +50,13 @@
     <string name="km_actual">Km actual</string>
     <string name="f_vi_toast_text">Etoy con el spinner tv </string>
     <string name="coment">Comentarios</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="menu_categor">Categorias</string>
+    <string name="menu_modopag">Modos de pago</string>
+    <string name="menu_moneda">Monedas</string>
+    <string name="menu_tipov">Tipos de viaje</string>
+    <string name="sin_datos">No hay datos</string>
+    <string name="insert_nuevo">Nuevo</string>
+    <string name="nombre">Nombre:</string>
+    <string name="valor_eur">Valor en EUR:</string>
 </resources>
 
