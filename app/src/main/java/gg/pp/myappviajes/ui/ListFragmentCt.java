@@ -10,20 +10,25 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import gg.pp.myappviajes.ActivitiesAdapter;
+import gg.pp.myappviajes.ActivitiesAdapterMn;
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
 
 /**
- * Fragment con  Listassssssssssssssssssssssssssssssss para ver
+ * Fragment con  Listassssssssssssssssssssssssssssssss para ver y suprimir
  * para Editar o insertar se va a InseretFragmentData_m
  * Viene del menú principal
  */
@@ -35,6 +40,7 @@ public class ListFragmentCt extends ListFragment implements
      * Adaptador
      */
     private ActivitiesAdapter adaptador;
+    private ActivitiesAdapterMn adaptadorMn; //para monedas
     /**
      * Views del formulario
      */
@@ -43,6 +49,11 @@ public class ListFragmentCt extends ListFragment implements
 
     String nomTabla;
     String miTabla;
+
+    private static final int INSERT_CT = Menu.FIRST; //INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
+    private static final int EDIT_CT = Menu.FIRST + 1;
+    private static final int DELET_CT = Menu.FIRST + 2;
+
     public ListFragmentCt() {
         // Required empty public constructor
     }
@@ -54,24 +65,29 @@ public class ListFragmentCt extends ListFragment implements
 
                 Log.i(TAG, "MainFragmen8888888888888888888888888888888888888tito OnCrete  TRES");
 
-//////////////////////////El nombre de la tsbla: /////////////////////////////////////////////////////
+//////////////////////////El nombre de la tabla: /////////////////////////////////////////////////////
         nomTabla = getActivity().getIntent().getStringExtra("NombreTabla");
                 Log.i(TAG, " OnCrete view T4444444444444444444444444RES  " + nomTabla);
 //////////////////////////////////////////////////////////////////////////
-//Envio el nomTabla a ActivitiesAdapter:
-       // miTabla = nomTabla;
-   //     Intent inte = new Intent(getContext(), ActivitiesAdapter. class) ;
-   //     inte.putExtra( "NombreTabla" , nomTabla);
-    //    startActivity(inte) ;
-
-
 
 
         adaptador = new ActivitiesAdapter(getActivity());
-        // Relacionar adaptador a la lista
+                // Relacionar adaptador a la lista
         setListAdapter(adaptador);
-        // Iniciar Loader
+                // Iniciar Loader
         getLoaderManager().initLoader(0, null, this);
+    //    registerForContextMenu(categ_list_text);
+      //  registerForContextMenu(list_categor);
+/*
+
+* el menu contextual deberia ser así:
+  //Obtenemos las referencias a los controles
+    lblMensaje = (TextView)findViewById(R.id.LblMensaje);
+
+    //Asociamos los menús contextuales a los controles
+    registerForContextMenu(lblMensaje);
+        */
+
     }
 
     @Override
@@ -79,10 +95,16 @@ public class ListFragmentCt extends ListFragment implements
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.list_categor, container, false);
+      ///  Object list_categor;
+     //   registerForContextMenu(getListView(list_categor));
 
         return view;
     }
-
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //
+        super.onCreateOptionsMenu(menu, inflater);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -118,9 +140,6 @@ public class ListFragmentCt extends ListFragment implements
         /*
         getActivity().startActivity(new Intent(getActivity(), UpdateActivity.class)
                                 .putExtra(TechsContract.Columnas._ID, id)
-                                .putExtra(TechsContract.Columnas.DESCRIPCION, descripcion.getText())
-                                .putExtra(TechsContract.Columnas.CATEGORIA, categoria.getText())
-                                .putExtra(TechsContract.Columnas.TECNICO, entidad.getText())
                                 .putExtra(TechsContract.Columnas.PRIORIDAD, prioridad.getText())
                                 .putExtra(TechsContract.Columnas.ESTADO, estado.getText())
                 );
@@ -132,8 +151,6 @@ public class ListFragmentCt extends ListFragment implements
         ContentValues values = new ContentValues();
         values.put(ViajesContract.CategoriasEntry.CAT_CGT, categoria.getText().toString());
     //    values.put(TechsContract.Columnas.PRIORIDAD, prioridad.getSelectedItem().toString());
-    //    values.put(TechsContract.Columnas.CATEGORIA, categoria.getSelectedItem().toString());
-    //    values.put(TechsContract.Columnas.TECNICO, entidad.getSelectedItem().toString());
     //    values.put(TechsContract.Columnas.DESCRIPCION, descripcion.getText().toString());
 
         getActivity().getContentResolver().insert(
@@ -148,8 +165,8 @@ public class ListFragmentCt extends ListFragment implements
         // Consultar todos los registros
         return new CursorLoader(
                 getActivity(),
-                ViajesContract.MonedasEntry.URI_CONTENIDO,
-           //     ViajesContract.CategoriasEntry.URI_CONTENIDO,
+          //      ViajesContract.MonedasEntry.URI_CONTENIDO,
+                ViajesContract.CategoriasEntry.URI_CONTENIDO,
                 null, null, null, null);
 
     }
@@ -164,11 +181,87 @@ public class ListFragmentCt extends ListFragment implements
         adaptador.swapCursor(null);
     }
 
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        registerForContextMenu(this.getListView());
+    }
+
+
+
+
     @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.i(TAG, " onListItemClick ===>");
         getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
                 .putExtra(ViajesContract.CategoriasEntry.CAT_ID, id));
+    }
+
+    // el menu contextual, con clic prolongado
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+
+        Log.i(TAG, "En onCreateContextMenu noooooooooooou");
+        MenuInflater inflater = getActivity().getMenuInflater();
+        Log.i(TAG, "En onCreateContextMenu noooooooooooou");
+        inflater.inflate(R.menu.menu_ctx_list, menu);
+        Log.i(TAG, "En onCreateContextMenu doooooossssssssssss");
+
+
+   //     registerForContextMenu(getListView());
+     //   Log.i(TAG, "En onCreateContextMenu trrrrrrrrrrrres");
+
+
+
+        /*
+        //menu.add("Action Button");  INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
+        menu.add(0, INSERT_CT,0, R.string.afegir_mc); // afegir_mc editar_mc borrar_mc
+        menu.add(0, EDIT_CT,0, R.string.editar_mc);
+        menu.add(0, DELET_CT,0, R.string.borrar_mc);
+*/
+
+        //MenuItem actionItem = menu.add("Action Button");
+        //actionItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+
+
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+       // Intent intent;
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch(item.getItemId()) { //
+            case R.id.ctx_insert:
+            //crea un nou
+            //	intent = new Intent(this, EditGasto.class); //
+            //	startActivityForResult(intent, GASTO_CREA);
+                Log.i(TAG, "En onContextItemSelected noooooooooooou");
+            	return true;
+            case R.id.ctx_delete:
+                //esborra un existent
+
+             //   AdapterView.AdapterContextMenuInfo infoDel = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+             //   mDbHelper.deleteGasto(infoDel.id);
+             //   listaGasto();
+                return true;
+            case R.id.ctx_edit:
+              //  AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+             //   intent = new Intent(this, EditGasto.class);
+             //   intent.putExtra(MiDbAdapter.GAST_ID, infoEd.id);
+
+             //   startActivityForResult(intent, GASTO_EDITA);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+
+
+        }
+
     }
     @Override
     public void onDestroy() {
@@ -183,4 +276,6 @@ public class ListFragmentCt extends ListFragment implements
             // Proyectar la excepción
         }
     }
+
+
 }

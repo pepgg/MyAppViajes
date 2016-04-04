@@ -58,5 +58,8 @@
     <string name="insert_nuevo">Nuevo</string>
     <string name="nombre">Nombre:</string>
     <string name="valor_eur">Valor en EUR:</string>
+    <string name="afegir_mc">Nuevo</string>
+    <string name="editar_mc">Editar</string>
+    <string name="borrar_mc">Suprimir</string>
 </resources>
 

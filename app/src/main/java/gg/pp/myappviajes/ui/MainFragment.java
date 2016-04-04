@@ -39,9 +39,6 @@ public class MainFragment extends ListFragment implements
     private Button btnViajes;
     public static final String nomTabla = null;
 
-
-
-
     public MainFragment() {
         // Required empty public constructor
     }
@@ -56,7 +53,6 @@ public class MainFragment extends ListFragment implements
         Log.i(TAG, "MainFragmentito OnCrete DOS");
 
     }
-
     //////////////////////////////////////////////las cards se intercambian
     //final CardView card1 = new CardView(this);
     //card1.setVisibility(View.INVISIBLE);
@@ -74,7 +70,6 @@ public class MainFragment extends ListFragment implements
         totalKm = (TextView) view.findViewById(R.id.totalkm);
         totalGast = (TextView) view.findViewById(R.id.totalg);
 
-
         ImageButton fab = (ImageButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(
                 new View.OnClickListener() {
@@ -84,12 +79,9 @@ public class MainFragment extends ListFragment implements
                                 .startActivity(
                                         new Intent(getActivity(), ListCategor.class)
                                 );
-
                     }
 
                 });
-
-
 
         Button button = (Button) view.findViewById(R.id.buttnviaje);
         button.setOnClickListener(
@@ -104,7 +96,6 @@ public class MainFragment extends ListFragment implements
                                 );
                     }
                 });
-
         return view;
     }
 
@@ -147,18 +138,13 @@ public class MainFragment extends ListFragment implements
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
     /**
      * Elimina la actividad actual
      */
     private void deleteData() {
        // Uri uri = ContentUris.withAppendedId(TechsContract.CONTENT_URI, id);
-      //  getActivity().getContentResolver().delete(
-       //         uri,
-      //          null,
-      //          null
-      //  );
+      //  getActivity().getContentResolver().delete(uri, null, null);
     }
 
     /**
@@ -167,31 +153,23 @@ public class MainFragment extends ListFragment implements
      */
     private void beginUpdate() {
         /*
-        getActivity()
-                .startActivity(
-
+        getActivity().startActivity(
                         new Intent(getActivity(), UpdateActivity.class)
                                 .putExtra(TechsContract.Columnas._ID, id)
                                 .putExtra(TechsContract.Columnas.DESCRIPCION, descripcion.getText())
-                                .putExtra(TechsContract.Columnas.CATEGORIA, categoria.getText())
-                                .putExtra(TechsContract.Columnas.TECNICO, entidad.getText())
-                                .putExtra(TechsContract.Columnas.PRIORIDAD, prioridad.getText())
-                                .putExtra(TechsContract.Columnas.ESTADO, estado.getText())
-
-                );
-                */
+                                .putExtra(TechsContract.Columnas.ESTADO, estado.getText())  );
+        */
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "MainFragmentito onActivityCreated CUATRO ");
-        // Iniciar adaptador
+            // Iniciar adaptador
         adaptador = new ActivitiesAdapter(getActivity());
-        // Relacionar adaptador a la lista
+            // Relacionar adaptador a la lista
         setListAdapter(adaptador);
-        // Iniciar Loader
+            // Iniciar Loader
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -203,7 +181,6 @@ public class MainFragment extends ListFragment implements
                 getActivity(),
                 ViajesContract.CategoriasEntry.URI_CONTENIDO,
                 null, null, null, null);
-
     }
 
     @Override
@@ -223,7 +200,6 @@ public class MainFragment extends ListFragment implements
                 .putExtra(ViajesContract.CategoriasEntry.CAT_ID, id));
     }
 
-
     public void iraNouViaje(View view) {
         Log.i(TAG, "Ahora en iraNouViaje de MainViajes) ");
        // getActivity().startActivity(new Intent(getActivity(), InsertViaje.class));
@@ -231,7 +207,6 @@ public class MainFragment extends ListFragment implements
      ////->   Intent i = new Intent(getContext(), InsertViaje.class);
        /////>- startActivityForResult(i, V_CREA);
     }
-
 
     @Override
     public void onDestroy() {

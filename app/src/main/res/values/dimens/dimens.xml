@@ -5,7 +5,7 @@
 
     <dimen name="indicator_size">12dp</dimen>
 
-    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
     <dimen name="margin_top_between_cards">16dp</dimen>
     <dimen name="vertical_margin_between_detail_components">16dp</dimen>
 
