@@ -17,18 +17,19 @@
             android:text="@string/insert_nuevo"
             android:id="@+id/textView2"        />
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/nombre"
-                android:id="@+id/label_item" />
+                android:id="@+id/label_item"
+                android:layout_weight="1"/>
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/nom_item"
                 android:layout_weight="1" />

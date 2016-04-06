@@ -117,16 +117,11 @@ public class InsertFragmentCt extends android.support.v4.app.Fragment
 
         // Actualizar la vista
         mNomText.setText(nom_text);     ///////////////aquí fallllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-        /*
-         descripcion.setText(descripcion_text);
-   */
+
     }
 
     @Override
     public void onResume() {
-        // TODO: Ver passa con esto onResume()
-       // getActivity().setTitle(R.string.tipo_v);
-       // getActivity().getActionBar().setTitle(R.string.tipo_v);
         super.onResume();
         id_item = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
         updateView(); // Cargar datos iniciales
