@@ -27,13 +27,15 @@
                     android:id="@+id/nom_e"
                     android:hint="@string/nomeven"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences" />
                 <!-- descripcio -->
                 <EditText
                     android:id="@+id/descripcio_e"
                     android:hint="@string/descripcio_label"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences" />
             </LinearLayout>
 
             <!-- Divisor-->
@@ -51,7 +53,8 @@
                     android:id="@+id/preu_e"
                     android:hint="@string/precio"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
                 <Spinner
                     android:id="@+id/spinner_mod_pag"
                     android:prompt="@string/spin_mp"
@@ -105,13 +108,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:hint="@string/direccio" />
+                    android:hint="@string/direccio"
+                    android:inputType="textPostalAddress" />
                 <EditText
                     android:id="@+id/cp"
                     android:hint="@string/codP"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:inputType="number" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -123,13 +128,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/ciudad_label"
-                    android:layout_weight="2" />
+                    android:layout_weight="2"
+                    android:inputType="textCapWords" />
                 <EditText
                     android:id="@+id/telef"
                     android:hint="@string/telef"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:inputType="phone" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -141,13 +148,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/mail"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:inputType="textEmailAddress" />
                 <EditText
                     android:id="@+id/web"
                     android:hint="@string/web"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:inputType="textWebEditText" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -203,7 +212,8 @@
                     android:hint="@string/km_actual"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"

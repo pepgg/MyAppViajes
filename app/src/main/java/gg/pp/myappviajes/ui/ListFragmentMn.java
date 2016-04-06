@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import gg.pp.myappviajes.ActivitiesAdapter;
+import gg.pp.myappviajes.ActivitiesAdapterMn;
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
@@ -33,15 +34,15 @@ import gg.pp.myappviajes.modelo.ViajesContract;
  * para Editar o insertar se va a InseretFragmentData_m
  * Viene del menú principal
  */
-public class ListFragmentCt extends ListFragment implements
+public class ListFragmentMn extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static final String TAG = "En ListFragmentCt: ";
+    public static final String TAG = "En ListFragmentMn: ";
     /**
      * Adaptador
      */
     private ActivitiesAdapter adaptador;
-
+    private ActivitiesAdapterMn adaptadorMn; //para monedas
     /**
      * Views del formulario
      */
@@ -51,11 +52,11 @@ public class ListFragmentCt extends ListFragment implements
     String nomTabla;
     String miTabla;
 
-    private static final int INSERT_CT = Menu.FIRST; //INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
-    private static final int EDIT_CT = Menu.FIRST + 1;
-    private static final int DELET_CT = Menu.FIRST + 2;
+    private static final int INSERT_MN = Menu.FIRST; //INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
+    private static final int EDIT_MN = Menu.FIRST + 1;
+    private static final int DELET_MN = Menu.FIRST + 2;
 
-    public ListFragmentCt() {
+    public ListFragmentMn() {
         // Required empty public constructor
     }
 
@@ -96,8 +97,6 @@ public class ListFragmentCt extends ListFragment implements
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.list_categor, container, false);
-      ///  Object list_categor;
-       // registerForContextMenu(this.getListView());
 
         return view;
     }
@@ -132,7 +131,7 @@ public class ListFragmentCt extends ListFragment implements
     }
     private void deleteData(long id) {
         Log.i(TAG, "En DEEEEEEEEEEEEEEELTEEEEEE data id: " + id); //aqui llega con el id
-        Uri uri = ContentUris.withAppendedId(ViajesContract.CategoriasEntry.URI_CONTENIDO, id);
+        Uri uri = ContentUris.withAppendedId(ViajesContract.MonedasEntry.URI_CONTENIDO, id);
         getActivity().getContentResolver().delete(uri, null, null); //funciona
     }
     /**
@@ -152,8 +151,10 @@ public class ListFragmentCt extends ListFragment implements
     private void saveData() { //insert funciona
         // Obtención de valores actuales
         ContentValues values = new ContentValues();
-        values.put(ViajesContract.CategoriasEntry.CAT_CGT, categoria.getText().toString());
-    //    values.put(TechsContract.Columnas.PRIORIDAD, prioridad.getSelectedItem().toString());
+        values.put(ViajesContract.MonedasEntry.MON_NOM, categoria.getText().toString());
+        values.put(ViajesContract.MonedasEntry.MON_VAL, valormoneda.getText().toString());
+
+        //    values.put(TechsContract.Columnas.PRIORIDAD, prioridad.getSelectedItem().toString());
     //    values.put(TechsContract.Columnas.DESCRIPCION, descripcion.getText().toString());
 
         getActivity().getContentResolver().insert(
@@ -168,8 +169,7 @@ public class ListFragmentCt extends ListFragment implements
         // Consultar todos los registros
         return new CursorLoader(
                 getActivity(),
-          //      ViajesContract.MonedasEntry.URI_CONTENIDO,
-                ViajesContract.CategoriasEntry.URI_CONTENIDO,
+                ViajesContract.MonedasEntry.URI_CONTENIDO,
                 null, null, null, null);
 
     }
@@ -199,7 +199,7 @@ public class ListFragmentCt extends ListFragment implements
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.i(TAG, " onListItemClick ===> id: " + id);
         getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
-                .putExtra(ViajesContract.CategoriasEntry.CAT_ID, id));
+                .putExtra(ViajesContract.MonedasEntry.MON_ID, id));
     }
 
     // el menu contextual, con clic prolongado
@@ -216,24 +216,7 @@ public class ListFragmentCt extends ListFragment implements
         Log.i(TAG, "En onCreateContextMenu doooooossssssssssss");
 
 
-   //     registerForContextMenu(getListView());
-     //   Log.i(TAG, "En onCreateContextMenu trrrrrrrrrrrres");
-
-
-
-        /*
-        //menu.add("Action Button");  INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
-        menu.add(0, INSERT_CT,0, R.string.afegir_mc); // afegir_mc editar_mc borrar_mc
-        menu.add(0, EDIT_CT,0, R.string.editar_mc);
-        menu.add(0, DELET_CT,0, R.string.borrar_mc);
-*/
-
-        //MenuItem actionItem = menu.add("Action Button");
-        //actionItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-
-
-    }
+   }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
      //   Intent intent;
@@ -242,8 +225,8 @@ public class ListFragmentCt extends ListFragment implements
             case R.id.ctx_insert:
             //crea un nou
                 Log.i(TAG, "En onContextItemSelected noUUUUUUUUUUUUU id: "  );
-                String nomTabla = ViajesContract.CategoriasEntry.TABLE_NAME.toString();
-                Intent intent = new Intent(getContext(), InsertCt.class); //funciona
+                String nomTabla = ViajesContract.MonedasEntry.TABLE_NAME.toString();
+                Intent intent = new Intent(getContext(), InsertMn.class); //funciona
                 intent.putExtra("NombreTabla", nomTabla);
                 startActivity(intent);
             	return true;
@@ -259,10 +242,10 @@ public class ListFragmentCt extends ListFragment implements
 
                 AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
-                intent = new Intent(getContext(), InsertCt.class);
-                intent.putExtra(ViajesContract.CategoriasEntry.CAT_ID, infoEd.id);
+                intent = new Intent(getContext(), InsertMn.class);
+                intent.putExtra(ViajesContract.MonedasEntry.MON_ID, infoEd.id);
                 Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
-                startActivityForResult(intent, EDIT_CT);
+                startActivityForResult(intent, EDIT_MN);
                 return true;
             default:
                 return super.onContextItemSelected(item);

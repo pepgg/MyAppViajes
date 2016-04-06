@@ -6,7 +6,7 @@ import android.view.Menu;
 
 import gg.pp.myappviajes.R;
 
-public class ListCategor extends AppCompatActivity {
+public class ListMonedas extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,10 +17,10 @@ public class ListCategor extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
 
         if (savedInstanceState == null) {
-            ListFragmentCt fragment = new ListFragmentCt();
+            ListFragmentMn fragment = new ListFragmentMn();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(android.R.id.content, fragment, ListFragmentCt.class.getSimpleName())
+                    .add(android.R.id.content, fragment, ListFragmentMn.class.getSimpleName())
                     .commit();
         }
     }

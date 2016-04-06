@@ -26,7 +26,8 @@
                     android:id="@+id/nom_viaje"
                     android:hint="@string/nom_viaje"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/data_in"
@@ -105,7 +106,8 @@
                     android:id="@+id/kmini"
                     android:hint="@string/kmini"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/km_fi"
@@ -122,7 +124,8 @@
                     android:id="@+id/kmfi"
                     android:hint="@string/kmfi"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="vertical"
@@ -138,7 +141,8 @@
                     android:id="@+id/descripv"
                     android:hint="@string/descripcio_label"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences" />
             </LinearLayout>
 
         </LinearLayout>

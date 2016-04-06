@@ -28,21 +28,11 @@ public class ActivitiesAdapter extends CursorAdapter {
 
         Log.i(TAG, "enn ActivitiesAdapter bindView  " );
         TextView categ_list = (TextView) view.findViewById(R.id.categ_list_text);
-    //    Log.i(TAG, "enn ActivitiesAdapter bindView la ANTES de: " + cursor.getColumnIndex(ViajesContract.MonedasEntry.MON_NOM)); // esto es -1
-
-
-///        registerForContextMenu(categ_list_text);
-
-
-//////-------------->
         categ_list.setText(cursor.getString(cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)));
-    //    categ_list.setText(cursor.getString(cursor.getColumnIndex(ViajesContract.MonedasEntry.MON_NOM)));
+
                 Log.i(TAG, "enn ActivitiesAdapter bindView la getColumnIndex de: " + cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)); // esto es 1
-     //   Log.i(TAG, "enn ActivitiesAdapter bindView la lista de: " + cursor.getColumnIndex(ViajesContract.MonedasEntry.MON_NOM)); // esto es -1
+
                 Log.i(TAG, "enn ActivitiesAdapter bindView la getString de: " + cursor.getString(cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT))); // esto es
-
-        //------------------- SI CAMBIO de tabla, Failed to read row 0, column -1 from a CursorWindow which has 5 rows, 2 columns.
-
     }
 
     @Override
