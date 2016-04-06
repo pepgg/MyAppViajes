@@ -88,7 +88,7 @@ public class ViajesProvider extends ContentProvider {
     // del moviedatabase
   //  private static final UriMatcher sUriMatcher = buildUriMatcher();
 
-    public static final String TAG = "ViajesProvider";
+    public static final String TAG = "En ViajesProvider: ";
    // long id;
 
      @Override
@@ -296,7 +296,7 @@ public class ViajesProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Log.d(TAG, "delete: " + uri);
+        Log.d(TAG, "delete: " + uri); //hasta aquí llega
 
         SQLiteDatabase bd = databaseHelper.getWritableDatabase();
         String id = null;
@@ -315,7 +315,10 @@ public class ViajesProvider extends ContentProvider {
                 break;
 
             case CATEGORIAS_ID:
+                Log.d(TAG, "delete CATEGORIAS_ID : " + uri);
+                id = CategoriasEntry.obtenerIdCategoria(uri);
                 afectados = bd.delete(Tablas.CATEGORIAS, CategoriasEntry.CAT_ID + " = ?", new String[]{id});
+                Log.d(TAG, "delete CATEGORIAS_ID : ");
                 notificarCambio(uri);
                 break;
 

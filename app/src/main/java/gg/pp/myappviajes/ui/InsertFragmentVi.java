@@ -76,7 +76,7 @@ public class InsertFragmentVi extends android.support.v4.app.Fragment implements
     private DatabaseHelper mDbHelper;
     private static final String TAG = "En InsertFragmentVi: ";
     ///////////////////////////////
-    SimpleCursorAdapter mTipoVAdapter; // Adapters for spinners
+    SimpleCursorAdapter mTipoVAdapter; // Adapter for spinner
     ////////////////////////////////
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
             "dd-MM-yyyy", Locale.getDefault()); //.FRENCH);//  . .US);

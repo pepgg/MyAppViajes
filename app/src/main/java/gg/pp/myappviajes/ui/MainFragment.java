@@ -98,7 +98,7 @@ public class MainFragment extends ListFragment implements
                 });
         return view;
     }
-
+// las opciones del menú principal:
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

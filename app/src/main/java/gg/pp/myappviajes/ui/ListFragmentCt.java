@@ -1,9 +1,11 @@
 package gg.pp.myappviajes.ui;
 
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -64,12 +66,12 @@ public class ListFragmentCt extends ListFragment implements
         setHasOptionsMenu(true);
 
                 Log.i(TAG, "MainFragmen8888888888888888888888888888888888888tito OnCrete  TRES");
-
+/*
 //////////////////////////El nombre de la tabla: /////////////////////////////////////////////////////
         nomTabla = getActivity().getIntent().getStringExtra("NombreTabla");
                 Log.i(TAG, " OnCrete view T4444444444444444444444444RES  " + nomTabla);
 //////////////////////////////////////////////////////////////////////////
-
+*/
 
         adaptador = new ActivitiesAdapter(getActivity());
                 // Relacionar adaptador a la lista
@@ -96,7 +98,7 @@ public class ListFragmentCt extends ListFragment implements
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.list_categor, container, false);
       ///  Object list_categor;
-     //   registerForContextMenu(getListView(list_categor));
+       // registerForContextMenu(this.getListView());
 
         return view;
     }
@@ -105,6 +107,7 @@ public class ListFragmentCt extends ListFragment implements
         //
         super.onCreateOptionsMenu(menu, inflater);
     }
+    //esto es para el menú de la barra, que aquí solo hay el hoe y el discard
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -115,10 +118,10 @@ public class ListFragmentCt extends ListFragment implements
                 getActivity().finish();
                 return true;
             case R.id.action_edit:
-                beginUpdate(); // Actualizar
+             //   beginUpdate(); // Actualizar
                 return true;
             case R.id.action_delete:
-                deleteData(); // Eliminar
+                deleteData(id); // Eliminar
                 getActivity().finish();
                 return true;
             case R.id.action_discard:
@@ -128,9 +131,10 @@ public class ListFragmentCt extends ListFragment implements
                 return super.onOptionsItemSelected(item);
         }
     }
-    private void deleteData() {
-        // Uri uri = ContentUris.withAppendedId(TechsContract.CONTENT_URI, id);
-        //  getActivity().getContentResolver().delete(uri, null, null);
+    private void deleteData(long id) {
+        Log.i(TAG, "En DEEEEEEEEEEEEEEELTEEEEEE data id: " + id); //aqui llega con el id
+        Uri uri = ContentUris.withAppendedId(ViajesContract.CategoriasEntry.URI_CONTENIDO, id);
+        getActivity().getContentResolver().delete(uri, null, null); //funciona
     }
     /**
      * Envía todos los datos de la actividad hacia el formulario
@@ -146,7 +150,7 @@ public class ListFragmentCt extends ListFragment implements
                 */
     }
 
-    private void saveData() {
+    private void saveData() { //insert funciona
         // Obtención de valores actuales
         ContentValues values = new ContentValues();
         values.put(ViajesContract.CategoriasEntry.CAT_CGT, categoria.getText().toString());
@@ -194,7 +198,7 @@ public class ListFragmentCt extends ListFragment implements
 
     @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Log.i(TAG, " onListItemClick ===>");
+        Log.i(TAG, " onListItemClick ===> id: " + id);
         getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
                 .putExtra(ViajesContract.CategoriasEntry.CAT_ID, id));
     }
@@ -206,9 +210,9 @@ public class ListFragmentCt extends ListFragment implements
         super.onCreateContextMenu(menu, v, menuInfo);
 
 
-        Log.i(TAG, "En onCreateContextMenu noooooooooooou");
+        Log.i(TAG, "En onCreateContextMenu nouuuuuuuuuuuuu");
         MenuInflater inflater = getActivity().getMenuInflater();
-        Log.i(TAG, "En onCreateContextMenu noooooooooooou");
+        Log.i(TAG, "En onCreateContextMenu nnnnnnnnnnnnnnouu");
         inflater.inflate(R.menu.menu_ctx_list, menu);
         Log.i(TAG, "En onCreateContextMenu doooooossssssssssss");
 
@@ -233,28 +237,33 @@ public class ListFragmentCt extends ListFragment implements
     }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-       // Intent intent;
+     //   Intent intent;
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch(item.getItemId()) { //
             case R.id.ctx_insert:
             //crea un nou
-            //	intent = new Intent(this, EditGasto.class); //
-            //	startActivityForResult(intent, GASTO_CREA);
-                Log.i(TAG, "En onContextItemSelected noooooooooooou");
+                Log.i(TAG, "En onContextItemSelected noUUUUUUUUUUUUU id: "  );
+                String nomTabla = ViajesContract.CategoriasEntry.TABLE_NAME.toString();
+                Intent intent = new Intent(getContext(), InsertCt.class); //funciona
+                intent.putExtra("NombreTabla", nomTabla);
+                startActivity(intent);
             	return true;
             case R.id.ctx_delete:
                 //esborra un existent
-
-             //   AdapterView.AdapterContextMenuInfo infoDel = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-             //   mDbHelper.deleteGasto(infoDel.id);
-             //   listaGasto();
+                Log.i(TAG, "En onContextItemSelected deleeeeettttttteANNNNNNNNNNNNNNtes id: " + getId());
+                AdapterView.AdapterContextMenuInfo infoDel = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                Log.i(TAG, "En onContextItemSelected deleeeeettttttte el III_DDDDD: " + infoDel.id); //funciona
+                deleteData(infoDel.id);
+                getActivity().finish();
                 return true;
             case R.id.ctx_edit:
-              //  AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-             //   intent = new Intent(this, EditGasto.class);
-             //   intent.putExtra(MiDbAdapter.GAST_ID, infoEd.id);
 
-             //   startActivityForResult(intent, GASTO_EDITA);
+                AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
+                intent = new Intent(getContext(), InsertCt.class);
+                intent.putExtra(ViajesContract.CategoriasEntry.CAT_ID, infoEd.id);
+                Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
+                startActivityForResult(intent, EDIT_CT);
                 return true;
             default:
                 return super.onContextItemSelected(item);

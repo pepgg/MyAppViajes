@@ -92,7 +92,8 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     private String idviaje;
     public static final int LOADER_MODPAG = 1; // Loader identifier for ModPag
     public static final int LOADER_MONED = 2; // Loader identifier for Monedas
-    SimpleCursorAdapter mModPagAdapter, mMonedAdapter, sAdapter; // Adapters for both spinners
+    /////// Adapters for both spinners:
+    SimpleCursorAdapter mModPagAdapter, mMonedAdapter, sAdapter;
 
     private LocationManager locManager;
     private LocationListener locListener;
