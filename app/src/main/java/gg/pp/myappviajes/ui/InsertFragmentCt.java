@@ -32,9 +32,10 @@ public class InsertFragmentCt extends android.support.v4.app.Fragment
     private EditText mNomText;
     private TextView mlabelV;
     private EditText mValor;
+
     private long id_item; //id del item que voy a editar
 
-    public Long mId;
+  //  public Long mId;
     private static final String TAG = "En InsertFragmentCt: ";
 
     private OnFragmentInteractionListener mListener;
@@ -84,8 +85,8 @@ public class InsertFragmentCt extends android.support.v4.app.Fragment
 
         // Unir Uri principal con identificador
         Uri uri = ContentUris.withAppendedId(ViajesContract.CategoriasEntry.URI_CONTENIDO, id_item);
-        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  87 updateDATA uri: " + uri); // que llega ?
-
+        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  87 updateDATA uri: " + uri); //  llega el uri bien, con su id
+        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  88 updateDATA nomcateg: " +  mNomText.getText().toString()); //lo coge biennnnn
         ContentValues values = new ContentValues();
         values.put(ViajesContract.CategoriasEntry.CAT_CGT, mNomText.getText().toString());
 /*
@@ -107,15 +108,15 @@ public class InsertFragmentCt extends android.support.v4.app.Fragment
         Intent i = getActivity().getIntent();
 
         Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  109 updateView i: " + i); //llega el i del intent BIEN
-        String id_text = i.getStringExtra(ViajesContract.CategoriasEntry.CAT_ID);
-        String nombre_text = i.getStringExtra(ViajesContract.CategoriasEntry.CAT_CGT);
+
+        String nom_text = i.getStringExtra(ViajesContract.CategoriasEntry.CAT_CGT);
         Log.i(TAG, "ViajecitosssssssInsertFrag   112 updateView El dato: " + ViajesContract.CategoriasEntry.CAT_CGT); // Bien. es el nombre del campo
-        Log.i(TAG, "ViajecitosssssssInsertFrag   113 updateView El nombre: " + nombre_text); //llega NULLLLLL por eso falla Creo que pierde el id en algun sitio
-        Log.i(TAG, "ViajecitosssssssInsertFrag   114 updateView El idtext: " + id_text);
+        Log.i(TAG, "ViajecitosssssssInsertFrag   113 updateView El nombre: " + nom_text); //llega NULLLLLL por eso falla Creo que pierde el id en algun sitio
+
         //////En techs llega perfectamente. hay que repasarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
 
         // Actualizar la vista
-        mNomText.setText(nombre_text);     ///////////////aquí fallllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        mNomText.setText(nom_text);     ///////////////aquí fallllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         /*
          descripcion.setText(descripcion_text);
    */
@@ -159,7 +160,7 @@ public class InsertFragmentCt extends android.support.v4.app.Fragment
 
         switch (id) {
             case android.R.id.home:
-                if (id_item != 0) {
+                if (id_item > 0) {
                     updateData();
                     getActivity().finish();
                 } else {

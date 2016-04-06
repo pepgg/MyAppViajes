@@ -112,21 +112,21 @@ public class ViajesProvider extends ContentProvider {
     //   final SQLiteDatabase db = databaseHelper.getWritableDatabase();
         // Comparar Uri
         int match = uriMatcher.match(uri);
-        Log.i(TAG, "ViajecitosProvider el mathc de la URRRRRRIIIIII query uri un poquito: " + match);
+        Log.i(TAG, "ViajecitosProvider el mathc de la URRRRRRIIIIII query uri un poquito match: " + match);
 ////////////////////////////////////////////////el match que llega es el 300, el de categorias
         // string auxiliar para los ids
         String id;
         Cursor c;
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder(); //esto no lo usa
 
-        Log.i(TAG, "ViajecitosProvider query uri un poquito: " + uri + " " + match); //el uri llega bien
+        Log.i(TAG, "ViajecitosProvider query uri un poquito uri y match: " + uri + " " + match); //el uri llega bien
         /////////////////////EN este sswitch fallaaaaaaaaaaaaaaaaaaaaaaa
         switch (match) {
       //  switch(sUriMatcher.match(uri)){
 
             case EVENTOS:
                 // Consultando todos los eventos
-                Log.i(TAG, "ViajecitosProvider query uri un EVENTOS: " + uri + " " + match);
+                Log.i(TAG, "ViajecitosProvider query uri un EVENTOS uri y match: " + uri + " " + match);
                 c = bd.query(Tablas.EVENTOS, projection,
                         selection, selectionArgs, null, null, sortOrder);
                // c.setNotificationUri(getContext().getContentResolver(), ViajesContract.EventosEntry.URI_CONTENIDO);
@@ -153,7 +153,7 @@ public class ViajesProvider extends ContentProvider {
             case CATEGORIAS:
                 c = bd.query(Tablas.CATEGORIAS, projection,
                         selection, selectionArgs, null, null, sortOrder);
-                Log.i(TAG, "ViajecitosProvider query uri un CATEGORIAS: " + uri + " " + match);
+                Log.i(TAG, "ViajecitosProvider query 156 uri un CATEGORIAS uri y match: " + uri + " " + match);
                 //c.setNotificationUri(getContext().getContentResolver(), ViajesContract.CategoriasEntry.URI_CONTENIDO);
                 break;
             case CATEGORIAS_ID:
@@ -348,40 +348,48 @@ public class ViajesProvider extends ContentProvider {
         SQLiteDatabase bd = databaseHelper.getWritableDatabase();
         int afectados;
         String id = null;
-        Log.d(TAG, "Esty en UPDATE con " + uri );
+        Log.d(TAG, "Esty en 351 UPDATE con " + uri );
         switch (uriMatcher.match(uri)) {
 
             case EVENTOS_ID:
+                Log.d(TAG, "Esty en 355 UPDATE con case EVENTOS_ID uri:" + uri );
                 afectados = bd.update(Tablas.EVENTOS, values,
                         EventosEntry.E_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
             case VIAJES_ID:
+                Log.d(TAG, "Esty en 362 UPDATE con case VIAJES_ID uri:" + uri );
                 afectados = bd.update(Tablas.VIAJES, values,
                         ViajesEntry.V_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
             case CATEGORIAS_ID:
+                id = CategoriasEntry.obtenerIdCategoria(uri);
+                Log.d(TAG, "Esty en 369 UPDATE con case CATEGORIAS_ID uri: " + uri );
                 afectados = bd.update(Tablas.CATEGORIAS, values,
                         CategoriasEntry.CAT_ID + " = ?", new String[]{id});
+                Log.d(TAG, "Esty en 372 UPDATE con case CATEGORIAS_ID values: " + values ); //llega biennnnn
                 notificarCambio(uri);
                 break;
 
             case MONEDAS_ID:
+                Log.d(TAG, "Esty en 376 UPDATE con case MONEDAS_ID uri:" + uri );
                 afectados = bd.update(Tablas.MONEDAS, values,
                         MonedasEntry.MON_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
             case M_PAGO_ID:
+                Log.d(TAG, "Esty en 383 UPDATE con case MPAGO_ID uri:" + uri );
                 afectados = bd.update(Tablas.MPAGO, values,
                         MPagoEntry.MPAG_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
             case TIPO_V_ID:
+                Log.d(TAG, "Esty en 390 UPDATE con case TIPOV_ID uri:" + uri );
                 afectados = bd.update(Tablas.TIPOVIAJE, values,
                         TipoVEntry.TIPO_ID + " = ?", new String[]{id});
                 notificarCambio(uri);

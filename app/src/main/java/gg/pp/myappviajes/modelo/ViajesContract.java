@@ -273,7 +273,7 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
         }
 
         public String getName(){
-            return this.TIPO_TIPO;
+            return TIPO_TIPO;
         }
     }
 
