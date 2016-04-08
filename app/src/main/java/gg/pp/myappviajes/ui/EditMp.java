@@ -9,7 +9,7 @@ import gg.pp.myappviajes.R;
 /**
  * Created by pepe on 14/03/16.
  */
-public class InsertMn extends AppCompatActivity {
+public class EditMp extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +19,7 @@ public class InsertMn extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
 
         if (savedInstanceState == null) {
-            EditFragmentCt fragment = new EditFragmentCt();
+            EditFragmentMn fragment = new EditFragmentMn();
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(android.R.id.content, fragment, fragment.getClass().getSimpleName())

@@ -32,7 +32,7 @@ import gg.pp.myappviajes.modelo.ViajesContract;
  * Fragment con  Listas para ver y suprimir, para Editar o insertar se va a InseretFragmentData_m
  * Viene del menú principal
  */
-public class ListFragmentMn extends ListFragment implements
+public class ListFragmentTv extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = "En ListFragmentMn: ";
@@ -54,7 +54,7 @@ public class ListFragmentMn extends ListFragment implements
     private static final int EDIT_CT = Menu.FIRST + 1;
     private static final int DELET_CT = Menu.FIRST + 2;
 
-    public ListFragmentMn() {
+    public ListFragmentTv() {
         // Required empty public constructor
     }
 
@@ -102,7 +102,7 @@ public class ListFragmentMn extends ListFragment implements
                 return true;
             case R.id.action_nuevo:
                 String nomTabla = ViajesContract.MonedasEntry.TABLE_NAME.toString();
-                Intent intent = new Intent(getContext(), EditMn.class); //funciona
+                Intent intent = new Intent(getContext(), EditCt.class); //funciona
                 intent.putExtra("NombreTabla", nomTabla);
                 startActivity(intent);
                 return true;
@@ -159,7 +159,7 @@ public class ListFragmentMn extends ListFragment implements
     @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.i(TAG, " onListItemClick ===> id: " + id);
-        getActivity().startActivity(new Intent(getActivity(), EditMn.class)
+        getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
                 .putExtra(ViajesContract.MonedasEntry.MON_NOM, id));
     }
 
@@ -190,7 +190,7 @@ public class ListFragmentMn extends ListFragment implements
             case R.id.ctx_edit:
                 AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                     Log.i(TAG, "En onContextItemSelected Edit: " + infoEd.id);
-                Intent intent = new Intent(getContext(), EditMn.class);
+                Intent intent = new Intent(getContext(), EditCt.class);
                 intent.putExtra(ViajesContract.MonedasEntry.MON_ID, infoEd.id);
                     Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
                 startActivityForResult(intent, EDIT_CT);

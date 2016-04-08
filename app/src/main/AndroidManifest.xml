@@ -63,7 +63,7 @@
         </activity>
         <activity
             android:name=".ui.ListCt"
-            android:label="@string/title_insert_evento"
+            android:label="@string/description_input"
             android:parentActivityName=".ui.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -72,7 +72,7 @@
 
         <activity
             android:name=".ui.InsertViaje"
-            android:label="@string/title_insert_evento"
+            android:label="@string/nuevo_viaje"
             android:parentActivityName=".ui.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -80,12 +80,65 @@
         </activity>
         <activity
             android:name=".ui.EditCt"
-            android:label="@string/title_insert_evento"
+            android:label="@string/categor_label"
             android:parentActivityName=".ui.ListCt" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.DetailActivity" />
         </activity>
+        <activity
+            android:name=".ui.EditMn"
+            android:label="@string/menu_moneda"
+            android:parentActivityName=".ui.ListCt" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.DetailActivity" />
+        </activity>
+        <activity
+            android:name=".ui.EditMp"
+            android:label="@string/menu_modopag"
+            android:parentActivityName=".ui.ListCt" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.DetailActivity" />
+        </activity>
+        <activity
+            android:name=".ui.EditTv"
+            android:label="@string/menu_tipov"
+            android:parentActivityName=".ui.ListCt" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.DetailActivity" />
+        </activity>
+        <activity
+            android:name=".ui.ListMn"
+            android:label="@string/menu_moneda"
+            android:parentActivityName=".ui.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.ListMp"
+            android:label="@string/menu_modopag"
+            android:parentActivityName=".ui.ListCt" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.DetailActivity" />
+        </activity>
+        <activity
+            android:name=".ui.ListTv"
+            android:label="@string/menu_tipov"
+            android:parentActivityName=".ui.ListCt" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.DetailActivity" />
+        </activity>
+
+
+
+
+
         <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
         <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
         <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>

@@ -21,7 +21,7 @@ import gg.pp.myappviajes.modelo.ViajesContract;
 /**
  * Fragment con formulario de inserción de viajes
  */
-public class EditFragmentMn extends android.support.v4.app.Fragment
+public class EditFragmentTv extends android.support.v4.app.Fragment
 {
     /**
      * Views del formulario
@@ -37,7 +37,7 @@ public class EditFragmentMn extends android.support.v4.app.Fragment
 
     private OnFragmentInteractionListener mListener;
 
-    public EditFragmentMn() {
+    public EditFragmentTv() {
         // Required empty public constructor
     }
 
@@ -60,8 +60,8 @@ public class EditFragmentMn extends android.support.v4.app.Fragment
         mNomText = (EditText) view.findViewById(R.id.nom_item);
         mValor = (EditText) view.findViewById(R.id.valor);
 
-     //   mlabelV.setVisibility(View.VISIBLE);
-     //   mValor.setVisibility(View.VISIBLE);
+        mlabelV.setVisibility(View.VISIBLE);
+        mValor.setVisibility(View.VISIBLE);
 
         return view;
     }
@@ -73,12 +73,10 @@ public class EditFragmentMn extends android.support.v4.app.Fragment
 
         // Unir Uri principal con identificador
         Uri uri = ContentUris.withAppendedId(ViajesContract.MonedasEntry.URI_CONTENIDO, id_item);
-            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  76 updateDATA uri: " + uri); //  llega el uri bien, con su id
-            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  77 updateDATA nom: " + mNomText.getText().toString()); //lo coge biennnnn
-            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  78 updateDATA valor: " + mValor.getText().toString());
+            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  87 updateDATA uri: " + uri); //  llega el uri bien, con su id
+            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  88 updateDATA nomcateg: " + mNomText.getText().toString()); //lo coge biennnnn
         ContentValues values = new ContentValues();
         values.put(ViajesContract.MonedasEntry.MON_NOM, mNomText.getText().toString());
-        values.put(ViajesContract.MonedasEntry.MON_VAL, mValor.getText().toString());
         // Actualiza datos del Content Provider
         getActivity().getContentResolver().update(
                 uri,
@@ -116,7 +114,6 @@ public class EditFragmentMn extends android.support.v4.app.Fragment
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                Log.i(TAG, "ViajecitosssssssInsertFrag   119 updateView El id: " + id_item); //
                 if (id_item > 0) {
                     updateData();
                     getActivity().finish();
@@ -136,12 +133,7 @@ public class EditFragmentMn extends android.support.v4.app.Fragment
     private void saveData() {
         // Obtención de valores actuales
         ContentValues values = new ContentValues();
-      //  Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  76 updateDATA uri: " + uri); //  llega el uri bien, con su id
-        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  139 SAVEDATA moneda: " + mNomText.getText().toString()); //lo coge biennnnn
-        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  140 SAVEDATA valor: " + mValor.getText().toString());
         values.put(ViajesContract.MonedasEntry.MON_NOM, mNomText.getText().toString());
-        values.put(ViajesContract.MonedasEntry.MON_VAL, mValor.getText().toString());
-
         Log.i(TAG, "En saveData");
 
         getActivity().getContentResolver().insert(

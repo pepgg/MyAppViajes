@@ -296,7 +296,7 @@ public class ViajesProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Log.d(TAG, "delete: " + uri); //hasta aquí llega
+        Log.d(TAG, "delete: " + uri); //hasta aquí llega siii
 
         SQLiteDatabase bd = databaseHelper.getWritableDatabase();
         String id = null;
@@ -304,12 +304,15 @@ public class ViajesProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case EVENTOS_ID:
+                Log.d(TAG, "delete EVENTOS_ID : " + uri);
                 id = EventosEntry.obtenerIdEvento(uri);
                 afectados = bd.delete(Tablas.EVENTOS, EventosEntry.E_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
             case VIAJES_ID:
+                Log.d(TAG, "delete VIAJES_ID : " + uri);
+                id = ViajesEntry.obtenerIdViaje(uri);
                 afectados = bd.delete(Tablas.VIAJES, ViajesEntry.V_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
@@ -323,16 +326,22 @@ public class ViajesProvider extends ContentProvider {
                 break;
 
             case TIPO_V_ID:
+                Log.d(TAG, "delete TIPO_V_ID : " + uri);
+                id = TipoVEntry.obtenerIdTipoV(uri);
                 afectados = bd.delete(Tablas.TIPOVIAJE, TipoVEntry.TIPO_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
             case MONEDAS_ID:
+                Log.d(TAG, "delete MONEDAS_ID : " + uri);
+                id = MonedasEntry.obtenerIdMoneda(uri);
                 afectados = bd.delete(Tablas.MONEDAS, MonedasEntry.MON_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
 
             case M_PAGO_ID:
+                Log.d(TAG, "delete M_PAGO_ID : " + uri);
+                id = MPagoEntry.obtenerIdMPago(uri);
                 afectados = bd.delete(Tablas.MPAGO, MPagoEntry.MPAG_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
                 break;
@@ -375,7 +384,8 @@ public class ViajesProvider extends ContentProvider {
                 break;
 
             case MONEDAS_ID:
-                Log.d(TAG, "Esty en 376 UPDATE con case MONEDAS_ID uri:" + uri );
+                id = MonedasEntry.obtenerIdMoneda(uri);
+                Log.d(TAG, "Esty en 376 UPDATE con case MONEDAS_ID uri: " + uri );
                 afectados = bd.update(Tablas.MONEDAS, values,
                         MonedasEntry.MON_ID + " = ?", new String[]{id});
                 notificarCambio(uri);

@@ -119,19 +119,19 @@ public class MainFragment extends ListFragment implements
                 return true;
             case R.id.m_modopag:
                 nomTabla = ViajesContract.MPagoEntry.TABLE_NAME.toString();
-                Intent inten = new Intent(getContext(), ListCt.class);
+                Intent inten = new Intent(getContext(), ListMp.class);
                 inten.putExtra("NombreTabla", nomTabla);
                 startActivity(inten);
                 return true;
             case R.id.m_moneda:
                 nomTabla = ViajesContract.MonedasEntry.TABLE_NAME.toString();
-                Intent inte = new Intent(getContext(), ListCt.class);
+                Intent inte = new Intent(getContext(), ListMn.class);
                 inte.putExtra("NombreTabla", nomTabla);
                 startActivity(inte);
                 return true;
             case R.id.m_tipov:
                 nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
-                Intent intn = new Intent(getContext(), ListCt.class);
+                Intent intn = new Intent(getContext(), ListTv.class);
                 intn.putExtra("NombreTabla", nomTabla);
                 startActivity(intn);
                 return true;
