@@ -19,7 +19,7 @@ public class InsertMn extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
 
         if (savedInstanceState == null) {
-            InsertFragmentCt fragment = new InsertFragmentCt();
+            EditFragmentCt fragment = new EditFragmentCt();
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(android.R.id.content, fragment, fragment.getClass().getSimpleName())

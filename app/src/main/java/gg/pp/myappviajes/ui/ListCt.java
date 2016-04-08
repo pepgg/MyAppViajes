@@ -6,10 +6,8 @@ import android.view.Menu;
 
 import gg.pp.myappviajes.R;
 
-/**
- * Created by pepe on 14/03/16.
- */
-public class InsertCt extends AppCompatActivity {
+public class ListCt extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,10 +17,10 @@ public class InsertCt extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
 
         if (savedInstanceState == null) {
-            InsertFragmentCt fragment = new InsertFragmentCt();
+            ListFragmentCt fragment = new ListFragmentCt();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(android.R.id.content, fragment, fragment.getClass().getSimpleName())
+                    .add(android.R.id.content, fragment, ListFragmentCt.class.getSimpleName())
                     .commit();
         }
     }

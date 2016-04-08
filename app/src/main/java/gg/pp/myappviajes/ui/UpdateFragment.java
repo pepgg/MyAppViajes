@@ -16,7 +16,7 @@ import android.widget.Spinner;
 
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.ViajesContract;
-
+// no lo uso ==========================================
 /**
  * Fragmento con un formulario de actualización
  */

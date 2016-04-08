@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import gg.pp.myappviajes.modelo.ViajesContract;
-
+// no lo uso ==============================================0
 /**
  * Created by pepe on 23/03/16.
  */

@@ -77,7 +77,7 @@ public class MainFragment extends ListFragment implements
                     public void onClick(View v) {
                         getActivity()
                                 .startActivity(
-                                        new Intent(getActivity(), ListCategor.class)
+                                        new Intent(getActivity(), ListCt.class)
                                 );
                     }
 
@@ -113,25 +113,25 @@ public class MainFragment extends ListFragment implements
                 return true;
             case R.id.m_catgor:
                 String nomTabla = ViajesContract.CategoriasEntry.TABLE_NAME.toString();
-                  Intent intent = new Intent(getContext(), ListCategor.class);
+                  Intent intent = new Intent(getContext(), ListCt.class);
                 intent.putExtra("NombreTabla", nomTabla);
                 startActivity(intent);
                 return true;
             case R.id.m_modopag:
                 nomTabla = ViajesContract.MPagoEntry.TABLE_NAME.toString();
-                Intent inten = new Intent(getContext(), ListCategor.class);
+                Intent inten = new Intent(getContext(), ListCt.class);
                 inten.putExtra("NombreTabla", nomTabla);
                 startActivity(inten);
                 return true;
             case R.id.m_moneda:
                 nomTabla = ViajesContract.MonedasEntry.TABLE_NAME.toString();
-                Intent inte = new Intent(getContext(), ListCategor.class);
+                Intent inte = new Intent(getContext(), ListCt.class);
                 inte.putExtra("NombreTabla", nomTabla);
                 startActivity(inte);
                 return true;
             case R.id.m_tipov:
                 nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
-                Intent intn = new Intent(getContext(), ListCategor.class);
+                Intent intn = new Intent(getContext(), ListCt.class);
                 intn.putExtra("NombreTabla", nomTabla);
                 startActivity(intn);
                 return true;

@@ -62,7 +62,7 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.ListCategor"
+            android:name=".ui.ListCt"
             android:label="@string/title_insert_evento"
             android:parentActivityName=".ui.MainActivity" >
             <meta-data
@@ -79,9 +79,9 @@
                 android:value=".ui.DetailActivity" />
         </activity>
         <activity
-            android:name=".ui.InsertCt"
+            android:name=".ui.EditCt"
             android:label="@string/title_insert_evento"
-            android:parentActivityName=".ui.ListCategor" >
+            android:parentActivityName=".ui.ListCt" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.DetailActivity" />

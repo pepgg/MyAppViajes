@@ -23,7 +23,7 @@ import gg.pp.myappviajes.modelo.ViajesContract;
 /**
  * Fragment con formulario de inserción de viajes
  */
-public class InsertFragmentMn extends android.support.v4.app.Fragment
+public class EditFragmentCt extends android.support.v4.app.Fragment
        // implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener
 {
     /**
@@ -36,11 +36,11 @@ public class InsertFragmentMn extends android.support.v4.app.Fragment
     private long id_item; //id del item que voy a editar
 
   //  public Long mId;
-    private static final String TAG = "En InsertFragmentCt: ";
+    private static final String TAG = "En EditFragmentCt: ";
 
     private OnFragmentInteractionListener mListener;
 
-    public InsertFragmentMn() {
+    public EditFragmentCt() {
         // Required empty public constructor
     }
 
@@ -65,7 +65,7 @@ public class InsertFragmentMn extends android.support.v4.app.Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_insert_data_m, container, false);
+        View view = inflater.inflate(R.layout.fragment_insert_datam, container, false);
          // Obtener views del layout
         mNomText = (EditText) view.findViewById(R.id.nom_item);
 ////////////////////////////////////////

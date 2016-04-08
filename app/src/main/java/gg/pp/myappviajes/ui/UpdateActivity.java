@@ -6,6 +6,9 @@ import android.view.Menu;
 
 import gg.pp.myappviajes.R;
 
+
+// no uso esa activity =================================
+
 public class UpdateActivity extends AppCompatActivity {
 
     @Override

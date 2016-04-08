@@ -6,7 +6,7 @@ import android.view.Menu;
 
 import gg.pp.myappviajes.R;
 
-public class ListMonedas extends AppCompatActivity {
+public class ListMn extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

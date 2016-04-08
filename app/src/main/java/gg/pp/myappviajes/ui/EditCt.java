@@ -6,8 +6,10 @@ import android.view.Menu;
 
 import gg.pp.myappviajes.R;
 
-public class ListCategor extends AppCompatActivity {
-
+/**
+ * Created by pepe on 14/03/16.
+ */
+public class EditCt extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,10 +19,10 @@ public class ListCategor extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
 
         if (savedInstanceState == null) {
-            ListFragmentCt fragment = new ListFragmentCt();
+            EditFragmentCt fragment = new EditFragmentCt();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(android.R.id.content, fragment, ListFragmentCt.class.getSimpleName())
+                    .add(android.R.id.content, fragment, fragment.getClass().getSimpleName())
                     .commit();
         }
     }

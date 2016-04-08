@@ -15,7 +15,7 @@ import android.widget.TextView;
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
-
+// no lo uso ==================================================
 /**
  * Fragmento para el detalle de la actividad
  */
