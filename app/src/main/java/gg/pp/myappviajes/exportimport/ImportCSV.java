@@ -1,18 +1,17 @@
 package gg.pp.myappviajes.exportimport;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import pep.gg.PromiclanDbAdapter;
-import pep.gg.R;
-import android.content.ContentValues;
-import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
-
 public class ImportCSV extends Importar {
+	@Override
+	protected String getHelpTitle() {
+		return null;
+	}
+
+	@Override
+	protected String getHelp() {
+		return null;
+	}
+
+	/*
 	public static final String INTENT_EXTRA = "intent_extra";
 	private static final int DIALOG_CSV_IMPORT = 3;
 	private static final String TAG = "ImportCSV";
@@ -111,5 +110,5 @@ public class ImportCSV extends Importar {
 	protected String getHelpTitle() {
 		return getString(R.string.help_import_csv_title);
 	}
-
+*/
 }

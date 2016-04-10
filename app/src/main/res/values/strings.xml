@@ -54,6 +54,8 @@
     <string name="menu_modopag">Modos de pago</string>
     <string name="menu_moneda">Monedas</string>
     <string name="menu_tipov">Tipos de viaje</string>
+    <string name="menu_export">Exportar</string>
+    <string name="menu_import">Importar</string>
     <string name="sin_datos">No hay datos</string>
     <string name="insert_nuevo">Nuevo</string>
     <string name="nombre">Nombre:</string>
@@ -61,5 +63,23 @@
     <string name="afegir_mc">Nuevo</string>
     <string name="editar_mc">Editar</string>
     <string name="borrar_mc">Suprimir</string>
+    <string name="error">Error !!</string>
+    <string name="export_acabat_msg">El fichero exportado est\á en la SD en el fichero\:</string>
+    <string name="export_be">Exportación con éxito! </string>
+    <string name="help_export_db">Exportar la base de datos crear\á una copia en la SD en formato Sqlite. La podr\ás abrir y editar con un gestor de bases de datos</string>
+    <string name="help_export_db_title">Exportar la base de datos</string>
+    <string name="exporting_title">Exportando la base de datos</string>
+    <string name="exporting">Exportando...</string>
+    <string name="import_done_msg">Se han importado los datos del fichero: </string>
+    <string name="help_import_db">Importar la base de datoss copiar\á los datos del fichero que est\á en la SD</string>
+    <string name="help_import_db_title">Importar la base de datos</string>
+    <string name="import_be">Importaci\ón con \éxito !!</string>
+    <string name="importing_title">Importando la base de datos</string>
+    <string name="importing">Importando...</string>
+    <string name="error_permission_gps">Problemas con los permisos de uso del GPS</string>
+
+
+
+
 </resources>
 

@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -28,6 +29,7 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,10 +39,12 @@ import java.util.Locale;
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
+import static android.view.View.OnClickListener;
+
 /**
  * Fragment con formulario de inserción de eventos
  */
-public class InsertFragmentEv extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
+public class InsertFragmentEv extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnClickListener {
 
     private static final String[] INITIAL_PERMS={
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -156,10 +160,11 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         idcat = id_categ;
 
         ///// EL GPSSSSSSSSSSSSSSSSSSS
-        gps.setOnClickListener(new View.OnClickListener() {
+       gps.setOnClickListener(new View.OnClickListener() {
+       // gps.setEnabled(setListeners())
 
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //clik en el boton del gps
                 Log.i(TAG, "EL GPSSSSSSSSSSSSSSSSSSS"); //Si lo tiene
                         comenzarLocalizacion();
             }
@@ -173,7 +178,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         //aqui Modopago
 
         mModPagAdapter = new SimpleCursorAdapter(
-                getContext(), android.R.layout.simple_spinner_item,
+                getActivity(), android.R.layout.simple_spinner_item,
                 null,
                 new String[]{ViajesContract.MPagoEntry.COLUMN_NAME},
                 new int[]{android.R.id.text1}, 2);
@@ -265,37 +270,52 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
 
 
     private void comenzarLocalizacion() {
-/*
+
         //Si el GPS no está habilitado
-        if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+  //      if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             //  mostrarAvisoGpsDeshabilitado();
-            Log.i(TAG, "ElGPSSS NNNO eSta activado¡¡¡¡");
-        }
-        */
-        //Obtenemos una referencia al LocationManager
-        Log.i(TAG, "Provider Status: ppSSSSSSSSSS" );
+  //          Log.i(TAG, "ElGPSSS NNNO eSta activado¡¡¡¡");
+   //     }
+        /////////////////////////////////////// modo simple para Maps:
+        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED) {
 
-        locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        //    googleMap.setMyLocationEnabled(true);
+        //    googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-        Log.i(TAG, "Provider Status: ppSSSS22222222SSSSSS" );
-        //Obtenemos la �ltima posici�n conocida
 
-        if (ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
 
-            Log.i(TAG, "Provider Status: dentron del ifff" );
-           // return;
-        }
+
+
+        /////////////////////////////////////
+
+            //Obtenemos una referencia al LocationManager
+            Log.i(TAG, "Provider Status: ppSSSSSSSSSS" );
+
+            locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+            Log.i(TAG, "Provider Status: ppSSSS22222222SSSSSS" );
+            //Obtenemos la �ltima posici�n conocida
+
+            if (ActivityCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+
+                Log.i(TAG, "Provider Status: dentron del ifff" );
+               // return;
+            }
 
 /*
         if (!canAccessLocation() ) {
@@ -308,39 +328,45 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
             return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(perm));
         }
 */
-        Log.i(TAG, "Provider Status: fuera del ifff" );
-        Location loc = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-    //    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener)loc);
+            Log.i(TAG, "Provider Status: fuera del ifff" );
+            Location loc = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        //    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener)loc);
 
-        Log.i(TAG, "Provider Status: ppSSS33333333SS" );
+            Log.i(TAG, "Provider Status: ppSSS33333333SS" );
 
-        //Mostramos la �ltima posici�n conocida
-        mostrarPosicion(loc);
+            //Mostramos la �ltima posici�n conocida
+            mostrarPosicion(loc);
 
-        //Nos registramos para recibir actualizaciones de la posici�n
-        locListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                mostrarPosicion(location);
+            //Nos registramos para recibir actualizaciones de la posici�n
+            locListener = new LocationListener() {
+                public void onLocationChanged(Location location) {
+                    mostrarPosicion(location);
 
-                Log.i(TAG, "Provider Status: onLocationChanged");
-            }
+                    Log.i(TAG, "Provider Status: onLocationChanged");
+                }
 
-            public void onProviderDisabled(String provider){
-                Log.i(TAG, "Provider Status: Disabled" );
-                //lblEstado.setText("Provider OFF");
-            }
-            public void onProviderEnabled(String provider){
-                Log.i(TAG, "Provider Status: ON" );
-                //lblEstado.setText("Provider ON ");
-            }
-            public void onStatusChanged(String provider, int status, Bundle extras){
-                Log.i(TAG, "Provider Status: " + status);
-             ///   lblEstado.setText("Provider Status: " + status);
-            }
-        };
+                public void onProviderDisabled(String provider){
+                    Log.i(TAG, "Provider Status: Disabled" );
+                    //lblEstado.setText("Provider OFF");
+                }
+                public void onProviderEnabled(String provider){
+                    Log.i(TAG, "Provider Status: ON" );
+                    //lblEstado.setText("Provider ON ");
+                }
+                public void onStatusChanged(String provider, int status, Bundle extras){
+                    Log.i(TAG, "Provider Status: " + status);
+                 ///   lblEstado.setText("Provider Status: " + status);
+                    }
+            };
 
-        locManager.requestLocationUpdates(
+            locManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER, 10000, 0, locListener);
+
+        } else {
+            Toast.makeText(getContext(), R.string.error_permission_gps, Toast.LENGTH_LONG).show();
+        }
+
+
     }
 
     private void mostrarPosicion(Location loc) {

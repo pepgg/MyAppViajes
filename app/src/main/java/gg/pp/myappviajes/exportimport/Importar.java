@@ -1,23 +1,13 @@
 package gg.pp.myappviajes.exportimport;
 
-import java.io.File;
-import java.io.FilenameFilter;
-
-import pep.gg.HelpDialog;
-import pep.gg.MiMateria;
-import pep.gg.PromiclanDbAdapter;
-import pep.gg.R;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +15,15 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FilenameFilter;
+
+import gg.pp.myappviajes.R;
+import gg.pp.myappviajes.modelo.DatabaseHelper;
+
 public abstract class Importar extends Activity {
+
+
 	protected final static String MESSAGE = "msg";
 	protected final static String TITLE = "title";
 	protected final static String SUCCESS = "success";
@@ -42,16 +40,16 @@ public abstract class Importar extends Activity {
 	protected static int s_title;
 	protected static String s_message;
 	protected static boolean s_success = false;
-	private PromiclanDbAdapter mDbHelper;
+	private DatabaseHelper mDbHelper;
 	private static final String TAG = "Importar";
 	public void onCreate(Bundle savedInstanceState, String ext) {
 		super.onCreate(savedInstanceState);
-		mDbHelper = new PromiclanDbAdapter(this);
+		mDbHelper = new DatabaseHelper(this);
 		m_ext = ext;
 		Log.i(TAG, " ESTIC EN IMPORT onCreate i l'extensió es: " + m_ext);
-		Log.i(TAG, "MiD EN IMPORTAR oncreate  " + MiMateria.mId);
-		mId = MiMateria.mId;
-		
+	//	Log.i(TAG, "MiD EN IMPORTAR oncreate  " + MiMateria.mId);
+	//	mId = MiMateria.mId;
+		/* ********************************** para los CSV *******************************
 		if (m_ext == "csv"){
 		
 			SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/pep.gg/databases/" + PromiclanDbAdapter.DATABASE_NOM, null, SQLiteDatabase.OPEN_READONLY);
@@ -69,6 +67,7 @@ public abstract class Importar extends Activity {
 			Cursor festiu = db.query(PromiclanDbAdapter.TABLE_FEST, new String[] {"*"}, null, null, null, null, null, null);
 			festiu.moveToFirst();
 		}
+		*/
 	}
 	@Override
 	public void onResume() {
@@ -82,10 +81,12 @@ public abstract class Importar extends Activity {
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+		/*
+        switch (item.getItemId()) {
 			case HelpDialog.MENU_HELP:
 				return true;
 		}
+        */
 		return super.onOptionsItemSelected(item);
 	}
 // el help no funciona de momento
@@ -109,12 +110,13 @@ public abstract class Importar extends Activity {
 		Log.i(TAG, " ESTIC EN IMPORT DESPYUES DEL THREAD input()" + m_importer);
 		/// aqui activa el dialog importing de import
 		showDialog(DIALOG_IMPORTING);
+     /*
 		if (m_ext=="csv"){
 			Intent intent;
 			intent = new Intent(this, ImportCSV.class);
 			startActivityForResult(intent, 0);
 		};
-	
+	*/
 	}
 
 	@Override
@@ -170,4 +172,5 @@ public abstract class Importar extends Activity {
 			showDialog(DIALOG_FINISHED);
 		}
 	};
+
 }

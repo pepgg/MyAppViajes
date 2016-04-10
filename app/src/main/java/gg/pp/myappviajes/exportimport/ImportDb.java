@@ -1,29 +1,40 @@
 package gg.pp.myappviajes.exportimport;
 
+import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-import pep.gg.PromiclanDbAdapter;
-import pep.gg.R;
-import android.os.Bundle;
-import android.os.Message;
-import android.util.Log;
+import gg.pp.myappviajes.R;
 
 public class ImportDb extends Importar {
 	private static final String TAG = "ImportDb";
+
+	//@Override
+//	protected String getHelpTitle() {
+//		return null;
+//	}
+
+	//@Override
+//	protected String getHelp() {
+//		return null;
+//	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState, "db");
-		Log.i(TAG, " estic a IMPORT DB: "); 
-			final String filename = "/sdcard/miesqola.db";//getInput();
+		super.onCreate(savedInstanceState);
+		Log.i(TAG, " estic a IMPORT DB: ");
+			final String filename = "/sdcard/cpviajes.db";//getInput();
 			FileInputStream in = null;
 			FileOutputStream out = null;
 			try {
 				in = new FileInputStream(filename);					
-				out = new FileOutputStream("/data/data/pep.gg/databases/" + PromiclanDbAdapter.DATABASE_NOM);
+				out = new FileOutputStream("/data/data/gg.pp.myappviajes/databases/cpviajes.db");
 				FileChannel inChannel = in.getChannel();
 				FileChannel outChannel = out.getChannel();
 				outChannel.transferFrom(inChannel, 0, inChannel.size());					
@@ -58,13 +69,14 @@ public class ImportDb extends Importar {
 		});
 	}
 
-	@Override
+//	@Override
 	protected String getHelp() {
 		return getString(R.string.help_import_db);
 	}
 
-	@Override
+//	@Override
 	protected String getHelpTitle() {
 		return getString(R.string.help_import_db_title);
 	}
+
 }

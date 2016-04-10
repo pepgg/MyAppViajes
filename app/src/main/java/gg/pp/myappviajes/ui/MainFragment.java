@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import gg.pp.myappviajes.ActivitiesAdapter;
 import gg.pp.myappviajes.R;
+import gg.pp.myappviajes.exportimport.ExportDb;
+import gg.pp.myappviajes.exportimport.ImportDb;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
 /**
@@ -134,6 +136,18 @@ public class MainFragment extends ListFragment implements
                 Intent intn = new Intent(getContext(), ListTv.class);
                 intn.putExtra("NombreTabla", nomTabla);
                 startActivity(intn);
+                return true;
+            case R.id.m_export:
+               // nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
+                Intent in = new Intent(getContext(), ExportDb.class);
+               // in.putExtra("NombreTabla", nomTabla);
+                startActivity(in);
+                return true;
+            case R.id.m_import:
+               // nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
+                Intent i = new Intent(getContext(), ImportDb.class);
+              //  i.putExtra("NombreTabla", nomTabla);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

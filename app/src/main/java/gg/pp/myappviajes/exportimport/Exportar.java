@@ -1,9 +1,5 @@
 package gg.pp.myappviajes.exportimport;
 
-import pep.gg.HelpDialog;
-import pep.gg.MiMateria;
-import pep.gg.PromiclanDbAdapter;
-import pep.gg.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,11 +8,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+
+import gg.pp.myappviajes.R;
+import gg.pp.myappviajes.modelo.DatabaseHelper;
 
 public abstract class Exportar extends Activity {
 	protected final static String MESSAGE = "msg";
@@ -34,23 +32,26 @@ public abstract class Exportar extends Activity {
 	protected String m_filename;
 	protected String m_ext = "";
 	protected Long mId;
-	private PromiclanDbAdapter mDbHelper;
-	private static final String TAG = "Exportar";
+	//private PromiclanDbAdapter mDbHelper;
+	private DatabaseHelper mDbHelper;
+	private static final String TAG = "En Exportar: ";
 	
 	public void onCreate(Bundle savedInstanceState, String ext) {
 		super.onCreate(savedInstanceState);
-		mDbHelper = new PromiclanDbAdapter(this);
+		mDbHelper = new DatabaseHelper(this);
+		/*
 		if (MiMateria.mId != null){
 			Log.i(TAG, "MiD EN EXPORTAR oncreate  " + MiMateria.mId);
 			mId = MiMateria.mId;
 			m_ext = ext;
 		}
+		*/
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-//		initUI(); //NO lo quito de momento, pero deberia restaurarlo si funciona
+		initUI(); // lo quito de momento, pero deberia restaurarlo si funciona
 export();
 	}
 	//el helpdialog no funciona de momento
@@ -64,9 +65,9 @@ export();
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case HelpDialog.MENU_HELP:
-				createHelp();
-				return true;
+			//case HelpDialog.MENU_HELP:
+			//	createHelp();
+			//	return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -78,9 +79,9 @@ export();
 	protected abstract String getHelpTitle();
 	protected abstract String getHelp();
 	protected void initUI() {
-		m_filename = PromiclanDbAdapter.nomMateria + ".csv";
-		Log.i(TAG, "NAME EN initUI EXPORTAR m_filename: " + m_filename);
-		export();  //muestra el dialog export	
+		//m_filename = PromiclanDbAdapter.nomMateria + ".csv";
+		//Log.i(TAG, "NAME EN initUI EXPORTAR m_filename: " + m_filename);
+	//	export();  //muestra el dialog export
 	}
 	protected void export() {
 		showDialog(DIALOG_EXPORTING);
@@ -88,7 +89,7 @@ export();
 	}
 
 	@Override
-	protected Dialog onCreateDialog(int which) {
+	protected Dialog  onCreateDialog(int which) {  //onCreateDialog(int which) {
 		switch (which) {
 			case DIALOG_EXPORTING:
 				ProgressDialog dlg = new ProgressDialog(this);

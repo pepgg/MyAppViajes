@@ -1,21 +1,16 @@
 package gg.pp.myappviajes.exportimport;
 
-import java.io.FileWriter;
-import java.io.IOException;
-
-import pep.gg.MiMateria;
-import pep.gg.PromiclanDbAdapter;
-import pep.gg.R;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Message;
-import android.util.Log;
-import au.com.bytecode.opencsv.CSVWriter;
-
 public class ExportCSV extends Exportar {
-	
+	@Override
+	protected String getHelpTitle() {
+		return null;
+	}
+
+	@Override
+	protected String getHelp() {
+		return null;
+	}
+	/*
 	private static final String TAG = "ExportCSV";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -173,5 +168,5 @@ public class ExportCSV extends Exportar {
 	protected String getHelpTitle() {
 		return getString(R.string.help_export_csv_title);
 	}
-
+*/
 }
