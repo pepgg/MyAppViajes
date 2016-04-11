@@ -125,6 +125,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static String nomViajeA;
     public static String nomViaje;
     public static Integer sumaTgasto;
+    public static Float valorMon;
 
     //public static final String NOU_TIPO = "@string/nou_modo";  tengo que arreglar esto, para las traducciones
 
@@ -275,6 +276,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.i(TAG, "en BaseDatosViajesrrrrr, el nomviaje consulta nomViaje es " + nomViajeA);  //  LO tiene??
                return nomViajeA;
     }
+    public Float valMoneda() {
+//String idmoneda = InsertFragmentEv.;
+        Cursor valorM = mDb.rawQuery("SELECT " + MON_VAL + " from "+ TABLE_MON + " where "+ MON_ID + " = '' ", null);
+        //Si existe al menos un registro
+        if (valorM.moveToFirst()) {
+            valorMon = valorM.getFloat(0); //para conseguir el valor
+        }
+        Log.i(TAG, "en Databasehelper, el valor de la moneda es es " + valorMon);  //  LO tiene??
+        return valorMon;
+    }
     //////////tngo que arreglar estooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
     /////////////////////////////////////////////////////////////ooooooooooooooooooooooooooooooooooooooo
     public Cursor buscaTotMpago(){ //para llenar el spinner de gastos
@@ -301,6 +312,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         numtipov = mCursor.getCount();
         Log.i(TAG, " en buscaTotTipov dice que tengo " + numtipov);
         return mDb.query(Tablas.TIPOVIAJE, new String[] {TIPO_ID, TIPO_TIPO}, null, null, null, null, null);
+    }
+
+    public Float sumaTotGastos() { //saca el total de gastos del viaje activo ++++ o el cambio de monedas
+        Log.i(TAG, " elestoy en sumaTotGastos ");
+
+        Cursor mCursor = mDb.rawQuery("select sum("+ MON_VAL + ") from gastos", null);
+
+        //if (mCursor.moveToFirst()) {
+        //	Integer sumaTgasto = mCursor.getInt(0);
+        //Log.i(TAG, " en sumaTotGastos dentro del if que total gastado: " + sumaTgasto); //aqui ññega biennnnnnnnnnnnnnnnnnn
+        //}
+        mCursor.moveToFirst();
+        Float sumaTgasto = mCursor.getFloat(0);
+        Log.i(TAG, " en sumaTotGastos dice que total gastado: " + sumaTgasto);	// lo tiene<<<<<<<<
+        return sumaTgasto;
+
+
+        //int sumaTgasto;
+        //Integer sumaTgasto = mCursor.getInt(0);
+        //Log.i(TAG, " en sumaTotGastos dice que total gastado: " + sumaTgasto);
+
+        //return sumaTgasto;
+        //mDb.query(TABLE_CGAST, new String[] {CGAST_ID, CGAST_CG}, null, null, null, null, null);
     }
 /*
     public List<ViajesContract.TipoVEntry> getAll() {

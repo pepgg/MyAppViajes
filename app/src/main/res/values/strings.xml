@@ -36,7 +36,7 @@
     <string name="kmfi">Km final: </string>
     <string name="guardar">Guardar </string>
     <string name="precio">precio </string>
-    <string name="eur_"> € </string>
+    <string name="eur_">Total €: </string>
     <string name="telef">teléfono: </string>
     <string name="mail">mail: </string>
     <string name="web">web: </string>

@@ -111,7 +111,7 @@ public class InsertFragmentVi extends android.support.v4.app.Fragment implements
 
      //   mTipoV.setEnabled(false);  //TODO:<<<<<<<>>>>>>>>>>>>>tengo que arrglar esto de los enabled
         mTipoVAdapter = new SimpleCursorAdapter(
-                getContext(), android.R.layout.simple_spinner_item,
+                getActivity(), android.R.layout.simple_spinner_item,
                 null,
                 new String[] { ViajesContract.TipoVEntry.COLUMN_NAME },
                 new int[] { android.R.id.text1 }, 2);
@@ -175,7 +175,7 @@ public class InsertFragmentVi extends android.support.v4.app.Fragment implements
         btDataFi.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
 
-        datePickerDialog = new DatePickerDialog(getContext(),
+        datePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
 
                     public void onDateSet(DatePicker view, int year,

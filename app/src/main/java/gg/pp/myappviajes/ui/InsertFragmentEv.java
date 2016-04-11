@@ -3,17 +3,16 @@ package gg.pp.myappviajes.ui;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -29,7 +28,6 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -50,6 +48,11 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.READ_CONTACTS
     };
+    private static final String[] LOCATION_PERMS={
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
+    private static final int INITIAL_REQUEST=1337;
+    private static final int LOCATION_REQUEST=INITIAL_REQUEST+1;
     /**
      * Views del formulario
      */
@@ -64,7 +67,8 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     private TextView nomcateg;
     private EditText nombre;
     private EditText descripcio;
-    private EditText totaleur;
+    private EditText precio;
+    private TextView totaleur;
     ///////////////////////////////
     //  private
     Spinner modpag, monedas;
@@ -94,6 +98,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     private String id_modopag;
     private String id_monedas;
     private String idviaje;
+    public Float valorMon;
     public static final int LOADER_MODPAG = 1; // Loader identifier for ModPag
     public static final int LOADER_MONED = 2; // Loader identifier for Monedas
     /////// Adapters for both spinners:
@@ -121,8 +126,10 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         setHasOptionsMenu(true);
         Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un poquitokkkkkkkkkkkkkkkkkkkkk idCAT: " + id_categ); // lo tienexxxxxxxxbvn
 
-    }
 
+
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -134,8 +141,10 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         nombre = (EditText) view.findViewById(R.id.nom_e);
         descripcio = (EditText) view.findViewById(R.id.descripcio_e);
 
+        precio = (EditText)view.findViewById(R.id.preu_e);
+        precio.setText("0");
         modpag = (Spinner) view.findViewById(R.id.spinner_mod_pag);
-        totaleur = (EditText) view.findViewById(R.id.preu_e);
+        totaleur = (TextView) view.findViewById(R.id.total_eur);
         monedas = (Spinner) view.findViewById(R.id.spinner_moned);
         eur = (TextView) view.findViewById(R.id.tot_eur);
         datae = (Button) view.findViewById(R.id.fecha_e);
@@ -161,8 +170,6 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
 
         ///// EL GPSSSSSSSSSSSSSSSSSSS
        gps.setOnClickListener(new View.OnClickListener() {
-       // gps.setEnabled(setListeners())
-
             @Override
             public void onClick(View v) { //clik en el boton del gps
                 Log.i(TAG, "EL GPSSSSSSSSSSSSSSSSSSS"); //Si lo tiene
@@ -203,7 +210,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         //aqui MONEDAS
 
         mMonedAdapter = new SimpleCursorAdapter(
-                getContext(), android.R.layout.simple_spinner_item,
+                getActivity(), android.R.layout.simple_spinner_item,
                 null,
                 new String[]{ViajesContract.MonedasEntry.COLUMN_NAME},
                 new int[]{android.R.id.text1}, 2);
@@ -216,8 +223,23 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
 
                 Cursor mop = (Cursor) parent.getItemAtPosition(position);
                 id_monedas = mop.getString(mop.getColumnIndexOrThrow(ViajesContract.MonedasEntry.MON_ID));
+
 //id_monedas = id;
                 Log.d(TAG, "onItemSelected(.EV..) -> id_monedas: = " + id_monedas);
+
+                Log.d(TAG, "============ -> val moneda entrADAs: = " + precio.getText().toString());
+Float miprecio = Float.valueOf(precio.getText().toString());
+                Log.d(TAG, "============ -> val moneda entrADAs: = " + miprecio);
+
+                if (miprecio != 0) {
+                    valMoneda();
+                    Log.d(TAG, "onItemSelected(.EV..) -> val monedas: = " + valorMon);
+                    Log.d(TAG, "onItemSelected(.EV..) -> val moneda entrADAs: = " + precio.getText().toString());
+                    Float preu = Float.valueOf(precio.getText().toString());
+                    Float enEuros = valorMon * preu;
+                    totaleur.setText(String.valueOf(enEuros));
+                }
+
             }
 
             @Override
@@ -248,7 +270,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         datae.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
 
-        datePickerDialog = new DatePickerDialog(getContext(),
+        datePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
 
                     public void onDateSet(DatePicker view, int year,
@@ -274,48 +296,40 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         //Si el GPS no está habilitado
   //      if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             //  mostrarAvisoGpsDeshabilitado();
-  //          Log.i(TAG, "ElGPSSS NNNO eSta activado¡¡¡¡");
+            Log.i(TAG, "ElGPSSS  eSta activado ?????????????????¡¡¡¡"); //llega aquí
    //     }
-        /////////////////////////////////////// modo simple para Maps:
+        /////////////////////////////////////// modo simple para Maps de http://stackoverflow.com/questions/32083913/android-gps-requires-access-fine-location-error-even-though-my-manifest-file
+/*
         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
                         PackageManager.PERMISSION_GRANTED) {
+                map.setMyLocationEnabled(true);
+                gps.getUiSettings().setMyLocationButtonEnabled(true); {
+*/
 
-        //    googleMap.setMyLocationEnabled(true);
-        //    googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-
-
-
-
-
-
-        /////////////////////////////////////
-
+            /////////////////////////////////////
+            Log.i(TAG, "ElGPSSS  eStan los permisossss activado ?????????????????¡¡¡¡");
             //Obtenemos una referencia al LocationManager
-            Log.i(TAG, "Provider Status: ppSSSSSSSSSS" );
+            Log.i(TAG, "Provider Status: ppSSSSSSSSSS");
 
-            locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            locManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-            Log.i(TAG, "Provider Status: ppSSSS22222222SSSSSS" );
+            Log.i(TAG, "Provider Status: ppSSSS22222222SSSSSS");
             //Obtenemos la �ltima posici�n conocida
 
+
+
+/*********************
             if (ActivityCompat.checkSelfPermission(getContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(getContext(),
                     Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
 
-                Log.i(TAG, "Provider Status: dentron del ifff" );
-               // return;
-            }
+                Log.i(TAG, "Provider Status: dentron del ifff");
+                // return;
+*/
 
 /*
         if (!canAccessLocation() ) {
@@ -328,66 +342,90 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
             return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(perm));
         }
 */
-            Log.i(TAG, "Provider Status: fuera del ifff" );
-            Location loc = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        //    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener)loc);
+                Log.i(TAG, "Provider Status: fuera del ifff");
+        Location loc = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                //    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener)loc);
 
-            Log.i(TAG, "Provider Status: ppSSS33333333SS" );
+                Log.i(TAG, "Provider Status: ppSSS33333333SS");
 
-            //Mostramos la �ltima posici�n conocida
-            mostrarPosicion(loc);
+                //Mostramos la �ltima posici�n conocida
+        mostrarPosicion(loc);
+//sgoliver:
 
-            //Nos registramos para recibir actualizaciones de la posici�n
-            locListener = new LocationListener() {
-                public void onLocationChanged(Location location) {
-                    mostrarPosicion(location);
-
-                    Log.i(TAG, "Provider Status: onLocationChanged");
-                }
-
-                public void onProviderDisabled(String provider){
-                    Log.i(TAG, "Provider Status: Disabled" );
-                    //lblEstado.setText("Provider OFF");
-                }
-                public void onProviderEnabled(String provider){
-                    Log.i(TAG, "Provider Status: ON" );
-                    //lblEstado.setText("Provider ON ");
-                }
-                public void onStatusChanged(String provider, int status, Bundle extras){
-                    Log.i(TAG, "Provider Status: " + status);
-                 ///   lblEstado.setText("Provider Status: " + status);
+                //Nos registramos para recibir actualizaciones de la posici�n
+                locListener = new LocationListener() {
+                    public void onLocationChanged(Location location) {
+                        mostrarPosicion(location);
+                        Log.i(TAG, "Provider Status: onLocationChanged");
                     }
-            };
+                    public void onProviderDisabled(String provider) {
+                        Log.i(TAG, "Provider Status: Disabled");
+                        //lblEstado.setText("Provider OFF");
+                    }
+                    public void onProviderEnabled(String provider) {
+                        Log.i(TAG, "Provider Status: ON");
+                        //lblEstado.setText("Provider ON ");
+                    }
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+                        Log.i(TAG, "Provider Status: " + status);
+                        ///   lblEstado.setText("Provider Status: " + status);
+                    }
+                };
 
-            locManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 10000, 0, locListener);
-
-        } else {
-            Toast.makeText(getContext(), R.string.error_permission_gps, Toast.LENGTH_LONG).show();
-        }
-
+                locManager.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER, 10000, 0, locListener);
 
     }
 
-    private void mostrarPosicion(Location loc) {
-        if(loc != null)
+////////////////////////
+public Float valMoneda() {
+    String[] projection = new String[] {
+            ViajesContract.MonedasEntry.MON_VAL
+             };
+    Uri vaMonedasUri =  ViajesContract.MonedasEntry.URI_CONTENIDO;
+    ContentResolver cr = getActivity().getContentResolver();
+// la consulta
+    Cursor cur = cr.query(vaMonedasUri,
+            projection, //Columnas a devolver
+            ViajesContract.MonedasEntry.MON_ID + " = " + id_monedas,       //Condición de la query
+            null,       //Argumentos variables de la query
+            null);      //Orden de los resultados
+    if (cur.moveToFirst())
+    {
+        int valmone = cur.getColumnIndex(ViajesContract.MonedasEntry.MON_VAL);
+        do
         {
-            latit.setText(String.valueOf(loc.getLatitude()));
-            longi.setText(String.valueOf(loc.getLongitude()));
-            //lblPrecision.setText("Precision: " + String.valueOf(loc.getAccuracy()));
-            altit.setText(String.valueOf(loc.getAltitude()));
+            valorMon = cur.getFloat(valmone);
+            Log.i(TAG, "ennnnnn Status: valmoneda" + valorMon);
 
-            Log.i(TAG, "!GPSSS posicion: " + loc.getLongitude());
-                    //+ String.valueOf(loc.getLatitude() + " - " + String.valueOf(loc.getLongitude())));
+        } while (cur.moveToNext());
+    }
+
+    return valorMon;
+}
+
+  //sgoliver
+   private void mostrarPosicion(Location loc){
+        if(loc!=null)
+        {
+        latit.setText(String.valueOf(loc.getLatitude()));
+        longi.setText(String.valueOf(loc.getLongitude()));
+        //lblPrecision.setText("Precision: " + String.valueOf(loc.getAccuracy()));
+        altit.setText(String.valueOf(loc.getAltitude()));
+
+        Log.i(TAG,"!GPSSS posicion: "+loc.getLongitude());
+        //+ String.valueOf(loc.getLatitude() + " - " + String.valueOf(loc.getLongitude())));
+
+
         }
         else
         {
-            Log.i(TAG, "GPSSSSS sindatossssssssssss");
-            latit.setText("Latitud: (sin_datos)");
-            longi.setText("Longitud: (sin_datos)");
-            altit.setText("Altitud: (sin_datos)");
+        Log.i(TAG,"GPSSSSS sindatossssssssssss");
+        latit.setText("Latitud: (sin_datos)");
+        longi.setText("Longitud: (sin_datos)");
+        altit.setText("Altitud: (sin_datos)");
         }
-    }
+        }
 
 
 

@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -71,7 +70,7 @@ public class MainFragment extends ListFragment implements
         nomViaje = (TextView) view.findViewById(R.id.nom_viaje);
         totalKm = (TextView) view.findViewById(R.id.totalkm);
         totalGast = (TextView) view.findViewById(R.id.totalg);
-
+/*
         ImageButton fab = (ImageButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(
                 new View.OnClickListener() {
@@ -84,7 +83,7 @@ public class MainFragment extends ListFragment implements
                     }
 
                 });
-
+*/
         Button button = (Button) view.findViewById(R.id.buttnviaje);
         button.setOnClickListener(
                 new View.OnClickListener() {
@@ -115,37 +114,37 @@ public class MainFragment extends ListFragment implements
                 return true;
             case R.id.m_catgor:
                 String nomTabla = ViajesContract.CategoriasEntry.TABLE_NAME.toString();
-                  Intent intent = new Intent(getContext(), ListCt.class);
+                  Intent intent = new Intent(getActivity(), ListCt.class);
                 intent.putExtra("NombreTabla", nomTabla);
                 startActivity(intent);
                 return true;
             case R.id.m_modopag:
                 nomTabla = ViajesContract.MPagoEntry.TABLE_NAME.toString();
-                Intent inten = new Intent(getContext(), ListMp.class);
+                Intent inten = new Intent(getActivity(), ListMp.class);
                 inten.putExtra("NombreTabla", nomTabla);
                 startActivity(inten);
                 return true;
             case R.id.m_moneda:
                 nomTabla = ViajesContract.MonedasEntry.TABLE_NAME.toString();
-                Intent inte = new Intent(getContext(), ListMn.class);
+                Intent inte = new Intent(getActivity(), ListMn.class);
                 inte.putExtra("NombreTabla", nomTabla);
                 startActivity(inte);
                 return true;
             case R.id.m_tipov:
                 nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
-                Intent intn = new Intent(getContext(), ListTv.class);
+                Intent intn = new Intent(getActivity(), ListTv.class);
                 intn.putExtra("NombreTabla", nomTabla);
                 startActivity(intn);
                 return true;
             case R.id.m_export:
                // nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
-                Intent in = new Intent(getContext(), ExportDb.class);
+                Intent in = new Intent(getActivity(), ExportDb.class);
                // in.putExtra("NombreTabla", nomTabla);
                 startActivity(in);
                 return true;
             case R.id.m_import:
                // nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
-                Intent i = new Intent(getContext(), ImportDb.class);
+                Intent i = new Intent(getActivity(), ImportDb.class);
               //  i.putExtra("NombreTabla", nomTabla);
                 startActivity(i);
                 return true;

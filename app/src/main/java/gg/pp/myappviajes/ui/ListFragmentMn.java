@@ -102,7 +102,7 @@ public class ListFragmentMn extends ListFragment implements
                 return true;
             case R.id.action_nuevo:
                 String nomTabla = ViajesContract.MonedasEntry.TABLE_NAME.toString();
-                Intent intent = new Intent(getContext(), EditMn.class); //funciona
+                Intent intent = new Intent(getActivity(), EditMn.class); //funciona
                 intent.putExtra("NombreTabla", nomTabla);
                 startActivity(intent);
                 return true;
@@ -190,7 +190,7 @@ public class ListFragmentMn extends ListFragment implements
             case R.id.ctx_edit:
                 AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                     Log.i(TAG, "En onContextItemSelected Edit: " + infoEd.id);
-                Intent intent = new Intent(getContext(), EditMn.class);
+                Intent intent = new Intent(getActivity(), EditMn.class);
                 intent.putExtra(ViajesContract.MonedasEntry.MON_ID, infoEd.id);
                     Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
                 startActivityForResult(intent, EDIT_CT);
