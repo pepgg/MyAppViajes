@@ -11,16 +11,17 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/categ_list_text"
         android:text="Categoria"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@android:color/black"
          />
-    <!--
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/valor_list_text"
-        android:textColor="@android:color/holo_red_dark"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/categ_list_text" />
--->
+        android:hint=" "
+        android:layout_alignParentTop="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/categ_list_text" />
+
 </RelativeLayout>

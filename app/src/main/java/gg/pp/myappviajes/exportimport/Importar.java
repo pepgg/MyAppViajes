@@ -106,8 +106,8 @@ public abstract class Importar extends Activity {
 	protected void input() {
 		Log.i(TAG, " ESTIC EN IMPORT input()"); //SI
 		s_success = false;
-		Log.i(TAG, " ESTIC EN IMPORT input() " + s_success); //si
-		Log.i(TAG, " ESTIC EN IMPORT DESPYUES DEL THREAD input()" + m_importer);
+		Log.i(TAG, " ESTIC EN IMPORT input() " + s_success); //si, false
+		Log.i(TAG, " ESTIC EN IMPORT DESPYUES DEL THREAD input()" + m_importer); //aqui da null
 		/// aqui activa el dialog importing de import
 		showDialog(DIALOG_IMPORTING);
      /*

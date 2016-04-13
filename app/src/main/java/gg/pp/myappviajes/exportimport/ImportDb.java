@@ -33,23 +33,34 @@ public class ImportDb extends Importar {
 			FileInputStream in = null;
 			FileOutputStream out = null;
 			try {
-				in = new FileInputStream(filename);					
-				out = new FileOutputStream("/data/data/gg.pp.myappviajes/databases/cpviajes.db");
+				in = new FileInputStream(filename);
+				            Log.i(TAG, " estic a IMPORT DB 1: ");
+                out = new FileOutputStream("/data/data/gg.pp.myappviajes/databases/cpviajes.db");
 				FileChannel inChannel = in.getChannel();
+				            Log.i(TAG, " estic a IMPORT DB 2: ");
 				FileChannel outChannel = out.getChannel();
-				outChannel.transferFrom(inChannel, 0, inChannel.size());					
+				            Log.i(TAG, " estic a IMPORT DB 3: ");
+				outChannel.transferFrom(inChannel, 0, inChannel.size());
+				            Log.i(TAG, " estic a IMPORT DB 4: ");
 				inChannel.close();
+				            Log.i(TAG, " estic a IMPORT DB 5: ");
 				outChannel.close();
+				            Log.i(TAG, " estic a IMPORT DB 6: ");
 				in.close();
+				            Log.i(TAG, " estic a IMPORT DB 7: ");
 				out.close();
 			} catch (final IOException ioe) {
 				m_handler.post(new Runnable() {
 					@Override
 					public void run() {
 						Bundle data = new Bundle();
+					    	    Log.i(TAG, " estic a IMPORT DB 8: ");
 						data.putString(MESSAGE, ioe.getMessage());
+						        Log.i(TAG, " estic a IMPORT DB 9: ");
 						data.putBoolean(SUCCESS, false);
+						        Log.i(TAG, " estic a IMPORT DB 10: ");
 						Message msg = new Message();
+						        Log.i(TAG, " estic a IMPORT DB 11: ");
 						msg.setData(data);
 						m_handler.handleMessage(msg);
 					}

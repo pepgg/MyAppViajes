@@ -18,8 +18,8 @@ import android.widget.TextView;
 
 import gg.pp.myappviajes.ActivitiesAdapter;
 import gg.pp.myappviajes.R;
-import gg.pp.myappviajes.exportimport.ExportDb;
-import gg.pp.myappviajes.exportimport.ImportDb;
+import gg.pp.myappviajes.exportimport.Export;
+import gg.pp.myappviajes.exportimport.Import;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
 /**
@@ -114,7 +114,7 @@ public class MainFragment extends ListFragment implements
                 return true;
             case R.id.m_catgor:
                 String nomTabla = ViajesContract.CategoriasEntry.TABLE_NAME.toString();
-                  Intent intent = new Intent(getActivity(), ListCt.class);
+                Intent intent = new Intent(getActivity(), ListCt.class);
                 intent.putExtra("NombreTabla", nomTabla);
                 startActivity(intent);
                 return true;
@@ -138,13 +138,13 @@ public class MainFragment extends ListFragment implements
                 return true;
             case R.id.m_export:
                // nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
-                Intent in = new Intent(getActivity(), ExportDb.class);
+                Intent in = new Intent(getActivity(), Export.class);
                // in.putExtra("NombreTabla", nomTabla);
                 startActivity(in);
                 return true;
             case R.id.m_import:
                // nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
-                Intent i = new Intent(getActivity(), ImportDb.class);
+                Intent i = new Intent(getActivity(), Import.class);
               //  i.putExtra("NombreTabla", nomTabla);
                 startActivity(i);
                 return true;
@@ -178,6 +178,11 @@ public class MainFragment extends ListFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "MainFragmentito onActivityCreated CUATRO ");
+
+        nomViaje.setText(" Cap Nord 2016 ");
+        totalKm.setText(" uns quants ");
+        totalGast.setText(" tropecientos ");
+
             // Iniciar adaptador
         adaptador = new ActivitiesAdapter(getActivity());
             // Relacionar adaptador a la lista

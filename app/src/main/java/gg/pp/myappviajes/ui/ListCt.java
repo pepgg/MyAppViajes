@@ -14,7 +14,7 @@ public class ListCt extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (getSupportActionBar() != null)
-            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
+            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_launcher);
 
         if (savedInstanceState == null) {
             ListFragmentCt fragment = new ListFragmentCt();

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My AppViajes</string>
+    <string name="app_name">Travel Note</string>
     <string name="title_activity_main_">Main_Activity</string>
     <string name="action_settings">Preferencias</string>
     <string name="categor_label">Nueva Categoria:</string>
@@ -17,7 +17,7 @@
     <string name="title_activity_insert">nuevo</string>
     <string name="title_activity_update">actualiza</string>
     <string name="title_insert_evento">Nuevo evento</string>
-    <string name="viaje_label">Estás en el viaje a:</string>
+    <string name="viaje_label">Estás en el viaje a: </string>
     <string name="nuevo_viaje">Nuevo viaje</string>
     <string name="nom_viaje">Viaje: </string>
     <string name="lati">Latitud: </string>
@@ -37,6 +37,7 @@
     <string name="guardar">Guardar </string>
     <string name="precio">precio </string>
     <string name="eur_">Total €: </string>
+    <string name="eurgas">Euros gast</string>
     <string name="telef">teléfono: </string>
     <string name="mail">mail: </string>
     <string name="web">web: </string>
@@ -77,8 +78,6 @@
     <string name="importing_title">Importando la base de datos</string>
     <string name="importing">Importando...</string>
     <string name="error_permission_gps">Problemas con los permisos de uso del GPS</string>
-
-
 
 
 </resources>
