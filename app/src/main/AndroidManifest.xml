@@ -73,6 +73,22 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
+            android:name=".ui.ListVi"
+            android:label="@string/description_input"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.ListEv"
+            android:label="@string/description_input"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
+        <activity
             android:name=".ui.InsertViaje"
             android:label="@string/nuevo_viaje"
             android:parentActivityName=".ui.MainActivity">
@@ -82,6 +98,14 @@
         </activity>
         <activity
             android:name=".ui.EditCt"
+            android:label="@string/categor_label"
+            android:parentActivityName=".ui.ListCt">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.DetailActivity" />
+        </activity>
+        <activity
+            android:name=".ui.EditVi"
             android:label="@string/categor_label"
             android:parentActivityName=".ui.ListCt">
             <meta-data
@@ -106,6 +130,14 @@
         </activity>
         <activity
             android:name=".ui.EditTv"
+            android:label="@string/menu_tipov"
+            android:parentActivityName=".ui.ListCt">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.DetailActivity" />
+        </activity>
+        <activity
+            android:name=".ui.EditEv"
             android:label="@string/menu_tipov"
             android:parentActivityName=".ui.ListCt">
             <meta-data

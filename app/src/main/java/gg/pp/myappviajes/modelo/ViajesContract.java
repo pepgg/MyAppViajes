@@ -118,15 +118,7 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
         public static final String FILTRO_VIAJE = "viaje";
         public static final String FILTRO_TOTAL_G = "totalg";
         public static final String FILTRO_FECHA = "fecha";
-      //  Log.i(TAG, "ViajecitContract EventosEntry un poquito" + URI_CONTENIDO);
-     //   Log.i("TAG", "ViajecitosProvider onCreate un poquit<<<<<o " + URI_CONTENIDO);//este es bueno
 
-        /*
-        public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
-                + URI_CONTENIDO + "/" + RUTA_EVENTOS;
-        public static final String TIPO_CONTENIDO_ITEM = "vnd.android.cursor.item/vnd."
-                + URI_CONTENIDO + "/" + RUTA_EVENTOS;
-      */
         public static Uri crearUriEvento(String id) {
             return URI_CONTENIDO.buildUpon().appendPath(id).build();
         }
@@ -136,28 +128,17 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
         public static boolean tieneFiltro(Uri uri) {
             return uri != null && uri.getQueryParameter(PARAMETRO_FILTRO) != null;
         }
-
         public static String generarIdEvento() {
             return "EV-" + UUID.randomUUID().toString();
         }
         public static String obtenerIdEvento(Uri uri) {
-           return uri.getLastPathSegment();         } // lo cambio por el siguiente:
-      //  public static String obtenerIdEvento(Uri uri) {
-      //      return uri.getLastPathSegment();
-      //  }
+           return uri.getLastPathSegment();         }
     }
-
-
 
     public static class ViajesEntry implements ColumnasViajes {
         public static final String TABLE_NAME = RUTA_VIAJES;
         public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_VIAJES).build();
-        /******quito esto que no está en pedidos:
-    public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
-            + URI_CONTENIDO + "/" + RUTA_VIAJES;
-    public static final String TIPO_CONTENIDO_ITEM = "vnd.android.cursor.item/vnd."
-            + URI_CONTENIDO + "/" + RUTA_VIAJES;
-         */
+
         public static Uri crearUriViajes(String id) {
             return URI_CONTENIDO.buildUpon().appendPath(id).build();
         }
@@ -166,25 +147,13 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
         }
     }
 
-/*
-        public static Uri crearUriViajes(String id) {
-            return URI_CONTENIDO.buildUpon().appendPath(id).appendPath("viajes").build();
-         }
-*/
-
     public static class CategoriasEntry implements ColumnasCategorias {
         public static final String TABLE_NAME = RUTA_CATEGORIAS;
         public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_CATEGORIAS).build();
-        /*
-        public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
-                + URI_CONTENIDO + "/" + RUTA_CATEGORIAS;
-        public static final String TIPO_CONTENIDO_ITEM = "vnd.android.cursor.item/vnd."
-                + URI_CONTENIDO + "/" + RUTA_CATEGORIAS;
-        */
+
         public static Uri crearUriCategorias(String id) {
             return URI_CONTENIDO.buildUpon().appendPath(id).build();
         }
-
         public static String generarIdCategoria() {
             return "CAT-" + UUID.randomUUID().toString();
         }
@@ -192,47 +161,31 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
         public static String obtenerIdCategoria(Uri uri) {
             return uri.getLastPathSegment();
         }
-
     }
 
     public static class MonedasEntry implements ColumnasMonedas {
-    public static final String TABLE_NAME = RUTA_MONEDAS;
-    public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_MONEDAS).build();
+        public static final String TABLE_NAME = RUTA_MONEDAS;
+        public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_MONEDAS).build();
         public static final String[] TAG_COLUMNS = {"_id","nom"};
         public static final String COLUMN_NAME = "nom";
 
-        /*
-        public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
-            + URI_CONTENIDO + "/" + RUTA_MONEDAS;
-    public static final String TIPO_CONTENIDO_ITEM = "vnd.android.cursor.item/vnd."
-            + URI_CONTENIDO + "/" + RUTA_MONEDAS;
-        */
         public static Uri crearUriMonedas(String id) {
             return URI_CONTENIDO.buildUpon().appendPath(id).build();
         }
-
         public static String generarIdMoneda() {
             return "MO-" + UUID.randomUUID().toString();
         }
-
         public static String obtenerIdMoneda(Uri uri) {
             return uri.getLastPathSegment();
         }
-
 }
 
     public static class MPagoEntry implements ColumnasMPago {
-    public static final String TABLE_NAME = RUTA_MPAGO;
-    public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_MPAGO).build();
+        public static final String TABLE_NAME = RUTA_MPAGO;
+        public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_MPAGO).build();
         public static final String[] TAG_COLUMNS = {"_id","mpago"};
         public static final String COLUMN_NAME = "mpago";
 
-/*
-    public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
-            + URI_CONTENIDO + "/" + RUTA_MPAGO;
-    public static final String TIPO_CONTENIDO_ITEM = "vnd.android.cursor.item/vnd."
-            + URI_CONTENIDO + "/" + RUTA_MPAGO;
-        */
         public static Uri crearUriMPago(String id) {
             return URI_CONTENIDO.buildUpon().appendPath(id).build();
         }
@@ -252,15 +205,10 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
         public static final String COLUMN_NAME = "tipov";
         public static final String[] TAG_COLUMNS = {"_id","tipov"};
         public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_TIPOV).build();
-       /*
-        public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
-                + URI_CONTENIDO + "/" + RUTA_TIPOV;
-        public static final String TIPO_CONTENIDO_ITEM = "vnd.android.cursor.item/vnd."
-                + URI_CONTENIDO + "/" + RUTA_TIPOV;
-        */
-       public static Uri crearUriTipoV(String id) {
+
+        public static Uri crearUriTipoV(String id) {
            return URI_CONTENIDO.buildUpon().appendPath(id).build();
-       }
+        }
 
         public static String generarIdTipoV() {
             return "TV-" + UUID.randomUUID().toString();
@@ -279,5 +227,4 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
 
     private ViajesContract() {
     }
-
 }

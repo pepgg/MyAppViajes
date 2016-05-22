@@ -124,12 +124,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static Integer idViajeA;
     public static String nomViajeA;
     public static String nomViaje;
-    public static Integer sumaTgasto;
+    public static Float sumaTgasto;
     public static Float valorMon;
 
     //public static final String NOU_TIPO = "@string/nou_modo";  tengo que arreglar esto, para las traducciones
 
-    private static final String TAG = "En ViajeDatabase";
+    private static final String TAG = "En DatabaseHelper: ";
 
     public static final String TABLE_V = "viajes";
     public static final String TABLE_EVENT = "eventos";
@@ -317,7 +317,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Float sumaTotGastos() { //saca el total de gastos del viaje activo ++++ o el cambio de monedas
         Log.i(TAG, " elestoy en sumaTotGastos ");
 
-        Cursor mCursor = mDb.rawQuery("select sum("+ MON_VAL + ") from gastos", null);
+        Cursor mCursor = mDb.rawQuery("select sum("+ ViajesContract.EventosEntry.E_TOT + ") from " +
+                ViajesContract.EventosEntry.TABLE_NAME + "where " + ViajesContract.EventosEntry.E_IDV + " = '2'", null);
 
         //if (mCursor.moveToFirst()) {
         //	Integer sumaTgasto = mCursor.getInt(0);

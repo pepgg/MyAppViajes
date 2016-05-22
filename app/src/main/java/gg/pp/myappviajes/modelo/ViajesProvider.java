@@ -357,14 +357,18 @@ public class ViajesProvider extends ContentProvider {
         SQLiteDatabase bd = databaseHelper.getWritableDatabase();
         int afectados;
         String id = null;
-        Log.d(TAG, "Esty en 351 UPDATE con " + uri );
+        Log.d(TAG, "Esty en 360 UPDATE con " + uri );
         switch (uriMatcher.match(uri)) {
 
             case EVENTOS_ID:
-                Log.d(TAG, "Esty en 355 UPDATE con case EVENTOS_ID uri:" + uri );
+                id = EventosEntry.obtenerIdEvento(uri);
+                Log.d(TAG, "Esty en 364 UPDATE con case EVENTOS_ID uri:" + uri );
                 afectados = bd.update(Tablas.EVENTOS, values,
                         EventosEntry.E_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
+                ///////////
+
+                ///////
                 break;
 
             case VIAJES_ID:

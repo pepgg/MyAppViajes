@@ -55,6 +55,8 @@
     <string name="menu_modopag">Modos de pago</string>
     <string name="menu_moneda">Monedas</string>
     <string name="menu_tipov">Tipos de viaje</string>
+    <string name="menu_viajes">Viajes</string>
+    <string name="menu_eventos">Eventos</string>
     <string name="menu_export">Exportar</string>
     <string name="menu_import">Importar</string>
     <string name="sin_datos">No hay datos</string>
@@ -78,7 +80,8 @@
     <string name="importing_title">Importando la base de datos</string>
     <string name="importing">Importando...</string>
     <string name="error_permission_gps">Problemas con los permisos de uso del GPS</string>
-
+    <string name="foto_e">Foto</string>
+    <string name="list_event">Lista eventos</string>
 
 </resources>
 

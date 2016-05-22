@@ -1,9 +1,11 @@
 package gg.pp.myappviajes.ui;
 
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -89,15 +91,28 @@ public class EditFragmentMn extends android.support.v4.app.Fragment
     }
 
     private void updateView() {
-            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  104 updateView id: " + id_item); //llega
+            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  104 updateView id: " + id_item); //llega si
         // Obtener datos del formulario
         Intent i = getActivity().getIntent();
-            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  109 updateView i: " + i); //llega
+            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  109 updateView i: " + i); //llega si
         String nom_text = i.getStringExtra(ViajesContract.MonedasEntry.MON_NOM);
-            Log.i(TAG, "ViajecitosssssssInsertFrag   113 updateView El nombre: " + nom_text); //llega
+            Log.i(TAG, "ViajecitosssssssInsertFrag   113 updateView El nombre: " + nom_text); //llega null, porque no lo he buscado con una consulta
 
-        // Actualizar la vista
-        mNomText.setText(nom_text);
+        //aquí la consulta para cpmseguir select nombre, valor, where id = id_item
+
+        Uri urimn = ViajesContract.MonedasEntry.URI_CONTENIDO;
+        ContentResolver cr = getActivity().getContentResolver();
+        Cursor cur = cr.query(urimn, null,
+                ViajesContract.MonedasEntry.MON_ID + " = " + id_item,
+                null, null);
+        if (cur.moveToFirst()) {
+              Log.i(TAG, "Viajecitosssssss EditFragmentMNNNNN  109 updateView uri: " + cur.getString(cur.getColumnIndex(ViajesContract.MonedasEntry.MON_NOM))); //  llega el uri bien, con su id
+            //
+
+            mNomText.setText(cur.getString(cur.getColumnIndex(ViajesContract.MonedasEntry.MON_NOM)));
+            mValor.setText(cur.getString(cur.getColumnIndex(ViajesContract.MonedasEntry.MON_VAL)));
+        }
+        //////////////////////////////////////////////////
     }
 
     @Override

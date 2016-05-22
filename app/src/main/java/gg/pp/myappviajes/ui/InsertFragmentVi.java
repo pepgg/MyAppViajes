@@ -11,6 +11,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -108,6 +109,12 @@ public class InsertFragmentVi extends android.support.v4.app.Fragment implements
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_insert_vi, container, false);
         findViewsById(view);
+
+        String midate = (DateFormat.format("dd-MM-yyyy", new java.util.Date()).toString());
+        Log.d(TAG, "onCreateView(.EV..) -> fechh222222222222222222a: = " + midate);
+        btDataIn.setText(midate);
+
+
 
      //   mTipoV.setEnabled(false);  //TODO:<<<<<<<>>>>>>>>>>>>>tengo que arrglar esto de los enabled
         mTipoVAdapter = new SimpleCursorAdapter(

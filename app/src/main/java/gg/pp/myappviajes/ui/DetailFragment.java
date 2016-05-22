@@ -1,19 +1,7 @@
 package gg.pp.myappviajes.ui;
 
-import android.content.ContentUris;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
-
-import gg.pp.myappviajes.R;
-import gg.pp.myappviajes.modelo.ViajesContract;
 
 // no lo uso ==================================================
 /**
@@ -34,6 +22,7 @@ public class DetailFragment extends Fragment {
     public DetailFragment() {
     }
 
+/*
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,7 +71,7 @@ public class DetailFragment extends Fragment {
 
     /**
      * Elimina la actividad actual
-     */
+
     private void deleteData() {
         Uri uri = ContentUris.withAppendedId(ViajesContract.EventosEntry.URI_CONTENIDO, id);
         getActivity().getContentResolver().delete(
@@ -95,7 +84,7 @@ public class DetailFragment extends Fragment {
     /**
      * Envía todos los datos de la actividad hacia el formulario
      * de actualización
-     */
+
     private void beginUpdate() {
         getActivity()
                 .startActivity(
@@ -114,7 +103,8 @@ public class DetailFragment extends Fragment {
      * Actualiza los textos del layout
      *
      * @param id Identificador de la actividad
-     */
+
+     *
     private void updateView(long id) {
         if (id == -1) {
             descripcio.setText("");
@@ -148,4 +138,5 @@ public class DetailFragment extends Fragment {
 
         c.close(); // Liberar memoria del cursor
     }
+    */
 }

@@ -10,29 +10,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import gg.pp.myappviajes.modelo.ViajesContract;
-
-
 /**
  * {@link CursorAdapter} personalizado para las categorias de la pag. principal
  */
-public class ActivitiesAdapter extends CursorAdapter {
-
-    public ActivitiesAdapter(Context context) {
+public class ActivitiesAdapterEv extends CursorAdapter {
+    public ActivitiesAdapterEv(Context context) {
         super(context, null, 0);
     }
-
     public static final String TAG = "En ActivitiesAdapter: ";
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-
                 Log.i(TAG, "enn ActivitiesAdapter bindView  " );
-        TextView categ_list = (TextView) view.findViewById(R.id.categ_list_text);
-        categ_list.setText(cursor.getString(cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)));
-
-                Log.i(TAG, "enn ActivitiesAdapter bindView la getColumnIndex de: " + cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)); // esto es 1
-
-                Log.i(TAG, "enn ActivitiesAdapter bindView la getString de: " + cursor.getString(cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT))); // esto es
+        TextView even_list = (TextView) view.findViewById(R.id.categ_list_text);
+        even_list.setText(cursor.getString(cursor.getColumnIndex(ViajesContract.EventosEntry.E_NOM)));
+        TextView data_list = (TextView) view.findViewById(R.id.valor_list_text);
+        data_list.setText(cursor.getString(cursor.getColumnIndex(ViajesContract.EventosEntry.E_DATAH)));
+                Log.i(TAG, "enn ActivitiesAdapter bindView la getColumnIndex de: " + cursor.getColumnIndex(ViajesContract.ViajesEntry.V_NOM)); // esto es 1
+                Log.i(TAG, "enn ActivitiesAdapter bindView la getString de: " + cursor.getString(cursor.getColumnIndex(ViajesContract.ViajesEntry.V_NOM))); // esto es
     }
 
     @Override
