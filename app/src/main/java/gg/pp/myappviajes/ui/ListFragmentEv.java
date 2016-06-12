@@ -50,7 +50,7 @@ public class ListFragmentEv extends ListFragment implements
     String nomTabla;
     String miTabla;
     private long id_categ;
-
+    String idCate;
     private static final int INSERT_CT = Menu.FIRST; //INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
     private static final int EDIT_EV = Menu.FIRST + 1;
     private static final int DELET_CT = Menu.FIRST + 2;
@@ -67,7 +67,11 @@ public class ListFragmentEv extends ListFragment implements
                 Log.i(TAG, "MainFragmento OnCrete  TRES");
 
         ///////////aquí mira si es todos los eventos o los de uma categoria:::::::>>>
-        String idCate = getActivity().getIntent().getStringExtra( "idCategoria" ) ;
+        idCate = getActivity().getIntent().getStringExtra( "idCategoria" ) ;
+        if (idCate != ""){
+
+        }
+
         Log.i(TAG, " OnCrete view 78 idCATEGORIAAAAAAAAA  " + idCate); //lo tengo<<<<<<<<<<<<<<>>
         //////////
         //
@@ -172,11 +176,26 @@ public class ListFragmentEv extends ListFragment implements
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.i(TAG, " onCreateLoader ");
         // Consultar todos los registros
+        if (idCate == null) {
+
         return new CursorLoader(
-                getActivity(),
-          //      ViajesContract.MonedasEntry.URI_CONTENIDO,
-                ViajesContract.EventosEntry.URI_CONTENIDO,
-                null, null, null, null);
+                getActivity(),                              // Parent activity context
+                ViajesContract.EventosEntry.URI_CONTENIDO,  // Table to query
+                null,                                       // Projection to return
+                null,                                        // No selection clause
+                null,                                       // No selection arguments
+                null);                                      // No selection arguments
+// if (idCate != "")
+        } else {
+            return new CursorLoader(
+                    getActivity(),                              // Parent activity context
+                    ViajesContract.EventosEntry.URI_CONTENIDO,  // Table to query
+                    null,                                       // Projection to return
+                    (ViajesContract.EventosEntry.E_IDCGT  + " = " +  idCate),  // selection clause
+                    null,                                       // No selection arguments
+                    null);                                      // No selection arguments
+        }
+
     }
 
     @Override

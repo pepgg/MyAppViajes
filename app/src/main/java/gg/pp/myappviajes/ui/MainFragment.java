@@ -35,9 +35,7 @@ public class MainFragment extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = "En MainFragment: ";
-    /**
-     * Adaptador
-     */
+    /**     * Adaptador     */
     private ActivitiesAdapter adaptador;
     private static final int V_CREA = 0;
     private TextView nomViaje;
@@ -91,10 +89,8 @@ public class MainFragment extends ListFragment implements
     }
 
     private Float totaGast() {
-
         String[] projection = new String[] {"sum(" + ViajesContract.EventosEntry.E_TOT + ")"
         };
-
 // la consulta
         Cursor cursar = getActivity().getContentResolver().query(
                 ViajesContract.EventosEntry.URI_CONTENIDO,
@@ -205,7 +201,7 @@ public int kminici(){
             int kmactual = c.getColumnIndex(ViajesContract.EventosEntry.E_KMP);
             kmactu = c.getInt(kmactual) ; // esto está bien si en el último evento está el kmp
 
-                    Log.i(TAG, "ennnnnn KMACTUAL 218: " + kmactu);
+                    Log.i(TAG, "ennnnnn KMACTUAL 204: " + kmactu);
                         // si el último evento no tiene kmp:
           /*
             if (kmactu <= 0) {
@@ -215,7 +211,7 @@ public int kminici(){
             }
             */
         }
-                    Log.i(TAG, "ennnnnn KMACTUAL 226: " + kmactu);
+                    Log.i(TAG, "ennnnnn KMACTUAL 214: " + kmactu);
         return kmactu;
     }
 

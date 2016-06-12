@@ -2,6 +2,7 @@ package gg.pp.myappviajes.ui;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -14,6 +15,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -31,6 +34,8 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,8 +47,7 @@ import gg.pp.myappviajes.modelo.ViajesContract;
 import static android.view.View.OnClickListener;
 
 /**
- * Fragment con formulario de inserción de eventos
- */
+ * Fragment con formulario de inserción de eventos */
 public class EditFragmentEv extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnClickListener {
 
     private static final String[] INITIAL_PERMS={
@@ -56,39 +60,29 @@ public class EditFragmentEv extends android.support.v4.app.Fragment implements L
     private static final int INITIAL_REQUEST=1337;
     private static final int LOCATION_REQUEST=INITIAL_REQUEST+1;
     /**
-     * Views del formulario
-     */
-    //////////
+     * Views del formulario     */
+
     Context mContext;
 
-  //  public InsertFragmentEv(Context mContext) {
-   //     this.mContext = mContext;
-  //  }
-
-    ///////////////////
     private TextView nomcateg;
     private EditText nombre;
     private EditText descripcio;
     private EditText precio;
     private TextView totaleur;
-    ///////////////////////////////
-    //  private
     Spinner modpag, monedas;
-    ////////////////////////////////
-    private TextView eur;
+    private Button eur;
     private Button datae;
+    private Button fotoe;
     private EditText direccio;
     private EditText cp;
     private EditText ciudad;
     private EditText telef;
     private EditText mail;
     private EditText web;
-
     private Button gps;
     private TextView longi;
     private TextView latit;
     private TextView altit;
-
     private EditText kmactual;
     private RatingBar valoracio;
     private EditText comentaris;
@@ -99,9 +93,11 @@ public class EditFragmentEv extends android.support.v4.app.Fragment implements L
     long idcat;
     private String id_modopag;
     private String id_monedas;
+    private String nomFoto;
     private int idviaje;
     public Float valorMon;
     public Float totaleuros;
+    boolean botEuros;
     public static final int LOADER_MODPAG = 1; // Loader identifier for ModPag
     public static final int LOADER_MONED = 2; // Loader identifier for Monedas
     /////// Adapters for both spinners:
@@ -114,11 +110,17 @@ public class EditFragmentEv extends android.support.v4.app.Fragment implements L
             "dd-MM-yyyy", Locale.getDefault()); //.FRENCH);//  . .US);
     DatePickerDialog datePickerDialog;
     Calendar dateCalendar;
+
+    private final String ruta_fotos = Environment.getExternalStorageDirectory() +"/Bkviajes/";   //.getAbsolutePath() +"/Bkviajes"; // yo usaré la carpeta de Bkkkk!!!!
+    private File file = new File(ruta_fotos);
+    Uri uri;
+    File mi_foto;
+
     private long id_item; //id del item que voy a editar
+
     public static final String TAG = "En EditFragmentEv: ";
 
     public EditFragmentEv() {
-        // Required empty public constructor
     }
 
     @Override
@@ -126,17 +128,36 @@ public class EditFragmentEv extends android.support.v4.app.Fragment implements L
         super.onCreate(savedInstanceState);
         id_categ = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
         setHasOptionsMenu(true);
+        nomFoto = "";
             Log.i(TAG, "Viajecitosssssss EDITFragmentEV  onCreate un poquitokkkkkkkkkkkkkkkkkkkkk idCAT: " + id_categ); // lo tienexxxxxxxxbvn
         idViaje();
              Log.i(TAG, "Viajecitosssssss EDITFragmentEV  onCreate un <<<<<<<<<<<<ID-------Viaje: " + idviaje); //
         id_item = getActivity().getIntent().getLongExtra(ViajesContract.EventosEntry.E_ID, -1);
         Log.i(TAG, "EditFragmentMn  onCreate un iditem: " + id_item); //llega el id del item ?
 
+        //Si no existe crea la carpeta donde se guardaran las fotos
+        file.mkdirs();
+        botEuros = false; // por omisión, no se clica el boton
     }
+
+    @SuppressLint("SimpleDateFormat")
+    private String getCode() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault().US);
+        String date = dateFormat.format(new Date() );
+        String photoCode = "vj_" + idviaje + "_" + date;
+        Log.i(TAG, "<<<<<<<<<<ID-------FOTOOOOOO: " + photoCode);
+        // en edit_evento pondré un botón para ver fotos tipo galeria
+        return photoCode;
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the layout
         View view = inflater.inflate(R.layout.fragment_insert_ev, container, false);
         // Obtener views
         nomcateg = (TextView) view.findViewById(R.id.categor_input);
@@ -144,12 +165,13 @@ public class EditFragmentEv extends android.support.v4.app.Fragment implements L
         descripcio = (EditText) view.findViewById(R.id.descripcio_e);
 
         precio = (EditText)view.findViewById(R.id.preu_e);
-        precio.setText("0");
+
         modpag = (Spinner) view.findViewById(R.id.spinner_mod_pag);
         totaleur = (TextView) view.findViewById(R.id.total_eur);
         monedas = (Spinner) view.findViewById(R.id.spinner_moned);
-        eur = (TextView) view.findViewById(R.id.tot_eur);
+        eur = (Button) view.findViewById(R.id.tot_eur);
         datae = (Button) view.findViewById(R.id.fecha_e);
+        fotoe = (Button) view.findViewById(R.id.foto_e);
 
         direccio = (EditText) view.findViewById(R.id.direccio);
         cp = (EditText) view.findViewById(R.id.cp);
@@ -183,9 +205,55 @@ public class EditFragmentEv extends android.support.v4.app.Fragment implements L
         });
 
             Log.i(TAG, "edittttFragmentTT T TT onCreateView 183 un poquito: " + id_categ); //Si lo tiene
+///////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        eur.setOnClickListener(new View.OnClickListener() {
+            //clic al boton EUR >> saca el valor float de precio, le aplica el valmonedas(),
+            // lo multiplica por precio y lo escribe en totaleur
+            @Override
+            public void onClick(View v) { //clik en el boton EUR
+                Log.i(TAG, "EL boton EURRRR"); //Si llega
+                Log.d(TAG, " -> id_monedas: = " + id_monedas);
+                Log.d(TAG, " -> precio: = " + precio.getText().toString());
+                Float miprecio = Float.valueOf(precio.getText().toString());
+                Log.d(TAG, " -> precio en float: = " + miprecio);
 
+                valMoneda();
+                Log.d(TAG, " -> valor moneda: = " + valorMon + " ID_MONEDA: " + id_monedas);
+                Float preu = Float.valueOf(precio.getText().toString());
+                Float enEuros = valorMon * preu;
+                Log.d(TAG, " -> emEuros: = " + enEuros);
+                totaleur.setText(String.valueOf(enEuros));
+                botEuros = true; // Se ha clicado el boton
+                Log.d(TAG, " -> Clicado el botón: = pasa a " + botEuros);
+            }
+        });
+
+        Log.i(TAG, "InsertFragmentTT T TT onCreateView 139 un poquito: " + id_categ); //Si lo tiene
+        fotoe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String file = ruta_fotos + getCode() + ".png";
+                mi_foto = new File(file);
+                try {
+                    mi_foto.createNewFile();
+                } catch (IOException ex) {
+                    Log.e("ERROR ", "Error:" + ex);
+                }
+                //
+                uri = Uri.fromFile(mi_foto);
+                nomFoto = getCode() + ".png";
+                //Abre la camara para tomar la foto
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //Guarda imagen
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                //Retorna a la actividad
+                startActivityForResult(cameraIntent, 0);
+            }
+        });
 //////////// los spinnerssssssssssssssssssssssssss modopag, monedas
-        //   mTipoV.setEnabled(false);  //TODO:<<<<<<<>>>>>>>>>>>>>tengo que arrglar esto de los enabled
+        ////// hay que darles el valor que tenian
+
+        //   mTipoV.setEnabled(false);
 
         //aqui Modopago
         mModPagAdapter = new SimpleCursorAdapter(
@@ -228,6 +296,7 @@ public class EditFragmentEv extends android.support.v4.app.Fragment implements L
                 id_monedas = mop.getString(mop.getColumnIndexOrThrow(ViajesContract.MonedasEntry.MON_ID));
 
 //id_monedas = id;
+                /*
                     Log.d(TAG, "onItemSelected(.EV..) -> id_monedas: = " + id_monedas);
 
                     Log.d(TAG, "============ -> val moneda entrADAs: = " + precio.getText().toString());
@@ -242,6 +311,7 @@ public class EditFragmentEv extends android.support.v4.app.Fragment implements L
                     Float enEuros = valorMon * preu;
                     totaleur.setText(String.valueOf(enEuros));
                 }
+                */
             }
 
             @Override
@@ -358,7 +428,7 @@ public class EditFragmentEv extends android.support.v4.app.Fragment implements L
                 locManager.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER, 10000, 0, locListener);
     }
-////////////////////////
+
 public Float valMoneda() {
    // valorMon = Float.valueOf(1);
     Log.i(TAG, "EEEEEEEEEEEENNNNNNNNNNNNN valmoneda el idmoneda: " + id_monedas);
@@ -480,14 +550,6 @@ public Float valMoneda() {
         }
         //////////////////////////////////////////////////
 
-
-
-
-
-
-
-
-
         /*
         getLoaderManager().initLoader(0, null, this);
         //modpag.setEnabled(false);
@@ -526,7 +588,7 @@ public Float valMoneda() {
                     ViajesContract.MonedasEntry.TAG_COLUMNS,      // Projection to return
                     null,                                       // No selection clause
                     null,                                       // No selection arguments
-                    null);                                      // Default sort order
+                    null);                                      // No selection arguments
         //    Log.i(TAG, "InsertFragmentEVV onCreateLoader cccccccccccc un poquito"); //aqui llega
             default:
                 return null;
@@ -646,13 +708,22 @@ private void onLoadFinishedModopag(Cursor data) {
             Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  77 updateDATA fecha: " + datae.getText().toString()); //lo coge biennnnn
             Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  78 updateDATA nombre: " + nombre.getText().toString());
         ContentValues values = new ContentValues();
+        if (botEuros == false) {
+            Log.d(TAG, "-684-----precio botEuros falso es:<> " + botEuros + precio.getText().toString()  );
+            values.put(ViajesContract.EventosEntry.E_TOT, precio.getText().toString());
+            // values.put(ViajesContract.EventosEntry.E_TOT, precio.getText().toString());
+        }
+        if (botEuros == true) {
+            Log.d(TAG, "-688-----totaleurrrrrrrrr botEur verdadero es:<> " + botEuros  + precio.getText().toString()  );
+            values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
+        }
         values.put(ViajesContract.EventosEntry.E_DATAH, datae.getText().toString());
         values.put(ViajesContract.EventosEntry.E_KMP, kmactual.getText().toString());
         values.put(ViajesContract.EventosEntry.E_NOM, nombre.getText().toString());
         values.put(ViajesContract.EventosEntry.E_DESC, descripcio.getText().toString());
 
        // values.put(ViajesContract.EventosEntry.E_MPAG, id_modopag.toString());
-        values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
+     //   values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
 
        // values.put(ViajesContract.EventosEntry.E_MON, id_monedas.toString());
      //   values.put(ViajesContract.EventosEntry.E_VAL, valoracio.getRating()); //funciona
@@ -666,6 +737,8 @@ private void onLoadFinishedModopag(Cursor data) {
         values.put(ViajesContract.EventosEntry.E_LAT, latit.getText().toString());
         values.put(ViajesContract.EventosEntry.E_ALT, altit.getText().toString());
         values.put(ViajesContract.EventosEntry.E_COM, comentaris.getText().toString());
+        values.put(ViajesContract.EventosEntry.E_FOT1, nomFoto.toString());
+
         // Actualiza datos del Content Provider
         getActivity().getContentResolver().update(
                 uri,
@@ -678,6 +751,15 @@ private void onLoadFinishedModopag(Cursor data) {
     private void saveData() {
         // Obtención de valores actuales
         ContentValues values = new ContentValues();
+        if (botEuros == false) {
+            Log.d(TAG, "-684-----precio botEuros falso es:<> " + botEuros + precio.getText().toString()  );
+            values.put(ViajesContract.EventosEntry.E_TOT, precio.getText().toString());
+            // values.put(ViajesContract.EventosEntry.E_TOT, precio.getText().toString());
+        }
+        if (botEuros == true) {
+            Log.d(TAG, "-688-----totaleurrrrrrrrr botEur verdadero es:<> " + botEuros  + precio.getText().toString()  );
+            values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
+        }
         values.put(ViajesContract.EventosEntry.E_IDV, idviaje);
         values.put(ViajesContract.EventosEntry.E_IDCGT, idcat);
         values.put(ViajesContract.EventosEntry.E_DATAH, datae.getText().toString());
@@ -685,8 +767,6 @@ private void onLoadFinishedModopag(Cursor data) {
         values.put(ViajesContract.EventosEntry.E_NOM, nombre.getText().toString());
         values.put(ViajesContract.EventosEntry.E_DESC, descripcio.getText().toString());
         values.put(ViajesContract.EventosEntry.E_MPAG, id_modopag.toString());
-        values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
-      //  values.put(ViajesContract.EventosEntry.E_TOT, totaleuros.floatValue());
         values.put(ViajesContract.EventosEntry.E_MON, id_monedas.toString());
         values.put(ViajesContract.EventosEntry.E_VAL, valoracio.getRating()); //funciona
         values.put(ViajesContract.EventosEntry.E_DIR, direccio.getText().toString());
@@ -705,5 +785,4 @@ private void onLoadFinishedModopag(Cursor data) {
                 values
         );
     }
-
 }
