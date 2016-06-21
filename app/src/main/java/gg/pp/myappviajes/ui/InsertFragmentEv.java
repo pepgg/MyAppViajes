@@ -116,6 +116,8 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     Uri uri;
     File mi_foto;
 
+
+
     public static final String TAG = "En InsertFragmentEv: ";
     public InsertFragmentEv() {
     }
@@ -129,6 +131,8 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
             Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un poquitokkkkkkkkkkkkkkkkkkkkk idCAT: " + id_categ); // lo tienexxxxxxxxbvn
         idViaje();
             Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un <<<<<<<<<<<<ID-------Viaje: " + idviaje); //
+
+
         //Si no existe crea la carpeta donde se guardaran las fotos
         file.mkdirs();
         botEuros = false; // por omisión, no se clica el boton
@@ -146,19 +150,6 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Comprobamos si el resultado de la segunda actividad es "RESULT_CANCELED".
-        /// Engo que ver qué es estl del resultCode. de momento no funciona
-   ///     if (resultCode == RESULT_CANCELED) {
-            // Si es así mostramos mensaje de cancelado por pantalla.
-         ///   Toast.makeText(getActivity(), "Fotografia cancelada...", Toast.LENGTH_LONG).show();
-    ///    } else {
-
-            //este es un text que solo muestra la dir en la actividad;
-            //textview.setText("dir:"+ uri.getPath()); //mejor en un toastttttt
-    //        Toast.makeText(getActivity(), "Fotografia guardada: " + uri.getPath(), Toast.LENGTH_LONG).show();
-            //Insertamos la direccion y nombre de la imagen en la base de datos (*)-2 //en el save dataaaaaa
-           // sqlcontrol.insertarImagen(uri.getPath(),mi_foto.getName());
-       /// }
     }
 
     @Override
@@ -210,6 +201,9 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
                         comenzarLocalizacion();
             }
         });
+
+
+
 ///////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         eur.setOnClickListener(new View.OnClickListener() {
             //clic al boton EUR >> saca el valor float de precio, le aplica el valmonedas(),
@@ -256,7 +250,6 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
             }
         });
 //////////// los spinnerssssssssssssssssssssssssss modopag, monedas
-        //   mTipoV.setEnabled(false);
 
         //aqui Modopago
         mModPagAdapter = new SimpleCursorAdapter(
@@ -530,19 +523,7 @@ public Float valMoneda() {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "InsertFragmentEVV onActivityCreated un poquito"); //lega
-/*
-        getLoaderManager().initLoader(0, null, this);
-        //modpag.setEnabled(false);
-        mModPagAdapter = new SimpleCursorAdapter(
-            getContext(),
-            android.R.layout.simple_spinner_item,
-            null,
-            new String[] {ViajesContract.MPagoEntry.MPAG_MP},
-            new int[] {android.R.id.text1},
-            0);
-        mModPagAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        modpag.setAdapter(mModPagAdapter);
-        */
+
     }
 
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -693,9 +674,11 @@ private void onLoadFinishedModopag(Cursor data) {
         values.put(ViajesContract.EventosEntry.E_KMP, kmactual.getText().toString());
         values.put(ViajesContract.EventosEntry.E_NOM, nombre.getText().toString());
         values.put(ViajesContract.EventosEntry.E_DESC, descripcio.getText().toString());
+
         values.put(ViajesContract.EventosEntry.E_MPAG, id_modopag.toString());
         values.put(ViajesContract.EventosEntry.E_MON, id_monedas.toString());
         values.put(ViajesContract.EventosEntry.E_VAL, valoracio.getRating()); //funciona
+
         values.put(ViajesContract.EventosEntry.E_DIR, direccio.getText().toString());
         values.put(ViajesContract.EventosEntry.E_CP, cp.getText().toString());
         values.put(ViajesContract.EventosEntry.E_CIUD, ciudad.getText().toString());
