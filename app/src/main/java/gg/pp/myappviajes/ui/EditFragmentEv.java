@@ -189,7 +189,7 @@ public class EditFragmentEv extends android.support.v4.app.Fragment implements L
         comentaris = (EditText) view.findViewById(R.id.coment);
 
         idcat = id_categ;
-// quito esto 25-04
+
         String midate = (DateFormat.format("dd-MM-yyyy", new Date()).toString());
             Log.d(TAG, "onCreateView(.EV..) -> fechh222222222222222222a: = " + midate);
         datae.setText(midate);
@@ -249,84 +249,9 @@ public class EditFragmentEv extends android.support.v4.app.Fragment implements L
                 startActivityForResult(cameraIntent, 0);
             }
         });
-//////////// los spinnerssssssssssssssssssssssssss modopag, monedas
-        ////// hay que darles el valor que tenian
-       //aqui Modopago
-        mModPagAdapter = new SimpleCursorAdapter(
-                getActivity(), android.R.layout.simple_spinner_item,
-                null,
-                new String[]{ViajesContract.MPagoEntry.COLUMN_NAME},
-                new int[]{android.R.id.text1}, 2);
-        mModPagAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        modpag.setAdapter(mModPagAdapter);
-        modpag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemSelected EV...)modopag -> position: " + position + " id: = " + id);
+//////////// >>>>>>>>>>>>>>>>>>>>>>>>><los spinnerssssssssssssssssssssssssss modopag, monedas
 
-                Cursor tipv = (Cursor) parent.getItemAtPosition(position);
-                id_modopag = tipv.getString(tipv.getColumnIndexOrThrow(ViajesContract.MPagoEntry.MPAG_ID));
-
-                Log.d(TAG, "onItemSelected(.EV..) -> id_modopag: = " + id_modopag);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Log.d(TAG, "onNothingSelected");
-            }
-        });
-        //aqui MONEDAS
-        mMonedAdapter = new SimpleCursorAdapter(
-                getActivity(), android.R.layout.simple_spinner_item,
-                null,
-                new String[]{ViajesContract.MonedasEntry.COLUMN_NAME},
-                new int[]{android.R.id.text1}, 2);
-        mMonedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        monedas.setAdapter(mMonedAdapter);
-        monedas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemSelected EV...)monedas -> position: " + position + " id: = " + id);
-
-                Cursor mop = (Cursor) parent.getItemAtPosition(position);
-                id_monedas = mop.getString(mop.getColumnIndexOrThrow(ViajesContract.MonedasEntry.MON_ID));
-
-//id_monedas = id;
-                /*
-                    Log.d(TAG, "onItemSelected(.EV..) -> id_monedas: = " + id_monedas);
-
-                    Log.d(TAG, "============ -> val moneda entrADAs: = " + precio.getText().toString());
-                Float miprecio = Float.valueOf(precio.getText().toString());
-                    Log.d(TAG, "============ -> val moneda entrADAs: = " + miprecio);
-
-                if (miprecio != 0) {
-                    valMoneda();
-                        Log.d(TAG, "onItemSelected(.EV..) -> val monedas: = " + valorMon + "ID_MONEDA: " + id_monedas);
-                        Log.d(TAG, "onItemSelected(.EV..) -> val moneda entrADAs: = " + precio.getText().toString());
-                    Float preu = Float.valueOf(precio.getText().toString());
-                    Float enEuros = valorMon * preu;
-                    totaleur.setText(String.valueOf(enEuros));
-                }
-                */
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Log.d(TAG, "onNothingSelected");
-            }
-        });
-
-        setListeners();
-
-        if (savedInstanceState != null) {
-            dateCalendar = Calendar.getInstance();
-            if (savedInstanceState.getLong("dateCalendar") != 0)
-                dateCalendar.setTime(new Date(savedInstanceState
-                        .getLong("dateCalendar")));
-        }
-        /////////////
-        getLoaderManager().initLoader(LOADER_MODPAG, null, this);
-        getLoaderManager().initLoader(LOADER_MONED, null, this);
+       // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         return view;
     }
     ///////////////////////////la fecha/////////////////////////////////////////////////
@@ -512,10 +437,100 @@ public Float valMoneda() {
         String nom_text = i.getStringExtra(ViajesContract.EventosEntry.E_NOM);
             Log.i(TAG, "ViajecitosssssssInsertFrag   113 updateView El nombre: " + nom_text); //llega null, porque no lo he buscado con una consulta
 
+
+
+/// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<
+        ////// hay que darles el valor que tenian
+        //aqui Modopago
+        mModPagAdapter = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_spinner_item,
+                null,
+                new String[]{ViajesContract.MPagoEntry.COLUMN_NAME},
+                new int[]{android.R.id.text1}, 2);
+        mModPagAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        modpag.setAdapter(mModPagAdapter);
+        //modpag.setSelection(mp);
+        modpag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemSelected EV...)modopag -> position: " + position + " id: = " + id);
+
+                Cursor mdp = (Cursor) parent.getItemAtPosition(position);
+                id_modopag = mdp.getString(mdp.getColumnIndexOrThrow(ViajesContract.MPagoEntry.MPAG_ID));
+
+                Log.d(TAG, "onItemSelected(.EV..) -> id_modopag: = " + id_modopag);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d(TAG, "onNothingSelected");
+            }
+        });
+        //aqui MONEDAS
+        mMonedAdapter = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_spinner_item,
+                null,
+                new String[]{ViajesContract.MonedasEntry.COLUMN_NAME},
+                new int[]{android.R.id.text1}, 2);
+        mMonedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        monedas.setAdapter(mMonedAdapter);
+        monedas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemSelected EV...)monedas -> position: " + position + " id: = " + id);
+
+                Cursor mon = (Cursor) parent.getItemAtPosition(position);
+                id_monedas = mon.getString(mon.getColumnIndexOrThrow(ViajesContract.MonedasEntry.MON_ID));
+
+//id_monedas = id;
+                /*
+                    Log.d(TAG, "onItemSelected(.EV..) -> id_monedas: = " + id_monedas);
+
+                    Log.d(TAG, "============ -> val moneda entrADAs: = " + precio.getText().toString());
+                Float miprecio = Float.valueOf(precio.getText().toString());
+                    Log.d(TAG, "============ -> val moneda entrADAs: = " + miprecio);
+
+                if (miprecio != 0) {
+                    valMoneda();
+                        Log.d(TAG, "onItemSelected(.EV..) -> val monedas: = " + valorMon + "ID_MONEDA: " + id_monedas);
+                        Log.d(TAG, "onItemSelected(.EV..) -> val moneda entrADAs: = " + precio.getText().toString());
+                    Float preu = Float.valueOf(precio.getText().toString());
+                    Float enEuros = valorMon * preu;
+                    totaleur.setText(String.valueOf(enEuros));
+                }
+                */
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d(TAG, "onNothingSelected");
+            }
+        });
+
+        setListeners();
+
+        if (savedInstanceState != null) {
+            dateCalendar = Calendar.getInstance();
+            if (savedInstanceState.getLong("dateCalendar") != 0)
+                dateCalendar.setTime(new Date(savedInstanceState
+                        .getLong("dateCalendar")));
+        }
+        /////////////
+        getLoaderManager().initLoader(LOADER_MODPAG, null, this);
+        getLoaderManager().initLoader(LOADER_MONED, null, this);
+
+
+
+
+
+
+        /////////// >>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<
+
+
         //aquí la consulta para comseguir select * where id = id_item
         Uri urimn = ViajesContract.EventosEntry.URI_CONTENIDO;
         ContentResolver cr = getActivity().getContentResolver();
-        Cursor cur = cr.query(urimn, null,
+        final Cursor cur = cr.query(urimn, null,
                 ViajesContract.EventosEntry.E_ID + " = " + id_item,
                 null, null);
         if (cur.moveToFirst()) { // ha trobat el evento: estic editant un registre fet anteriorment
@@ -526,24 +541,48 @@ public Float valMoneda() {
             kmactual.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_KMP)));
             descripcio.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_DESC)));
 
-                int mp = Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MPAG)));
+                final int mp = Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MPAG)))-1;
                 Log.i(TAG, "Viajecitosssssss EditFragmentMNNNNN  529 int MMPP: " + mp); //  llega el id
             Uri urimp = ViajesContract.MPagoEntry.URI_CONTENIDO;
             ContentResolver crs = getActivity().getContentResolver();
-            Cursor curs = cr.query(urimp, null,
+            Cursor curs = crs.query(urimp, null,
                     ViajesContract.MPagoEntry.MPAG_MP + " = " + mp,
                     null, null);
 
 
-            if (curs != null) {
-                modpag.setSelection(mp);
-            }
+            modpag.post(new Runnable() {
+                @Override
+                public void run() {
+                    modpag.setSelection(mp);
+                }
+            });
+
+
+
+
+         //   modpag.setSelection(((ArrayAdapter<String>)mySpinner.getAdapter()).getPosition(myString));
+           // modpag.setSelection(getIndex(modpag, cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MPAG))));
+          ///////  this.modpag.setSelection(Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MPAG))));
+            Log.i(TAG, "Viajecitosssssss EditFragmentMNNNNN<<<<<<<  553 int modPag: " + Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MPAG))));
+           // if (curs != null) {
+              //this.modpag.setSelection(mp);
+           // }
 
             totaleur.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_TOT)));
 
-                int mond = Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MON)));
-                Log.i(TAG, "Viajecitosssssss EditFragmentMNNNNN  535 int mond: " + mond); //  llega el id
-            monedas.setSelection(mond);
+                final int mond = Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MON)))-1;
+                Log.i(TAG, "Viajecitosssssss EditFragmentMNNNNN  562 int mond: " + mond); //  llega el id
+
+            monedas.post(new Runnable() {
+                @Override
+                public void run() {
+                    monedas.setSelection(mond);
+                }
+            });
+
+
+
+           // this.monedas.setSelection(mond);
 
                 float valo = Float.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_VAL)));
             valoracio.setRating(valo);
@@ -561,7 +600,12 @@ public Float valMoneda() {
         }
         //////////////////////////////////////////////////
     }
-
+/*
+    private int getIndex(Spinner modpag, String string) {
+        int index = 0;
+        return index;
+    }
+*/
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id){
             case LOADER_MODPAG:

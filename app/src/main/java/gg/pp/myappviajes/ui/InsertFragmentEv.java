@@ -96,6 +96,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     private String nomFoto;
     private int idviaje;
     public Float valorMon;
+    public int kmparcial;
     public Float totaleuros;
     boolean botEuros;
     public static final int LOADER_MODPAG = 1; // Loader identifier for ModPag
@@ -431,8 +432,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     }
 
 public Float valMoneda() {
-        // valorMon = Float.valueOf(1);
-        Log.i(TAG, "En valmoneda() el idmoneda: " + id_monedas);
+            Log.i(TAG, "En valmoneda() el idmoneda: " + id_monedas);
     String[] projection = new String[] {
             ViajesContract.MonedasEntry.MON_VAL
              };
@@ -456,6 +456,36 @@ public Float valMoneda() {
     }
     return valorMon;
 }
+
+    public int kmParcial() {
+        Log.i(TAG, "En kmParcial()  " );
+        String[] projection = new String[] {
+                ViajesContract.EventosEntry.E_KMP
+        };
+        Uri kmparcialUri =  ViajesContract.EventosEntry.URI_CONTENIDO;
+        ContentResolver cr = getActivity().getContentResolver();
+        // la consulta
+        Cursor cur = cr.query(kmparcialUri,
+                projection, //Columnas a devolver
+                ViajesContract.EventosEntry.E_KMP + " != " + "''"  ,       //Condición de la query
+                null,       //Argumentos variables de la query
+                null);      //Orden de los resultados
+        if (cur.moveToFirst())  //se cumple si la consulta ha dado un resultado con datos
+        {
+            int numkm = cur.getCount();
+            int kmparci = cur.getColumnIndex(ViajesContract.EventosEntry.E_KMP);
+           // do
+           // {
+            cur.moveToLast();
+                kmparcial = cur.getInt(kmparci);
+                Log.i(TAG, "en kmParcial() hay " + numkm + " el valor de kmparcial es: " + kmparcial);
+
+           // } while (cur.moveToLast());
+        }
+        return kmparcial;
+    }
+
+
 
 //public float precioEur(Float totaleuros) {
     /////// precio es el EdiText(donde se escribe) --------- totaleur el resultado
@@ -663,6 +693,7 @@ private void onLoadFinishedModopag(Cursor data) {
             values.put(ViajesContract.EventosEntry.E_TOT, precio.getText().toString());
             // values.put(ViajesContract.EventosEntry.E_TOT, precio.getText().toString());
         }
+       // kmParcial();
         if (botEuros == true) {
             Log.d(TAG, "-688-----totaleurrrrrrrrr botEur verdadero es:<> " + botEuros  + precio.getText().toString()  );
             values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
@@ -671,7 +702,21 @@ private void onLoadFinishedModopag(Cursor data) {
         values.put(ViajesContract.EventosEntry.E_IDV, idviaje);
         values.put(ViajesContract.EventosEntry.E_IDCGT, idcat);
         values.put(ViajesContract.EventosEntry.E_DATAH, datae.getText().toString());
-        values.put(ViajesContract.EventosEntry.E_KMP, kmactual.getText().toString());
+        //if (kmactual.getText().toString() == null) {
+
+       // }
+        if (kmactual.getText().toString().trim().length()  > 0) {
+            Log.d(TAG, "-706-----kmParciaLLLLLLLLLL es: lleno " + kmactual.getText().toString());
+            values.put(ViajesContract.EventosEntry.E_KMP, kmactual.getText().toString());
+        } else  //if (kmactual.getText().toString().trim().length()  == 0)
+        {
+            Log.d(TAG, "-710-----kmParciaLLLLLLLLLL es: vacio " + kmactual.getText().toString());
+            kmParcial();
+            Log.d(TAG, "-710-----kmParciaLLLLLLLLLL es: ULTIMOOO: " + kmparcial);
+            values.put(ViajesContract.EventosEntry.E_KMP, String.valueOf(kmparcial));
+        }
+
+
         values.put(ViajesContract.EventosEntry.E_NOM, nombre.getText().toString());
         values.put(ViajesContract.EventosEntry.E_DESC, descripcio.getText().toString());
 
