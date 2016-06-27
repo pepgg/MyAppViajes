@@ -9,6 +9,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import gg.pp.myappviajes.ActivitiesAdapter;
@@ -35,23 +37,29 @@ public class MainFragment extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = "En MainFragment: ";
-    /**     * Adaptador     */
+
     private ActivitiesAdapter adaptador;
+    SimpleCursorAdapter viajeActAdapter;
     private static final int V_CREA = 0;
-    private TextView nomViaje;
+    private Spinner nomViaje;
     private TextView totalKm;
     private TextView totalGast;
     private Button btnViajes;
     private String nombreViaje;
     private int idviaje;
+    private String id_viaje;
     private long idcate;
     private Float totaGasto;
     private int kmini;
     private int kmactu;
     private int kmparcial;
     private String strKmp;
+
     public static final String nomTabla = null;
     public static final String nomTabl = null;
+    public static final int LOADER_MCATEG = 1; // Loader identifier for Categorias
+    public static final int LOADER_MVIAJE = 2; // Loader identifier for Viajes
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -66,16 +74,14 @@ public class MainFragment extends ListFragment implements
 
         nombrViaje();
             Log.i(TAG, "MainFragmentito OnCrete 61 NOMBRE VIAJE " + nombreViaje); //si este está bien
-        idViaje();
+        viajesAct();
             Log.i(TAG, "MainFragmentito OnCrete 63 IDDDD VIAJE " + idviaje); //sale 1 en lugar de 2
         totaGast();
             Log.i(TAG, "MainFragmentito OnCrete 65 TOTAL GASTO " + totaGasto);// este está bien
         totaKM();
-
     }
 
     private void totaKM() {
-
         //primero busco el km inici en kminici() L 201
         kminici();
                 Log.i(TAG, "ennnnnn TOTAKM 77 INICI: " + kmini); // aquí dice que 100 ?????
@@ -87,7 +93,6 @@ public class MainFragment extends ListFragment implements
         strKmp = Integer.toString(kmparcial);
                     Log.i(TAG, "ennnnnn TOTAKM 85 de momentoooooooooooo: " + strKmp);
     }
-
     private Float totaGast() {
         String[] projection = new String[] {"sum(" + ViajesContract.EventosEntry.E_TOT + ")"
         };
@@ -102,46 +107,33 @@ public class MainFragment extends ListFragment implements
         cursar.moveToFirst();
         Log.i(TAG, "ennnnnn TOTAGAST: idviaje: 89 moveToFirst");
             int to_gast = cursar.getInt(0);
-           // int to_gast = cursa.getColumnIndex(ViajesContract.EventosEntry.E_TOT);
-       // int to_gasto = cursa.getInt(0);
             totaGasto = Float.valueOf(to_gast); //
-
             return Float.valueOf(totaGasto);
     }
-
     public String nombrViaje() {
-            String[] projection = new String[] {
-                    ViajesContract.ViajesEntry.V_NOM,
-            };
-            Uri nomViajeUri =  ViajesContract.ViajesEntry.URI_CONTENIDO;
-            ContentResolver cr = getActivity().getContentResolver();
-// la consulta
-            Cursor cu = cr.query(nomViajeUri,
-                    projection, //Columnas a devolver
-                    ViajesContract.ViajesEntry.V_DATAFI + " LIKE '%'",       //Condición de la query
-                    null,       //Argumentos variables de la query
-                    null);      //Orden de los resultados
-
-            if (cu.moveToFirst())
-
-            {
-                Log.i(TAG, "ennnnnn IDVIAJE: idviaje: 434 moveToFirst");
-                int id_viaj = cu.getColumnIndex(ViajesContract.ViajesEntry.V_NOM);
-                nombreViaje = cu.getString(id_viaj) ; //
-                /*
-                cu.close();
-                do
-                {
-
-                } while (cu.moveToPrevious());
-                */
-            }
-
-            return nombreViaje;
-        }
-    public String idViaje() {
         String[] projection = new String[] {
-        ViajesContract.ViajesEntry.V_ID,
+                ViajesContract.ViajesEntry.V_NOM,
+        };
+        Uri nomViajeUri =  ViajesContract.ViajesEntry.URI_CONTENIDO;
+        ContentResolver cr = getActivity().getContentResolver();
+// la consulta
+        Cursor cu = cr.query(nomViajeUri,
+                projection, //Columnas a devolver
+                ViajesContract.ViajesEntry.V_DATAFI + " LIKE '%'",       //Condición de la query
+                null,       //Argumentos variables de la query
+                null);      //Orden de los resultados
+
+        if (cu.moveToFirst())
+        {
+            Log.i(TAG, "ennnnnn IDVIAJE: idviaje: 434 moveToFirst");
+            int id_viaj = cu.getColumnIndex(ViajesContract.ViajesEntry.V_NOM);
+            nombreViaje = cu.getString(id_viaj) ; //
+        }
+        return nombreViaje;
+    }
+    public String viajesAct() {
+        String[] projection = new String[] {
+                ViajesContract.ViajesEntry.V_ID
         };
         Uri idViajeUri =  ViajesContract.ViajesEntry.URI_CONTENIDO;
         ContentResolver cr = getActivity().getContentResolver();
@@ -160,25 +152,25 @@ public class MainFragment extends ListFragment implements
         return String.valueOf(idviaje);
     }
 
-public int kminici(){
-    String[] projection = new String[] {
-            ViajesContract.ViajesEntry.V_KMIN,
-    };
-    Uri idViajeUri =  ViajesContract.ViajesEntry.URI_CONTENIDO;
-    ContentResolver cr = getActivity().getContentResolver();
+    public int kminici(){
+        String[] projection = new String[] {
+                ViajesContract.ViajesEntry.V_KMIN,
+        };
+        Uri idViajeUri =  ViajesContract.ViajesEntry.URI_CONTENIDO;
+        ContentResolver cr = getActivity().getContentResolver();
 // la consulta
-    Cursor c = cr.query(idViajeUri,
-            projection, //Columnas a devolver
-            ViajesContract.ViajesEntry.V_DATAFI + " LIKE '%'",       //Condición de la query
-            null,       //Argumentos variables de la query
-            null);      //Orden de los resultados
-    if (c.moveToFirst())
-    {
-        int kminici = c.getColumnIndex(ViajesContract.ViajesEntry.V_KMIN);
-        kmini = c.getInt(kminici) ;
+        Cursor c = cr.query(idViajeUri,
+                projection, //Columnas a devolver
+                ViajesContract.ViajesEntry.V_DATAFI + " LIKE '%'",       //Condición de la query
+                null,       //Argumentos variables de la query
+                null);      //Orden de los resultados
+        if (c.moveToFirst())
+        {
+            int kminici = c.getColumnIndex(ViajesContract.ViajesEntry.V_KMIN);
+            kmini = c.getInt(kminici) ;
+        }
+        return kmini;
     }
-    return kmini;
-}
 
     public int kmactual(){
         String[] projection = new String[] {
@@ -192,33 +184,66 @@ public int kminici(){
                 null,      //Condición de la query: sin condiciones para que salgan todos
                 null,       //Argumentos variables de la query
                 null);      //Orden de los resultados
-
         ////supongo que con la consulta anterior me saca el campo kmp de todos los registros
-
         if (c.moveToLast())
         {
             // si entra aquí es porque tiene resultados. Entonces se va al último registro
             int kmactual = c.getColumnIndex(ViajesContract.EventosEntry.E_KMP);
             kmactu = c.getInt(kmactual) ; // esto está bien si en el último evento está el kmp
-
                     Log.i(TAG, "ennnnnn KMACTUAL 204: " + kmactu);
-                        // si el último evento no tiene kmp:
-          /*
-            if (kmactu <= 0) {
-                do {
-                    c.moveToPrevious();
-                } while (kmactu <= 0);
-            }
-            */
         }
                     Log.i(TAG, "ennnnnn KMACTUAL 214: " + kmactu);
         return kmactu;
     }
 
-    //////////////////////////////////////////////las cards se intercambian
-    //final CardView card1 = new CardView(this);
-    //card1.setVisibility(View.INVISIBLE);
-    //Log.i(TAG, "Inserción en ");
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id){
+            case LOADER_MVIAJE:
+                Log.i(TAG, "InsertFragmentEVV onCreateLoader AAAAA-modopag-AAAAA un poquito");
+                return new CursorLoader(
+                        getActivity(),                              // Parent activity context
+                        ViajesContract.ViajesEntry.URI_CONTENIDO,    // Table to query
+                        null,      // Projection to return
+                        null,                                       // No selection clause
+                        null,                                       // No selection arguments
+                        null);                                      // Default sort order
+            case LOADER_MCATEG:
+                Log.i(TAG, "MainFragmentito onCreateLoader CINCO");
+                return new CursorLoader(
+                        getActivity(),
+                        ViajesContract.CategoriasEntry.URI_CONTENIDO,
+                        null, null, null, null);
+            default:
+                return null;
+        }
+        }
+
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        switch (loader.getId())
+        {
+            case LOADER_MVIAJE:
+                viajeActAdapter.swapCursor(data);
+              //  onLoadFinishedViajes(data);
+                break;
+            case LOADER_MCATEG:
+                adaptador.swapCursor(data);
+             //   onLoadFinishedCateg(data);
+                break;
+        }
+    }
+
+    public void onLoaderReset(Loader<Cursor> loader) {
+        switch (loader.getId())
+        {
+            case LOADER_MCATEG:
+                adaptador.swapCursor(null);
+                break;
+            case LOADER_MVIAJE:
+                viajeActAdapter.swapCursor(null);
+                break;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -228,9 +253,42 @@ public int kminici(){
 
         //inicialica instancia los elementos del View: nomViaje totalKm totalGast btnViajes
         btnViajes = (Button) view.findViewById(R.id.buttnviaje);
-        nomViaje = (TextView) view.findViewById(R.id.nom_viaje);
+        nomViaje = (Spinner) view.findViewById(R.id.spinner_nom_viaje);
         totalKm = (TextView) view.findViewById(R.id.totalkm);
         totalGast = (TextView) view.findViewById(R.id.totalg);
+
+                 Log.d(TAG, "onItemSviajeActAdaptersetDropDownViewResource AAAAAAAAAAAAAAAAAAAAAA ");
+        viajeActAdapter = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_spinner_item,
+                null,
+                new String[]{ViajesContract.ViajesEntry.COLUMN_NAME},
+                new int[]{android.R.id.text1}, 2);
+
+        viajeActAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    Log.d(TAG, "onItemSviajeActAdaptersetDropDownViewResource BBBBBBBBBBBBBBBBBBBBBB ");
+        nomViaje.setAdapter(viajeActAdapter);
+
+        nomViaje.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        Log.d(TAG, "onItemSelected id_viaje -> position: " + position + " id: = " + id);
+                Cursor nomv = (Cursor) parent.getItemAtPosition(position);
+                id_viaje = nomv.getString(nomv.getColumnIndexOrThrow(ViajesContract.ViajesEntry.V_ID));
+                        Log.d(TAG, "onItemSelected(.adaspter id viajes..) -> id_viaje: = " + id_viaje);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                        Log.d(TAG, "onNothingSelected");
+            }
+        });
+
+        // aquí el adapter de la listaCateg
+        adaptador = new ActivitiesAdapter(getActivity());
+        // Relacionar adaptador a la lista
+        setListAdapter(adaptador);
+        // Iniciar Loader
+        getLoaderManager().initLoader(LOADER_MCATEG, null, this);
+        getLoaderManager().initLoader(LOADER_MVIAJE, null, this);
 /*
         ImageButton fab = (ImageButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(
@@ -264,7 +322,6 @@ public int kminici(){
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id) {
             case R.id.action_edit:
                 beginUpdate(); // Actualizar
@@ -310,33 +367,25 @@ public int kminici(){
                 startActivity(intnte);
                 return true;
             case R.id.m_export:
-               // nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
                 Intent in = new Intent(getActivity(), Export.class);
-               // in.putExtra("NombreTabla", nomTabla);
                 startActivity(in);
                 return true;
             case R.id.m_import:
-               // nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
-                Intent i = new Intent(getActivity(), Import.class);
-              //  i.putExtra("NombreTabla", nomTabla);
-                startActivity(i);
+                 Intent i = new Intent(getActivity(), Import.class);
+                 startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
     /**
-     * Elimina la actividad actual
-     */
+     * Elimina la actividad actual     */
     private void deleteData() {
        // Uri uri = ContentUris.withAppendedId(TechsContract.CONTENT_URI, id);
       //  getActivity().getContentResolver().delete(uri, null, null);
     }
 
-    /**
-     * Envía todos los datos de la actividad hacia el formulario
-     * de actualización
-     */
+    /** Envía los datos de la actividad hacia el formulario de actualización     */
     private void beginUpdate() {
         /*
         getActivity().startActivity(
@@ -353,21 +402,7 @@ public int kminici(){
         registerForContextMenu(this.getListView());
         Log.i(TAG, "MainFragmentito onActivityCreated CUATRO ");
 
-        nomViaje.setText(nombreViaje);
-        totalKm.setText(strKmp);
-        totalGast.setText(totaGasto.toString());
-
-            // Iniciar adaptador
-        adaptador = new ActivitiesAdapter(getActivity());
-            // Relacionar adaptador a la lista
-        setListAdapter(adaptador);
-            // Iniciar Loader
-        getLoaderManager().initLoader(0, null, this);
-    }
-    @Override
-    public void onResume() {
-            super.onResume();
-        nomViaje.setText(nombreViaje);
+       /// nomViaje.setText(nombreViaje);
         totalKm.setText(strKmp);
         totalGast.setText(totaGasto.toString());
 
@@ -376,45 +411,40 @@ public int kminici(){
         // Relacionar adaptador a la lista
         setListAdapter(adaptador);
         // Iniciar Loader
-        getLoaderManager().initLoader(0, null, this);
-
-
-
-        }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.i(TAG, "MainFragmentito onCreateLoader CINCO");
-        // Consultar todos los registros
-        return new CursorLoader(
-                getActivity(),
-                ViajesContract.CategoriasEntry.URI_CONTENIDO,
-                null, null, null, null);
+        getLoaderManager().initLoader(LOADER_MCATEG, null, this);
     }
-
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        adaptador.swapCursor(data);
-    }
+    public void onResume() {
+            super.onResume();
+        totaGast();
+        totaKM();
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        adaptador.swapCursor(null);
+        ////////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        ///nomViaje.setText(nombreViaje);
+        ////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        totalKm.setText(strKmp);
+        totalGast.setText(totaGasto.toString());
+
+        // Iniciar adaptador
+        adaptador = new ActivitiesAdapter(getActivity());
+        // Relacionar adaptador a la lista
+        setListAdapter(adaptador);
+        // Iniciar Loader
+        getLoaderManager().initLoader(LOADER_MCATEG, null, this);
     }
 
     @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.i(TAG, "MainFragmentito onListItemClick SEIS");
         getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
-                .putExtra(ViajesContract.CategoriasEntry.CAT_ID, id));
+                .putExtra(ViajesContract.CategoriasEntry.CAT_ID, id)
+          //      .putExtra(ViajesContract.ViajesEntry.V_ID, id_viaje)
+        );
     }
 
     public void iraNouViaje(View view) {
         Log.i(TAG, "Ahora en iraNouViaje de MainViajes) ");
-       // getActivity().startActivity(new Intent(getActivity(), InsertViaje.class));
-
-     ////->   Intent i = new Intent(getContext(), InsertViaje.class);
-       /////>- startActivityForResult(i, V_CREA);
     }
 
     @Override
@@ -461,37 +491,12 @@ public int kminici(){
             */
             case R.id.ctx_m_listevent:
                 // esto viene de lista eventos, del menú principal
-                /// no lo anulo de momento
-
-              ///  String nomTabl = ViajesContract.EventosEntry.TABLE_NAME.toString();
                 AdapterView.AdapterContextMenuInfo infoDel = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                Log.i(TAG, "En onContextItemSelected idCATEGORIAAAAAAAAA id: " + infoDel.id); //esta si que lo tiene
-               // String idcat = tengo que convertir infoDel.id a string
+                        Log.i(TAG, "En onContextItemSelected idCATEGORIAAAAAAAAA id: " + infoDel.id); //esta si que lo tiene
                 String idcat = String.valueOf(infoDel.id);
                 Intent intnte = new Intent(getActivity(), ListEv.class);
                 intnte.putExtra( "idCategoria" , idcat );
-
-                    //Log.i(TAG, " onContextItemSelected 473 idCATEGORIAAAAAAAAA  " + ViajesContract.CategoriasEntry.CAT_ID);
-
                 startActivity(intnte);
-
-                ///
-
-///esto es lo que funciona con un clic:
-      /*
-                 getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
-                .putExtra(ViajesContract.CategoriasEntry.CAT_ID, id));
-    */
-
-
-                /*   esto era la opcion editar monedas
-                AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                Log.i(TAG, "En onContextItemSelected Edit: " + infoEd.id);
-                Intent intent = new Intent(getActivity(), EditMn.class);
-                intent.putExtra(ViajesContract.MonedasEntry.MON_ID, infoEd.id);
-                Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
-                startActivityForResult(intent, EDIT_MN);
-                */
                 return true;
             default:
                 return super.onContextItemSelected(item);

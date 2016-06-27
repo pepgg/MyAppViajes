@@ -94,7 +94,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     private String id_modopag;
     private String id_monedas;
     private String nomFoto;
-    private int idviaje;
+    private long idviaje;
     public Float valorMon;
     public int kmparcial;
     public Float totaleuros;
@@ -128,10 +128,11 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         super.onCreate(savedInstanceState);
         id_categ = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
         setHasOptionsMenu(true);
+        idviaje = getActivity().getIntent().getLongExtra(ViajesContract.ViajesEntry.V_ID, -1);
         nomFoto = "";
             Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un poquitokkkkkkkkkkkkkkkkkkkkk idCAT: " + id_categ); // lo tienexxxxxxxxbvn
-        idViaje();
-            Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un <<<<<<<<<<<<ID-------Viaje: " + idviaje); //
+        //idViaje();
+            Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un <<<<<<<<<<<<ID-------Viaje: " + idviaje); // lo tiene bien ?
 
 
         //Si no existe crea la carpeta donde se guardaran las fotos

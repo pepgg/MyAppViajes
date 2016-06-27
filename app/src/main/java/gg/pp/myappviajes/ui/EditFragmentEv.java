@@ -610,7 +610,6 @@ public Float valMoneda() {
         switch (id){
             case LOADER_MODPAG:
                 Log.i(TAG, "InsertFragmentEVV onCreateLoader AAAAA-modopag-AAAAA un poquito");
-            //    android.support.v4.content.CursorLoader cursorLoader = new CursorLoader(
                 return new CursorLoader(
                     getActivity(),                              // Parent activity context
                     ViajesContract.MPagoEntry.URI_CONTENIDO,    // Table to query
@@ -618,11 +617,8 @@ public Float valMoneda() {
                     null,                                       // No selection clause
                     null,                                       // No selection arguments
                     null);                                      // Default sort order
-           // Log.i(TAG, "InsertFragmentEVV onCreateLoader cccccccccccc un poquito"); //aqui llega
-       // return cursorLoader;
             case LOADER_MONED:
                 Log.i(TAG, "InsertFragmentEVV onCreateLoader AAAA-MONEDAS-AAA un poquito");
-          //      cursorLoader = new CursorLoader(
                 return new CursorLoader(
                     getActivity(),                              // Parent activity context
                     ViajesContract.MonedasEntry.URI_CONTENIDO,    // Table to query
@@ -630,12 +626,10 @@ public Float valMoneda() {
                     null,                                       // No selection clause
                     null,                                       // No selection arguments
                     null);                                      // No selection arguments
-        //    Log.i(TAG, "InsertFragmentEVV onCreateLoader cccccccccccc un poquito"); //aqui llega
             default:
                 return null;
         }
     }
-
 
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId())
@@ -647,7 +641,6 @@ public Float valMoneda() {
                 onLoadFinishedMonedas(data);
                 break;
         }
-      //  mModPagAdapter.swapCursor(arg1);
     }
 private void onLoadFinishedModopag(Cursor data) {
     // se puede usar para deshabilitar el spinner

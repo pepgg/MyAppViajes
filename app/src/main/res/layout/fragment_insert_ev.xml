@@ -94,7 +94,7 @@
                     />
                 <!--
             "?android:attr/textAppearanceLarge"
-                android:textAppearance="@color/colorPrimary"
+                android:textAppearance="@color/colorPrimary"-
 
                 android:textAppearance="?android:attr/textAppearanceLarge"
             -->

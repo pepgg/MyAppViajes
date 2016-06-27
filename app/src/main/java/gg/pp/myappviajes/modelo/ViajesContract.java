@@ -138,6 +138,8 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
     public static class ViajesEntry implements ColumnasViajes {
         public static final String TABLE_NAME = RUTA_VIAJES;
         public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_VIAJES).build();
+        public static final String[] TAG_COLUMNS = {"_id","nom", "datain", "datafi"};
+        public static final String COLUMN_NAME = "nom";
 
         public static Uri crearUriViajes(String id) {
             return URI_CONTENIDO.buildUpon().appendPath(id).build();
