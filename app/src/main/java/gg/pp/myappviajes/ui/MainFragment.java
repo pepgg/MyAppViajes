@@ -48,6 +48,7 @@ public class MainFragment extends ListFragment implements
     private String nombreViaje;
     private int idviaje;
     private String id_viaje;
+ //   private String id_categ;
     private long idcate;
     private Float totaGasto;
     private int kmini;
@@ -274,7 +275,21 @@ public class MainFragment extends ListFragment implements
                         Log.d(TAG, "onItemSelected id_viaje -> position: " + position + " id: = " + id);
                 Cursor nomv = (Cursor) parent.getItemAtPosition(position);
                 id_viaje = nomv.getString(nomv.getColumnIndexOrThrow(ViajesContract.ViajesEntry.V_ID));
+                idviaje = Integer.valueOf(id_viaje);
                         Log.d(TAG, "onItemSelected(.adaspter id viajes..) -> id_viaje: = " + id_viaje);
+
+
+
+               // Bundle bundle = new Bundle();
+              //  String Item = getArguments().getString(ViajesContract.ViajesEntry.V_ID, id_viaje);
+             //   bundle.putInt(ViajesContract.ViajesEntry.V_ID, Integer.parseInt(Item));
+
+                //    Intent intent = new Intent(getActivity(), InsertEvento.class);
+             //   intent.putExtra(id_viaje, bundle);
+               // startActivity(intent);
+
+
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -435,12 +450,39 @@ public class MainFragment extends ListFragment implements
     }
 
     @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(ListView l, View v, int position, long idc) {
         Log.i(TAG, "MainFragmentito onListItemClick SEIS");
+        //////////////////esto funciona para una variable:
+        Log.d(TAG, "onListItemClick(.-----..) -> id_viaje: = " + id_viaje);
+
+
+        Bundle bundle = new Bundle();
+       getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
+                .putExtra(ViajesContract.CategoriasEntry.CAT_ID, idc) // este pasa bien el idcateg
+                .putExtra("idv", id_viaje));
+       // );
+/*
+        Bundle bundle = new Bundle();
+        Intent inten = new Intent(getActivity(), InsertEvento.class);
+        inten.putExtra(id_viaje, bundle);
+        startActivity(inten);
+        */
+
+
+/*
+        idviaje = Integer.parseInt(id_viaje);
+        Log.d(TAG, "onItemSelected(.adaspter id viajes..) -> id_viaje: = " + idviaje);
+
+
         getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
-                .putExtra(ViajesContract.CategoriasEntry.CAT_ID, id)
-          //      .putExtra(ViajesContract.ViajesEntry.V_ID, id_viaje)
-        );
+        .putExtra(ViajesContract.ViajesEntry.V_ID, idviaje));
+*/
+       // getActivity().startActivity(intn);
+        //intent.putExtra(ViajesContract.CategoriasEntry.CAT_ID, id);
+
+
+
+
     }
 
     public void iraNouViaje(View view) {

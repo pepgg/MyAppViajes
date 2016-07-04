@@ -89,12 +89,14 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     public int fecha1;
     static final int DATE_DIALOG = 0;
     Calendar c = Calendar.getInstance();
-    private long id_categ;
-    long idcat;
+    //private long id_categ;
+    long id_categ;
+    //long idcat;
     private String id_modopag;
     private String id_monedas;
     private String nomFoto;
-    private long idviaje;
+    private String idviaje;
+    private String id_viaj;
     public Float valorMon;
     public int kmparcial;
     public Float totaleuros;
@@ -126,15 +128,16 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        id_categ = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
         setHasOptionsMenu(true);
-        idviaje = getActivity().getIntent().getLongExtra(ViajesContract.ViajesEntry.V_ID, -1);
-        nomFoto = "";
-            Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un poquitokkkkkkkkkkkkkkkkkkkkk idCAT: " + id_categ); // lo tienexxxxxxxxbvn
+        id_categ = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
+      //  id_categ = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
+        id_viaj =  getActivity().getIntent().getStringExtra("idv");
+
+            Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un jjkkkkkkkkkkkkkkkkkk idCAT: " + id_categ); // lo tienexxxxxxxxbvn
         //idViaje();
-            Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un <<<<<<<<<<<<ID-------Viaje: " + idviaje); // lo tiene bien ?
+            Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un <<<<<<<<<<<<ID-------Viaje: " + id_viaj); // lo tiene bien ?
 
-
+        nomFoto = "";
         //Si no existe crea la carpeta donde se guardaran las fotos
         file.mkdirs();
         botEuros = false; // por omisión, no se clica el boton
@@ -189,7 +192,7 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         valoracio = (RatingBar) view.findViewById(R.id.ratingBar);
         comentaris = (EditText) view.findViewById(R.id.coment);
 
-        idcat = id_categ;
+      //  idcat = id_categ;
 
         String midate = (DateFormat.format("dd-MM-yyyy", new java.util.Date()).toString());
             Log.d(TAG, "onCreateView(.EV..) -> fechh222222222222222222a: = " + midate);
@@ -523,7 +526,7 @@ public Float valMoneda() {
             int id_viaj = cur.getColumnIndex(ViajesContract.ViajesEntry.V_ID);
             do
             {
-                idviaje = cur.getInt(id_viaj) ;
+                idviaje = cur.getString(id_viaj) ;
                // Log.i(TAG, "ennnnnn IDVIAJE: idviaje: " + idviaje);
             } while (cur.moveToNext());
         }
@@ -700,8 +703,8 @@ private void onLoadFinishedModopag(Cursor data) {
             values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
         }
 
-        values.put(ViajesContract.EventosEntry.E_IDV, idviaje);
-        values.put(ViajesContract.EventosEntry.E_IDCGT, idcat);
+        values.put(ViajesContract.EventosEntry.E_IDV, id_viaj);
+        values.put(ViajesContract.EventosEntry.E_IDCGT, id_categ);
         values.put(ViajesContract.EventosEntry.E_DATAH, datae.getText().toString());
         //if (kmactual.getText().toString() == null) {
 

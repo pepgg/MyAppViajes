@@ -2,6 +2,7 @@ package gg.pp.myappviajes.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 
 import gg.pp.myappviajes.R;
@@ -10,10 +11,20 @@ import gg.pp.myappviajes.R;
  * Created by pepe on 14/03/16.
  */
 public class InsertEvento extends AppCompatActivity {
+
+    public static final String TAG = "En InsertEvento: ";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String id_viaje = "";
+           Bundle bundle = getIntent().getExtras();
+
+            String id_viaj = getIntent().getStringExtra("idv");
+
+        Log.i(TAG, "MainFragmentito onListItemClick SEIS " + id_viaj); //lo tengo
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
