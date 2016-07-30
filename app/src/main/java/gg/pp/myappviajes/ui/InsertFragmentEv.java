@@ -166,29 +166,24 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         nomcateg = (TextView) view.findViewById(R.id.categor_input);
         nombre = (EditText) view.findViewById(R.id.nom_e);
         descripcio = (EditText) view.findViewById(R.id.descripcio_e);
-
         precio = (EditText) view.findViewById(R.id.preu_e);
-
         modpag = (Spinner) view.findViewById(R.id.spinner_mod_pag);
         totaleur = (TextView) view.findViewById(R.id.total_eur);
         monedas = (Spinner) view.findViewById(R.id.spinner_moned);
         eur = (Button) view.findViewById(R.id.tot_eur);
         datae = (Button) view.findViewById(R.id.fecha_e);
         fotoe = (Button) view.findViewById(R.id.foto_e);
-
         direccio = (EditText) view.findViewById(R.id.direccio);
         cp = (EditText) view.findViewById(R.id.cp);
         ciudad = (EditText) view.findViewById(R.id.ciudad);
         telef = (EditText) view.findViewById(R.id.telef);
         mail = (EditText) view.findViewById(R.id.mail);
         web = (EditText) view.findViewById(R.id.web);
-
         gps = (Button) view.findViewById(R.id.gps);
         longi = (TextView) view.findViewById(R.id.longitud);
         latit = (TextView) view.findViewById(R.id.latitud);
         altit = (TextView) view.findViewById(R.id.altitud);
         kmactual = (EditText) view.findViewById(R.id.Km_p);
-
         valoracio = (RatingBar) view.findViewById(R.id.ratingBar);
         comentaris = (EditText) view.findViewById(R.id.coment);
 
@@ -233,6 +228,22 @@ public class InsertFragmentEv extends android.support.v4.app.Fragment implements
         });
 
             Log.i(TAG, "InsertFragmentTT T TT onCreateView 139 un poquito: " + id_categ); //Si lo tiene
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         fotoe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

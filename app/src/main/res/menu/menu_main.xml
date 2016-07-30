@@ -57,4 +57,9 @@
         android:orderInCategory="2"
         app:showAsAction="ifRoom"
         android:icon="@mipmap/ic_delete"/>
+    <item android:id="@+id/action_vermapa"
+        android:title="@string/action_vermapa"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/ic_delete"/>
 </menu>

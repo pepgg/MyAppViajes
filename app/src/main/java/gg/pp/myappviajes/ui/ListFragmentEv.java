@@ -35,7 +35,7 @@ import gg.pp.myappviajes.modelo.ViajesContract;
 public class ListFragmentEv extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static final String TAG = "En ListFragmentCt: ";
+    public static final String TAG = "En ListFragmentEv: ";
     /**
      * Adaptador
      */
@@ -51,6 +51,7 @@ public class ListFragmentEv extends ListFragment implements
     String miTabla;
     private long id_categ;
     String idCate;
+    String esEdit;
     private static final int INSERT_CT = Menu.FIRST; //INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
     private static final int EDIT_EV = Menu.FIRST + 1;
     private static final int DELET_CT = Menu.FIRST + 2;
@@ -272,7 +273,8 @@ public class ListFragmentEv extends ListFragment implements
                 AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                     Log.i(TAG, "En onContextItemSelected Edit: " + infoEd.id);
                 Intent intent = new Intent(getActivity(), EditEv.class);
-                intent.putExtra(ViajesContract.EventosEntry.E_ID, infoEd.id);
+                intent.putExtra(ViajesContract.EventosEntry.E_ID, infoEd.id)
+                      .putExtra(esEdit, true);
                     Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
                 startActivityForResult(intent, EDIT_EV);
                 return true;

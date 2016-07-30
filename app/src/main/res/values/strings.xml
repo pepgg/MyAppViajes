@@ -81,7 +81,13 @@
     <string name="importing">Importando...</string>
     <string name="error_permission_gps">Problemas con los permisos de uso del GPS</string>
     <string name="foto_e">Foto</string>
-    <string name="list_event">Lista eventos</string>
+    <string name="list_event">Lista eventos</string>Primero tienes que escribir el precio...
+    <string name="sin_precio">Primero tienes que escribir el precio...</string>
+    <string name="action_vermapa">Ver mapa</string>
+    <string name="map">mapa</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
 

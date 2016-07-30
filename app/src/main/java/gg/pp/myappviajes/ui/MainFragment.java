@@ -1,9 +1,11 @@
 package gg.pp.myappviajes.ui;
 
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -48,7 +50,7 @@ public class MainFragment extends ListFragment implements
     private String nombreViaje;
     private int idviaje;
     private String id_viaje;
- //   private String id_categ;
+    private String id_categ;
     private long idcate;
     private Float totaGasto;
     private int kmini;
@@ -270,24 +272,32 @@ public class MainFragment extends ListFragment implements
         nomViaje.setAdapter(viajeActAdapter);
 
         nomViaje.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Log.d(TAG, "onItemSelected id_viaje -> position: " + position + " id: = " + id);
                 Cursor nomv = (Cursor) parent.getItemAtPosition(position);
                 id_viaje = nomv.getString(nomv.getColumnIndexOrThrow(ViajesContract.ViajesEntry.V_ID));
-                idviaje = Integer.valueOf(id_viaje);
+                //idviaje = Integer.valueOf(id_viaje);
                         Log.d(TAG, "onItemSelected(.adaspter id viajes..) -> id_viaje: = " + id_viaje);
 
 
 
-               // Bundle bundle = new Bundle();
-              //  String Item = getArguments().getString(ViajesContract.ViajesEntry.V_ID, id_viaje);
-             //   bundle.putInt(ViajesContract.ViajesEntry.V_ID, Integer.parseInt(Item));
+             //   Bundle bundle = new Bundle();
 
-                //    Intent intent = new Intent(getActivity(), InsertEvento.class);
-             //   intent.putExtra(id_viaje, bundle);
-               // startActivity(intent);
+            //    getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
+             //           .putExtra("iv", id_viaje) // este pasa bien el idcateg
+                      //  .putExtra("lt", latitu)
+                      //  .putExtra("dt", datafot)
+            //    );
+                /*
+                String Item = getArguments().getString(ViajesContract.ViajesEntry.V_ID, id_viaje);
+                bundle.putInt(ViajesContract.ViajesEntry.V_ID, Integer.parseInt(Item));
 
+                    Intent intent = new Intent(getActivity(), InsertEvento.class);
+                intent.putExtra(id_viaje, bundle);
+                startActivity(intent);
+*/
 
 
             }
@@ -389,6 +399,10 @@ public class MainFragment extends ListFragment implements
                  Intent i = new Intent(getActivity(), Import.class);
                  startActivity(i);
                 return true;
+            case R.id.action_vermapa:
+                Intent it = new Intent(getActivity(), FirstMapActivity.class);
+                startActivity(it);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -458,8 +472,9 @@ public class MainFragment extends ListFragment implements
 
         Bundle bundle = new Bundle();
        getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
-                .putExtra(ViajesContract.CategoriasEntry.CAT_ID, idc) // este pasa bien el idcateg
-                .putExtra("idv", id_viaje));
+               .putExtra(ViajesContract.CategoriasEntry.CAT_ID, idc) // este pasa bien el idcateg
+             //  .putExtra("idc", id_categ)
+               .putExtra("idv", id_viaje));
        // );
 /*
         Bundle bundle = new Bundle();
