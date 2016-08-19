@@ -188,8 +188,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.DetailActivity" />
         </activity>
-        <activity android:name=".exportimport.ExportImport"></activity>
-        <activity android:name=".ui.FirstMapActivity"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+        <activity
+            android:name=".exportimport.ExportImport">
+        </activity>
+        <activity
+            android:name=".ui.FirstMapActivity"
+            android:parentActivityName=".ui.MainActivity">
+
+        </activity>
+        <activity
+            android:name=".ui.PolylineActivity"
+            android:parentActivityName=".ui.MainActivity">
+
+        </activity>
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data
             android:name="com.google.android.gms.version"

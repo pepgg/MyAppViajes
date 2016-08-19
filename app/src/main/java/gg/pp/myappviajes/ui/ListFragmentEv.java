@@ -218,9 +218,22 @@ public class ListFragmentEv extends ListFragment implements
     @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long id) {
         //Log.i(TAG, " onListItemClick ===> id: " + id);
-        getActivity().startActivity(new Intent(getActivity(), EditEv.class)
-                .putExtra(ViajesContract.EventosEntry.E_ID, id));
+        ///quito lo que sigue:
+    ///    getActivity().startActivity(new Intent(getActivity(), EditEv.class).putExtra(ViajesContract.EventosEntry.E_ID, id));
         ///////////////
+
+
+      //  AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) .getMenuInfo();
+        Log.i(TAG, "En onContextItemSelected Edit: " + id);
+        Intent intent = new Intent(getActivity(), EditEv.class);
+        intent.putExtra(ViajesContract.EventosEntry.E_ID, id)
+                .putExtra(esEdit, true);
+        Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + id);
+        startActivityForResult(intent, EDIT_EV);
+
+
+
+
         /*
         AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 Log.i(TAG, "En onContextItemSelected Edit: " + infoEd.id);

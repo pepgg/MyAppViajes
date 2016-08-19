@@ -50,7 +50,8 @@ import static android.view.View.OnClickListener;
 
 /**
  * Fragment con formulario de EDIción de eventos */
-public class EditFragmentEv extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnClickListener {
+public class EditFragmentEv extends android.support.v4.app.Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor>, OnClickListener {
 
     private static final String[] INITIAL_PERMS={
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -438,7 +439,9 @@ public Float valMoneda() {
 
         } while (cur.moveToNext());
     }
-
+    if (!cur.isClosed()){
+        cur.close();
+    }
     return valorMon;
 }
 
@@ -467,6 +470,9 @@ public Float valMoneda() {
                // Log.i(TAG, "ennnnnn IDVIAJE: idviaje: " + idviaje);
             } while (cur.moveToNext());
         }
+        if (!cur.isClosed()){
+            cur.close();
+        }
         return String.valueOf(idviaje);
     }
     public int kmParcial() {
@@ -493,6 +499,9 @@ public Float valMoneda() {
             Log.i(TAG, "en kmParcial() hay " + numkm + " el valor de kmparcial es: " + kmparcial);
 
             // } while (cur.moveToLast());
+        }
+        if (!cur.isClosed()){
+            cur.close();
         }
         return kmparcial;
     }
@@ -840,6 +849,11 @@ private void onLoadFinishedModopag(Cursor data) {
             Log.d(TAG, "-688-----totaleurrrrrrrrr botEur verdadero es:<> " + botEuros  + precio.getText().toString()  );
             values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
         }
+        if  (latit.getText().toString() == "Latitud: (sin_datos)"){
+            latit.setText("");
+            longi.setText("");
+            altit.setText("");
+        }
         values.put(ViajesContract.EventosEntry.E_DATAH, datae.getText().toString());
         values.put(ViajesContract.EventosEntry.E_KMP, kmactual.getText().toString());
         values.put(ViajesContract.EventosEntry.E_NOM, nombre.getText().toString());
@@ -881,6 +895,11 @@ private void onLoadFinishedModopag(Cursor data) {
         if (botEuros == true) {
             Log.d(TAG, "-688-----totaleurrrrrrrrr botEur verdadero es:<> " + botEuros  + precio.getText().toString()  );
             values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
+        }
+        if  (latit.getText().toString() == "Latitud: (sin_datos)"){
+            latit.setText("");
+            longi.setText("");
+            altit.setText("");
         }
         values.put(ViajesContract.EventosEntry.E_IDV, id_viaj);
         values.put(ViajesContract.EventosEntry.E_IDCGT, id_categ);

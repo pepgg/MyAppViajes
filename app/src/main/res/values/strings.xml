@@ -83,7 +83,7 @@
     <string name="foto_e">Foto</string>
     <string name="list_event">Lista eventos</string>Primero tienes que escribir el precio...
     <string name="sin_precio">Primero tienes que escribir el precio...</string>
-    <string name="action_vermapa">Ver mapa</string>
+    <string name="action_vermapa">Mapa del viaje</string>
     <string name="map">mapa</string>
 
     <!-- TODO: Remove or change this placeholder text -->

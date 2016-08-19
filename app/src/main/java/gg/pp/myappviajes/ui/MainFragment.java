@@ -63,7 +63,6 @@ public class MainFragment extends ListFragment implements
     public static final int LOADER_MCATEG = 1; // Loader identifier for Categorias
     public static final int LOADER_MVIAJE = 2; // Loader identifier for Viajes
 
-
     public MainFragment() {
         // Required empty public constructor
     }
@@ -74,7 +73,6 @@ public class MainFragment extends ListFragment implements
 
         // Habilitar al fragmento para contribuir en la action bar
         setHasOptionsMenu(true);         /////añado esto por la barra de titulo y actionbar
-
         nombrViaje();
             Log.i(TAG, "MainFragmentito OnCrete 61 NOMBRE VIAJE " + nombreViaje); //si este está bien
         viajesAct();
@@ -99,7 +97,7 @@ public class MainFragment extends ListFragment implements
     private Float totaGast() {
         String[] projection = new String[] {"sum(" + ViajesContract.EventosEntry.E_TOT + ")"
         };
-// la consulta
+        // la consulta
         Cursor cursar = getActivity().getContentResolver().query(
                 ViajesContract.EventosEntry.URI_CONTENIDO,
                 projection, //Columnas a devolver
@@ -111,6 +109,11 @@ public class MainFragment extends ListFragment implements
         Log.i(TAG, "ennnnnn TOTAGAST: idviaje: 89 moveToFirst");
             int to_gast = cursar.getInt(0);
             totaGasto = Float.valueOf(to_gast); //
+
+        if (!cursar.isClosed()){
+            cursar.close();
+        }
+
             return Float.valueOf(totaGasto);
     }
     public String nombrViaje() {
@@ -132,6 +135,9 @@ public class MainFragment extends ListFragment implements
             int id_viaj = cu.getColumnIndex(ViajesContract.ViajesEntry.V_NOM);
             nombreViaje = cu.getString(id_viaj) ; //
         }
+        if (!cu.isClosed()){
+            cu.close();
+        }
         return nombreViaje;
     }
     public String viajesAct() {
@@ -152,6 +158,9 @@ public class MainFragment extends ListFragment implements
             int id_viaj = c.getColumnIndex(ViajesContract.ViajesEntry.V_ID);
             idviaje = c.getInt(id_viaj) ;
         }
+        if (!c.isClosed()){
+            c.close();
+        }
         return String.valueOf(idviaje);
     }
 
@@ -171,6 +180,9 @@ public class MainFragment extends ListFragment implements
         {
             int kminici = c.getColumnIndex(ViajesContract.ViajesEntry.V_KMIN);
             kmini = c.getInt(kminici) ;
+        }
+        if (!c.isClosed()){
+            c.close();
         }
         return kmini;
     }
@@ -196,6 +208,9 @@ public class MainFragment extends ListFragment implements
                     Log.i(TAG, "ennnnnn KMACTUAL 204: " + kmactu);
         }
                     Log.i(TAG, "ennnnnn KMACTUAL 214: " + kmactu);
+        if (!c.isClosed()){
+            c.close();
+        }
         return kmactu;
     }
 
@@ -254,7 +269,7 @@ public class MainFragment extends ListFragment implements
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.layout_provi, container, false);
 
-        //inicialica instancia los elementos del View: nomViaje totalKm totalGast btnViajes
+        //inicializa instancia los elementos del View: nomViaje totalKm totalGast btnViajes
         btnViajes = (Button) view.findViewById(R.id.buttnviaje);
         nomViaje = (Spinner) view.findViewById(R.id.spinner_nom_viaje);
         totalKm = (TextView) view.findViewById(R.id.totalkm);
@@ -281,25 +296,6 @@ public class MainFragment extends ListFragment implements
                 //idviaje = Integer.valueOf(id_viaje);
                         Log.d(TAG, "onItemSelected(.adaspter id viajes..) -> id_viaje: = " + id_viaje);
 
-
-
-             //   Bundle bundle = new Bundle();
-
-            //    getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
-             //           .putExtra("iv", id_viaje) // este pasa bien el idcateg
-                      //  .putExtra("lt", latitu)
-                      //  .putExtra("dt", datafot)
-            //    );
-                /*
-                String Item = getArguments().getString(ViajesContract.ViajesEntry.V_ID, id_viaje);
-                bundle.putInt(ViajesContract.ViajesEntry.V_ID, Integer.parseInt(Item));
-
-                    Intent intent = new Intent(getActivity(), InsertEvento.class);
-                intent.putExtra(id_viaje, bundle);
-                startActivity(intent);
-*/
-
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -314,20 +310,7 @@ public class MainFragment extends ListFragment implements
         // Iniciar Loader
         getLoaderManager().initLoader(LOADER_MCATEG, null, this);
         getLoaderManager().initLoader(LOADER_MVIAJE, null, this);
-/*
-        ImageButton fab = (ImageButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getActivity()
-                                .startActivity(
-                                        new Intent(getActivity(), ListCt.class)
-                                );
-                    }
 
-                });
-*/
         Button button = (Button) view.findViewById(R.id.buttnviaje);
         button.setOnClickListener(
                 new View.OnClickListener() {
@@ -335,9 +318,7 @@ public class MainFragment extends ListFragment implements
                     public void onClick(View v) {
                         getActivity()
                                 .startActivity(
-                                        //////////////////////////////////////////////////
-                                        new Intent(getActivity(), InsertViaje.class)
-                                        //////////////////////////////////////////////////
+                                       new Intent(getActivity(), InsertViaje.class)
                                 );
                     }
                 });
@@ -400,7 +381,10 @@ public class MainFragment extends ListFragment implements
                  startActivity(i);
                 return true;
             case R.id.action_vermapa:
-                Intent it = new Intent(getActivity(), FirstMapActivity.class);
+                Intent it = new Intent(getActivity(), PolylineActivity.class);
+                it.putExtra("idv", String.valueOf(id_viaje));
+
+
                 startActivity(it);
                 return true;
             default:

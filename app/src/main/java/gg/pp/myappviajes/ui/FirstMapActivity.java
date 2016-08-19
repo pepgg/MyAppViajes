@@ -24,41 +24,52 @@ public class FirstMapActivity extends AppCompatActivity
     private Double latitu;
     private String datafot;
     private String nombr;
+    private String idviaj;
+
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-  ///  private GoogleApiClient client;
+ ///   private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        longitu = Double.valueOf(getIntent().getStringExtra("lg"));
-        latitu = Double.valueOf(getIntent().getStringExtra("lt"));
-        datafot = getIntent().getStringExtra("dt");
-        nombr =  getIntent().getStringExtra("nb");
+       // longitu = Double.valueOf(getIntent().getStringExtra("lg"));
+       // latitu = Double.valueOf(getIntent().getStringExtra("lt"));
+       // datafot = getIntent().getStringExtra("dt");
+       // nombr =  getIntent().getStringExtra("nb");
+        idviaj = getIntent().getStringExtra("idv");
+if (idviaj != null){
+    Log.i(TAG, "idviaje 46 " + idviaj); // lo tiene
+} else {
+    longitu = Double.valueOf(getIntent().getStringExtra("lg"));
+    latitu = Double.valueOf(getIntent().getStringExtra("lt"));
+    datafot = getIntent().getStringExtra("dt");
+    nombr = getIntent().getStringExtra("nb");
 
-        Log.i(TAG, "longitu 34 " + longitu);
-        Log.i(TAG, "latitu 34 " + latitu);
-        Log.i(TAG, "datafot 34 " + datafot);
-        Log.i(TAG, "latitu 34 " + nombr);
+    Log.i(TAG, "longitu 34 " + longitu);
+    Log.i(TAG, "latitu 34 " + latitu);
+    Log.i(TAG, "datafot 34 " + datafot);
+    Log.i(TAG, "latitu 34 " + nombr);
 
-        setContentView(R.layout.activity_first_map);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    setContentView(R.layout.activity_first_map);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mFirstMapFragment = FirstMapFragment.newInstance();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.map_container, mFirstMapFragment)
-                .commit();
+    mFirstMapFragment = FirstMapFragment.newInstance();
+    getSupportFragmentManager()
+            .beginTransaction()
+            .add(R.id.map_container, mFirstMapFragment)
+            .commit();
 
-        // Registrar escucha onMapReadyCallback
-        mFirstMapFragment.getMapAsync(this);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-    ///    client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    // Registrar escucha onMapReadyCallback
+    mFirstMapFragment.getMapAsync(this);
+    // ATTENTION: This was auto-generated to implement the App Indexing API.
+    // See https://g.co/AppIndexing/AndroidStudio for more information.
+    ///  client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+}
     }
 
     @Override
@@ -67,9 +78,12 @@ public class FirstMapActivity extends AppCompatActivity
      ///   Double longitu = 25.78101438678016;
      ///   Double latitu = 71.1697329955483;
         //datafot
+        Log.i(TAG, "longitu 70 " + longitu);
+        Log.i(TAG, "latitu 34 " + latitu);
+        Log.i(TAG, "datafot 34 " + datafot);
+        Log.i(TAG, "latitu 34 " + nombr);
 
-
-        LatLng cali = new LatLng(longitu, latitu);
+        LatLng cali = new LatLng(latitu, longitu);
         googleMap.addMarker(new MarkerOptions()
                 .position(cali)
                 .title(nombr)
@@ -88,25 +102,25 @@ public class FirstMapActivity extends AppCompatActivity
         onBackPressed();
         return super.onSupportNavigateUp();
     }
-/*
+
     @Override
     public void onStart() {
         super.onStart();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "FirstMap Page", // TODO: Define a title for the content shown.
+   ///     client.connect();
+   ///     Action viewAction = Action.newAction(
+   ///             Action.TYPE_VIEW, // TODO: choose an action type.
+   ///             "FirstMap Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
+               /// Uri.parse("http://host/path"),
                 // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://gg.pp.myappviajes.ui/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
+               /// Uri.parse("android-app://gg.pp.myappviajes.ui/http/host/path")
+    ///    );
+    ///    AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     @Override
@@ -115,18 +129,18 @@ public class FirstMapActivity extends AppCompatActivity
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "FirstMap Page", // TODO: Define a title for the content shown.
+   ///     Action viewAction = Action.newAction(
+             ///   Action.TYPE_VIEW, // TODO: choose an action type.
+            ///    "FirstMap Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
+            ///    Uri.parse("http://host/path"),
                 // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://gg.pp.myappviajes.ui/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
+           ///    Uri.parse("android-app://gg.pp.myappviajes.ui/http/host/path")
+     ///   );
+     ///   AppIndex.AppIndexApi.end(client, viewAction);
+    ///    client.disconnect();
     }
-*/
+
 }

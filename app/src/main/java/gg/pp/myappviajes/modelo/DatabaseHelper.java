@@ -205,7 +205,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO mpago (mpago) VALUES ('visaing')");
         Log.i(TAG, "insertado en la tabla " + TABLE_MPAG);
 
-        db.execSQL("INSERT INTO monedas (nom, valor) VALUES ('GBP', '1,4')");
+        db.execSQL("INSERT INTO monedas (nom, valor) VALUES ('EUR', '1')");
         db.execSQL("INSERT INTO monedas (nom, valor) VALUES ('NOK', '1,6')");
         db.execSQL("INSERT INTO monedas (nom, valor) VALUES ('SEK', '1,2')");
         db.execSQL("INSERT INTO monedas (nom, valor) VALUES ('DNK', '0,4')");
