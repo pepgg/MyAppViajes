@@ -70,7 +70,7 @@
         </activity>
         <activity
             android:name=".ui.ListCt"
-            android:label="@string/description_input"
+            android:label="@string/menu_categor"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -78,7 +78,7 @@
         </activity>
         <activity
             android:name=".ui.ListVi"
-            android:label="@string/description_input"
+            android:label="@string/menu_viajes"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -86,7 +86,7 @@
         </activity>
         <activity
             android:name=".ui.ListEv"
-            android:label="@string/description_input"
+            android:label="@string/menu_eventos"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -110,7 +110,7 @@
         </activity>
         <activity
             android:name=".ui.EditVi"
-            android:label="@string/categor_label"
+            android:label="@string/nuevo_viaje"
             android:parentActivityName=".ui.ListCt">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -142,7 +142,7 @@
         </activity>
         <activity
             android:name=".ui.EditEv"
-            android:label="@string/menu_tipov"
+            android:label="@string/menu_eventos"
             android:parentActivityName=".ui.ListCt">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -182,7 +182,7 @@
         </activity>
         <activity
             android:name=".exportimport.Import"
-            android:label="@string/menu_export"
+            android:label="@string/menu_import"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

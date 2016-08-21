@@ -432,10 +432,6 @@ public class MainFragment extends ListFragment implements
         totaGast();
         totaKM();
 
-        ////////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        ///nomViaje.setText(nombreViaje);
-        ////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
         totalKm.setText(strKmp);
         totalGast.setText(totaGasto.toString());
 
@@ -450,7 +446,6 @@ public class MainFragment extends ListFragment implements
     @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long idc) {
         Log.i(TAG, "MainFragmentito onListItemClick SEIS");
-        //////////////////esto funciona para una variable:
         Log.d(TAG, "onListItemClick(.-----..) -> id_viaje: = " + id_viaje);
 
 
@@ -459,30 +454,7 @@ public class MainFragment extends ListFragment implements
                .putExtra(ViajesContract.CategoriasEntry.CAT_ID, idc) // este pasa bien el idcateg
              //  .putExtra("idc", id_categ)
                .putExtra("idv", id_viaje));
-       // );
-/*
-        Bundle bundle = new Bundle();
-        Intent inten = new Intent(getActivity(), InsertEvento.class);
-        inten.putExtra(id_viaje, bundle);
-        startActivity(inten);
-        */
-
-
-/*
-        idviaje = Integer.parseInt(id_viaje);
-        Log.d(TAG, "onItemSelected(.adaspter id viajes..) -> id_viaje: = " + idviaje);
-
-
-        getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
-        .putExtra(ViajesContract.ViajesEntry.V_ID, idviaje));
-*/
-       // getActivity().startActivity(intn);
-        //intent.putExtra(ViajesContract.CategoriasEntry.CAT_ID, id);
-
-
-
-
-    }
+           }
 
     public void iraNouViaje(View view) {
         Log.i(TAG, "Ahora en iraNouViaje de MainViajes) ");
@@ -517,7 +489,7 @@ public class MainFragment extends ListFragment implements
     }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        //   Intent intent;
+
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch(item.getItemId()) {
             /*

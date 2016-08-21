@@ -50,9 +50,9 @@ public class ListFragmentCt extends ListFragment implements
     String nomTabla;
     String miTabla;
 
-    private static final int INSERT_CT = Menu.FIRST; //INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
-    private static final int EDIT_CT = Menu.FIRST + 1;
-    private static final int DELET_CT = Menu.FIRST + 2;
+    private static final int INSERT_CT = Menu.FIRST; //en la barra con el icono +
+    private static final int EDIT_CT = Menu.FIRST + 1;  //menú contextual con clic prolongado
+    private static final int DELET_CT = Menu.FIRST + 2;  //menú contextual
 
     public ListFragmentCt() {
         // Required empty public constructor
@@ -64,12 +64,12 @@ public class ListFragmentCt extends ListFragment implements
         setHasOptionsMenu(true);
 
                 Log.i(TAG, "MainFragmento OnCrete  TRES");
-/*
+
 //////////////////////////El nombre de la tabla: /////////////////////////////////////////////////////
         nomTabla = getActivity().getIntent().getStringExtra("NombreTabla");
                 Log.i(TAG, " OnCrete view T4444444444444444444444444RES  " + nomTabla);
 //////////////////////////////////////////////////////////////////////////
-*/
+
         adaptador = new ActivitiesAdapter(getActivity());
                 // Relacionar adaptador a la lista
         setListAdapter(adaptador);
@@ -104,7 +104,7 @@ public class ListFragmentCt extends ListFragment implements
         //
         super.onCreateOptionsMenu(menu, inflater);
     }
-    //esto es para el menú de la barra, que aquí solo hay el hoe y el discard
+    //esto es para el menú de la barra, que aquí solo hay el home y el discard
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

@@ -62,8 +62,8 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
     };
     private static final int INITIAL_REQUEST=1337;
     private static final int LOCATION_REQUEST=INITIAL_REQUEST+1;
-    /**
-     * Views del formulario     */
+
+    /*     * Views del formulario     */
 
     Context mContext;
 
@@ -153,15 +153,8 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
             Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un <<<<<<<<<<<<ID-------Viaje: " + id_viaj); // lo tiene bien ?
         }
 
-
-
-
-
         nomFoto = "";
             Log.i(TAG, "Viajecitosssssss EDITFragmentEV  onCreate un poquitokkkkkkkkkkkkkkkkkkkkk idCAT: " + id_categ); // lo tienexxxxxxxxbvn
-       // idViaje();
-            // Log.i(TAG, "Viajecitosssssss EDITFragmentEV  onCreate un <<<<<<<<<<<<ID-------Viaje: " + idviaje); //lo tengo
-
 
         //Si no existe crea la carpeta donde se guardaran las fotos
         file.mkdirs();
@@ -288,7 +281,6 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
         });
 //////////// >>>>>>>>>>>>>>>>>>>>>>>>><los spinnerssssssssssssssssssssssssss modopag, monedas
 
-       // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         return view;
     }
     ///////////////////////////la fecha/////////////////////////////////////////////////
@@ -387,8 +379,6 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
                         LocationManager.GPS_PROVIDER, 10000, 0, locListener);
     }
 
-
-
 private void mostrarMapa(){
     String longitu= longi.getText().toString();
     String latitu= latit.getText().toString();
@@ -407,13 +397,7 @@ private void mostrarMapa(){
             .putExtra("nb", nombr)
             .putExtra("dt", datafot));
 
-
-   // Intent it = new Intent(getActivity(), FirstMapActivity.class);
-    //startActivity(it);
-
 }
-
-
 
 public Float valMoneda() {
    // valorMon = Float.valueOf(1);
@@ -539,8 +523,6 @@ public Float valMoneda() {
         String nom_text = i.getStringExtra(ViajesContract.EventosEntry.E_NOM);
         Log.i(TAG, "ViajecitosssssssInsertFrag   113 updateView El nombre: " + nom_text); //llega null, porque no lo he buscado con una consulta
 
-
-/// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<
         ////// hay que darles el valor que tenian
         //aqui Modopago
         mModPagAdapter = new SimpleCursorAdapter(

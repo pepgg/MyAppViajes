@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
 import gg.pp.myappviajes.R;
-// no lo uso =========================================================
+// SI lo uso =========================================================
 public class DetailActivity extends AppCompatActivity {
 
     @Override

@@ -36,14 +36,10 @@ public class ListFragmentEv extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = "En ListFragmentEv: ";
-    /**
-     * Adaptador
-     */
+    /**      * Adaptador     */
     private ActivitiesAdapterEv adaptador;
 
-    /**
-     * Views del formulario
-     */
+    /**     * Views del formulario     */
     private TextView categoria;
     private TextView valormoneda;
 
@@ -52,9 +48,9 @@ public class ListFragmentEv extends ListFragment implements
     private long id_categ;
     String idCate;
     String esEdit;
-    private static final int INSERT_CT = Menu.FIRST; //INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
-    private static final int EDIT_EV = Menu.FIRST + 1;
-    private static final int DELET_CT = Menu.FIRST + 2;
+    private static final int INSERT_EV = Menu.FIRST; //En la barra icon +
+    private static final int EDIT_EV = Menu.FIRST + 1; //contextuales
+    private static final int DELET_EV = Menu.FIRST + 2;
 
     public ListFragmentEv() {
         // Required empty public constructor
@@ -66,20 +62,8 @@ public class ListFragmentEv extends ListFragment implements
         setHasOptionsMenu(true);
 
                 Log.i(TAG, "MainFragmento OnCrete  TRES");
-
-        ///////////aquí mira si es todos los eventos o los de uma categoria:::::::>>>
         idCate = getActivity().getIntent().getStringExtra( "idCategoria" ) ;
-        if (idCate != ""){
-
-        }
-
-        Log.i(TAG, " OnCrete view 78 idCATEGORIAAAAAAAAA  " + idCate); //lo tengo<<<<<<<<<<<<<<>>
-        //////////
-        //
-        // aquí me falta el if que separe si todos lo registros o solo los de la _idcat = idCate
-        //
-        //
-        // ////
+             Log.i(TAG, " OnCrete view 78 idCATEGORIAAAAAAAAA  " + idCate); //lo tengo<<<<<<<<<<<<<<>>
 
         adaptador = new ActivitiesAdapterEv(getActivity());
                 // Relacionar adaptador a la lista
@@ -114,7 +98,7 @@ public class ListFragmentEv extends ListFragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
     }
-    //esto es para el menú de la barra, que aquí solo hay el home y el discard
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -130,10 +114,6 @@ public class ListFragmentEv extends ListFragment implements
                 intent.putExtra("NombreTabla", nomTabla);
                 startActivity(intent);
                 return true;
-            //case R.id.action_delete:
-            //    deleteData(id); // Eliminar
-            //    getActivity().finish();
-            //    return true;
             case R.id.action_discard:
                 getActivity().finish();
                 return true;
@@ -147,8 +127,7 @@ public class ListFragmentEv extends ListFragment implements
         getActivity().getContentResolver().delete(uri, null, null); //funciona
     }
     /**
-     * Envía todos los datos de la actividad hacia el formulario
-     * de actualización
+     * Envía todos los datos de la actividad hacia el formulario de actualización
      */
     private void beginUpdate() {
         /*
@@ -164,9 +143,6 @@ public class ListFragmentEv extends ListFragment implements
         // Obtención de valores actuales
         ContentValues values = new ContentValues();
         values.put(ViajesContract.EventosEntry.E_NOM, categoria.getText().toString());
-    //    values.put(TechsContract.Columnas.PRIORIDAD, prioridad.getSelectedItem().toString());
-    //    values.put(TechsContract.Columnas.DESCRIPCION, descripcion.getText().toString());
-
         getActivity().getContentResolver().insert(
                 ViajesContract.URI_BASE,
                 values
@@ -186,8 +162,8 @@ public class ListFragmentEv extends ListFragment implements
                 null,                                        // No selection clause
                 null,                                       // No selection arguments
                 null);                                      // No selection arguments
-// if (idCate != "")
-        } else {
+
+        } else {    // solo los de la categoria idCate
             return new CursorLoader(
                     getActivity(),                              // Parent activity context
                     ViajesContract.EventosEntry.URI_CONTENIDO,  // Table to query
@@ -215,15 +191,9 @@ public class ListFragmentEv extends ListFragment implements
         registerForContextMenu(this.getListView());
     }
 
-    @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
+    @Override   //on list item click se va con el id a EditEvento
     public void onListItemClick(ListView l, View v, int position, long id) {
-        //Log.i(TAG, " onListItemClick ===> id: " + id);
-        ///quito lo que sigue:
-    ///    getActivity().startActivity(new Intent(getActivity(), EditEv.class).putExtra(ViajesContract.EventosEntry.E_ID, id));
-        ///////////////
 
-
-      //  AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) .getMenuInfo();
         Log.i(TAG, "En onContextItemSelected Edit: " + id);
         Intent intent = new Intent(getActivity(), EditEv.class);
         intent.putExtra(ViajesContract.EventosEntry.E_ID, id)
@@ -231,19 +201,6 @@ public class ListFragmentEv extends ListFragment implements
         Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + id);
         startActivityForResult(intent, EDIT_EV);
 
-
-
-
-        /*
-        AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                Log.i(TAG, "En onContextItemSelected Edit: " + infoEd.id);
-        Intent intent = new Intent(getActivity(), EditEv.class);
-        intent.putExtra(ViajesContract.EventosEntry.E_ID, infoEd.id);
-                Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
-        startActivityForResult(intent, EDIT_EV);
-       // return super.onContextItemSelected(item);
-        */
-        /////////
     }
 
     // el menu contextual, con clic prolongado
@@ -256,22 +213,9 @@ public class ListFragmentEv extends ListFragment implements
             Log.i(TAG, "En onCreateContextMenu nnnnnnnnnnnnnnouu");
         inflater.inflate(R.menu.menu_ctx_list, menu);
             Log.i(TAG, "En onCreateContextMenu doooooossssssssssss");
-
-   //     registerForContextMenu(getListView());
-     //   Log.i(TAG, "En onCreateContextMenu trrrrrrrrrrrres");
-
-        /*
-        //menu.add("Action Button");  INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
-        menu.add(0, INSERT_CT,0, R.string.afegir_mc); // afegir_mc editar_mc borrar_mc
-        menu.add(0, EDIT_CT,0, R.string.editar_mc);
-        menu.add(0, DELET_CT,0, R.string.borrar_mc);
-*/
-        //MenuItem actionItem = menu.add("Action Button");
-        //actionItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
     }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-     //   Intent intent;
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch(item.getItemId()) {
             case R.id.ctx_delete:

@@ -26,9 +26,7 @@ import gg.pp.myappviajes.modelo.ViajesContract;
 public class EditFragmentCt extends android.support.v4.app.Fragment
        // implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener
 {
-    /**
-     * Views del formulario
-     */
+    /*   * Views del formulario      */
     private EditText mNomText;
     private TextView mlabelV;
     private EditText mValor;
@@ -53,13 +51,7 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
         Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt primero onCreate un poquito: "); // aquí llega
         id_item = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
         Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  onCreate un idITEMMM: " + id_item); //llega el id del item
-/*
-        if (id_item > 0) {
-            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  el id > 0: " + id_item); //llega el id del item
-            id_item = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
-            updateView();
-        }
-        */
+
     }
 
     @Override
@@ -78,9 +70,7 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
         return view;
     }
 
-    /**
-     * Actualizar datos de la actividad
-     */
+    /*     * Actualizar datos de la actividad      */
     private void updateData() {
 
         // Unir Uri principal con identificador
@@ -89,9 +79,7 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
         Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  88 updateDATA nomcateg: " +  mNomText.getText().toString()); //lo coge biennnnn
         ContentValues values = new ContentValues();
         values.put(ViajesContract.CategoriasEntry.CAT_CGT, mNomText.getText().toString());
-/*
-        values.put(TechsContract.Columnas.PRIORIDAD, prioridad.getSelectedItem().toString());
-*/
+
         // Actualiza datos del Content Provider
         getActivity().getContentResolver().update(
                 uri,
@@ -112,8 +100,6 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
         String nom_text = i.getStringExtra(ViajesContract.CategoriasEntry.CAT_CGT);
         Log.i(TAG, "ViajecitosssssssInsertFrag   112 updateView El dato: " + ViajesContract.CategoriasEntry.CAT_CGT); // Bien. es el nombre del campo
         Log.i(TAG, "ViajecitosssssssInsertFrag   113 updateView El nombre: " + nom_text); //llega NULLLLLL por eso falla Creo que pierde el id en algun sitio
-
-        //////En techs llega perfectamente. hay que repasarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
 
         // Actualizar la vista
         mNomText.setText(nom_text);     ///////////////aquí fallllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
