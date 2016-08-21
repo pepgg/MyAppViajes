@@ -17,7 +17,7 @@ public class ActivitiesAdapterEv extends CursorAdapter {
     public ActivitiesAdapterEv(Context context) {
         super(context, null, 0);
     }
-    public static final String TAG = "En ActivitiesAdapter: ";
+    public static final String TAG = "En ActivitiesAdapterE: ";
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
