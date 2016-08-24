@@ -14,13 +14,13 @@ public class ListMp extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (getSupportActionBar() != null)
-            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
+            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_launcher);
 
         if (savedInstanceState == null) {
-            ListFragmentMn fragment = new ListFragmentMn();
+            ListFragmentMp fragment = new ListFragmentMp();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(android.R.id.content, fragment, ListFragmentMn.class.getSimpleName())
+                    .add(android.R.id.content, fragment, ListFragmentMp.class.getSimpleName())
                     .commit();
         }
     }

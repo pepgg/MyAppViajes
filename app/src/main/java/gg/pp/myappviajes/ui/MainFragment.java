@@ -26,7 +26,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import gg.pp.myappviajes.ActivitiesAdapter;
+import gg.pp.myappviajes.ActivitiesAdapterCt;
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.exportimport.Export;
 import gg.pp.myappviajes.exportimport.Import;
@@ -40,7 +40,7 @@ public class MainFragment extends ListFragment implements
 
     public static final String TAG = "En MainFragment: ";
 
-    private ActivitiesAdapter adaptador;
+    private ActivitiesAdapterCt adaptador;
     SimpleCursorAdapter viajeActAdapter;
     private static final int V_CREA = 0;
     private Spinner nomViaje;
@@ -304,7 +304,7 @@ public class MainFragment extends ListFragment implements
         });
 
         // aquí el adapter de la listaCateg
-        adaptador = new ActivitiesAdapter(getActivity());
+        adaptador = new ActivitiesAdapterCt(getActivity());
         // Relacionar adaptador a la lista
         setListAdapter(adaptador);
         // Iniciar Loader
@@ -420,7 +420,7 @@ public class MainFragment extends ListFragment implements
         totalGast.setText(totaGasto.toString());
 
         // Iniciar adaptador
-        adaptador = new ActivitiesAdapter(getActivity());
+        adaptador = new ActivitiesAdapterCt(getActivity());
         // Relacionar adaptador a la lista
         setListAdapter(adaptador);
         // Iniciar Loader
@@ -436,7 +436,7 @@ public class MainFragment extends ListFragment implements
         totalGast.setText(totaGasto.toString());
 
         // Iniciar adaptador
-        adaptador = new ActivitiesAdapter(getActivity());
+        adaptador = new ActivitiesAdapterCt(getActivity());
         // Relacionar adaptador a la lista
         setListAdapter(adaptador);
         // Iniciar Loader

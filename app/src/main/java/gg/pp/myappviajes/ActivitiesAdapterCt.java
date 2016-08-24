@@ -15,24 +15,24 @@ import gg.pp.myappviajes.modelo.ViajesContract;
 /**
  * {@link CursorAdapter} personalizado para las categorias de la pag. principal
  */
-public class ActivitiesAdapter extends CursorAdapter {
+public class ActivitiesAdapterCt extends CursorAdapter {
 
-    public ActivitiesAdapter(Context context) {
+    public ActivitiesAdapterCt(Context context) {
         super(context, null, 0);
     }
 
-    public static final String TAG = "En ActivitiesAdapter: ";
+    public static final String TAG = "En ActivitAdapterCt: ";
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-                Log.i(TAG, "enn ActivitiesAdapter bindView  " );
+                Log.i(TAG, "enn ActivitiesAdapterCt bindView  " );
         TextView categ_list = (TextView) view.findViewById(R.id.categ_list_text);
         categ_list.setText(cursor.getString(cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)));
 
-                Log.i(TAG, "enn ActivitiesAdapter bindView la getColumnIndex de: " + cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)); // esto es 1
+                Log.i(TAG, "enn ActivitiesAdapterCt bindView la getColumnIndex de: " + cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)); // esto es 1
 
-                Log.i(TAG, "enn ActivitiesAdapter bindView la getString de: " + cursor.getString(cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT))); // esto es
+                Log.i(TAG, "enn ActivitiesAdapterCt bindView la getString de: " + cursor.getString(cursor.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT))); // esto es
     }
 
     @Override

@@ -336,17 +336,7 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
                 Log.i(TAG, "Provider Status: dentron del ifff");
                 // return;
 */
-/*
-        if (!canAccessLocation() ) {
-            requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
-        }
-        private boolean canAccessLocation() {
-            return(hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
-        }
-        private boolean hasPermission(String perm) {
-            return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(perm));
-        }
-*/
+
                 Log.i(TAG, "Provider Status: fuera del ifff");
         Location loc = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 //    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener)loc);
@@ -565,23 +555,6 @@ public Float valMoneda() {
                 Cursor mon = (Cursor) parent.getItemAtPosition(position);
                 id_monedas = mon.getString(mon.getColumnIndexOrThrow(ViajesContract.MonedasEntry.MON_ID));
 
-//id_monedas = id;
-                /*
-                    Log.d(TAG, "onItemSelected(.EV..) -> id_monedas: = " + id_monedas);
-
-                    Log.d(TAG, "============ -> val moneda entrADAs: = " + precio.getText().toString());
-                Float miprecio = Float.valueOf(precio.getText().toString());
-                    Log.d(TAG, "============ -> val moneda entrADAs: = " + miprecio);
-
-                if (miprecio != 0) {
-                    valMoneda();
-                        Log.d(TAG, "onItemSelected(.EV..) -> val monedas: = " + valorMon + "ID_MONEDA: " + id_monedas);
-                        Log.d(TAG, "onItemSelected(.EV..) -> val moneda entrADAs: = " + precio.getText().toString());
-                    Float preu = Float.valueOf(precio.getText().toString());
-                    Float enEuros = valorMon * preu;
-                    totaleur.setText(String.valueOf(enEuros));
-                }
-                */
             }
 
             @Override
@@ -637,14 +610,7 @@ public Float valMoneda() {
                     }
                 });
 
-
-                //   modpag.setSelection(((ArrayAdapter<String>)mySpinner.getAdapter()).getPosition(myString));
-                // modpag.setSelection(getIndex(modpag, cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MPAG))));
-                ///////  this.modpag.setSelection(Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MPAG))));
                 Log.i(TAG, "Viajecitosssssss EditFragmentMNNNNN<<<<<<<  553 int modPag: " + Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MPAG))));
-                // if (curs != null) {
-                //this.modpag.setSelection(mp);
-                // }
 
                 totaleur.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_TOT)));
 
@@ -657,9 +623,6 @@ public Float valMoneda() {
                         monedas.setSelection(mond);
                     }
                 });
-
-
-                // this.monedas.setSelection(mond);
 
                 float valo = Float.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_VAL)));
                 valoracio.setRating(valo);
@@ -678,12 +641,7 @@ public Float valMoneda() {
             //////////////////////////////////////////////////
         }
     }
-/*
-    private int getIndex(Spinner modpag, String string) {
-        int index = 0;
-        return index;
-    }
-*/
+
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id){
             case LOADER_MODPAG:
@@ -724,48 +682,15 @@ private void onLoadFinishedModopag(Cursor data) {
     // se puede usar para deshabilitar el spinner
     Log.d(TAG, "----onLoadFinishedModopag<> "   );
     mModPagAdapter.swapCursor(data);
-    /*
-    mProvincesAdapter.swapCursor(data);
-		int rowCount = data.getCount();
-		Log.d(TAG, "onLoadFinishedProvinces(...) -> Provinces data loaded. " + rowCount + " rows available");
-		if (rowCount > 0)
-		{
-			provinces.setEnabled(true);
-		}
-		else
-		{
-			// Both Spinners (provinces and cities) must be disabled
-			provinces.setEnabled(false);
-			cities.setEnabled(false);
-		}
-    */
+
 }
     private void onLoadFinishedMonedas(Cursor data)
     {
         Log.d(TAG, "------onLoadFinishedMonedas<> "   );
         mMonedAdapter.swapCursor(data);
-        /*
-        mCitiesAdapter.swapCursor(data);
-        int rowCount = data.getCount();
-        Log.d(TAG, "onLoadFinishedCities(...) -> Cities data loaded. " + rowCount + " rows available");
-        if (rowCount > 0)
-        {
-            if (mSavedCityPosition != AdapterView.INVALID_POSITION)
-            {
-                cities.setSelection(mSavedCityPosition);
-                mSavedCityPosition = AdapterView.INVALID_POSITION;
-            }
-            else
-            {
-                cities.setSelection(0);
-            }
-            cities.setEnabled(true);
-        }
-        else
-        {
-            cities.setEnabled(false);
-        }
-        */
+
+        // cities.setEnabled(true);
+        // cities.setEnabled(false);
     }
 
     public void onLoaderReset(Loader<Cursor> loader) {

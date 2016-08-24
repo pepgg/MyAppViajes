@@ -21,13 +21,13 @@ public class ActivitiesAdapterEv extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-                Log.i(TAG, "enn ActivitiesAdapter bindView  " );
+                Log.i(TAG, "enn ActivitiesAdapterCt bindView  " );
         TextView even_list = (TextView) view.findViewById(R.id.categ_list_text);
         even_list.setText(cursor.getString(cursor.getColumnIndex(ViajesContract.EventosEntry.E_NOM)));
         TextView data_list = (TextView) view.findViewById(R.id.valor_list_text);
         data_list.setText(cursor.getString(cursor.getColumnIndex(ViajesContract.EventosEntry.E_DATAH)));
-                Log.i(TAG, "enn ActivitiesAdapter bindView la getColumnIndex de: " + cursor.getColumnIndex(ViajesContract.ViajesEntry.V_NOM)); // esto es 1
-                Log.i(TAG, "enn ActivitiesAdapter bindView la getString de: " + cursor.getString(cursor.getColumnIndex(ViajesContract.ViajesEntry.V_NOM))); // esto es
+                Log.i(TAG, "enn ActivitiesAdapterCt bindView la getColumnIndex de: " + cursor.getColumnIndex(ViajesContract.ViajesEntry.V_NOM)); // esto es 1
+                Log.i(TAG, "enn ActivitiesAdapterCt bindView la getString de: " + cursor.getString(cursor.getColumnIndex(ViajesContract.ViajesEntry.V_NOM))); // esto es
     }
 
     @Override

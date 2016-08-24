@@ -23,7 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import gg.pp.myappviajes.ActivitiesAdapter;
+import gg.pp.myappviajes.ActivitiesAdapterCt;
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
@@ -36,20 +36,16 @@ public class ListFragmentCt extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = "En ListFragmentCt: ";
-    /**
-     * Adaptador
-     */
-    private ActivitiesAdapter adaptador;
+    /**      * Adaptador     */
+    private ActivitiesAdapterCt adaptador;
 
-    /**
-     * Views del formulario
-     */
+    /**     * Views del formulario     */
     private TextView categoria;
     private TextView valormoneda;
 
     String nomTabla;
     String miTabla;
-
+    String esEdit;
     private static final int INSERT_CT = Menu.FIRST; //en la barra con el icono +
     private static final int EDIT_CT = Menu.FIRST + 1;  //menú contextual con clic prolongado
     private static final int DELET_CT = Menu.FIRST + 2;  //menú contextual
@@ -65,27 +61,15 @@ public class ListFragmentCt extends ListFragment implements
 
                 Log.i(TAG, "MainFragmento OnCrete  TRES");
 
-//////////////////////////El nombre de la tabla: /////////////////////////////////////////////////////
+//El nombre de la tabla:
         nomTabla = getActivity().getIntent().getStringExtra("NombreTabla");
                 Log.i(TAG, " OnCrete view T4444444444444444444444444RES  " + nomTabla);
-//////////////////////////////////////////////////////////////////////////
 
-        adaptador = new ActivitiesAdapter(getActivity());
+        adaptador = new ActivitiesAdapterCt(getActivity());
                 // Relacionar adaptador a la lista
         setListAdapter(adaptador);
                 // Iniciar Loader
         getLoaderManager().initLoader(0, null, this);
-    //    registerForContextMenu(categ_list_text);
-      //  registerForContextMenu(list_categor);
-/*
-
-* el menu contextual deberia ser así:
-  //Obtenemos las referencias a los controles
-    lblMensaje = (TextView)findViewById(R.id.LblMensaje);
-
-    //Asociamos los menús contextuales a los controles
-    registerForContextMenu(lblMensaje);
-        */
 
     }
 
@@ -94,14 +78,11 @@ public class ListFragmentCt extends ListFragment implements
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.list_categor, container, false);
-      ///  Object list_categor;
-       // registerForContextMenu(this.getListView());
 
         return view;
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //
         super.onCreateOptionsMenu(menu, inflater);
     }
     //esto es para el menú de la barra, que aquí solo hay el home y el discard
@@ -120,10 +101,6 @@ public class ListFragmentCt extends ListFragment implements
                 intent.putExtra("NombreTabla", nomTabla);
                 startActivity(intent);
                 return true;
-            //case R.id.action_delete:
-            //    deleteData(id); // Eliminar
-            //    getActivity().finish();
-            //    return true;
             case R.id.action_discard:
                 getActivity().finish();
                 return true;
@@ -136,27 +113,14 @@ public class ListFragmentCt extends ListFragment implements
         Uri uri = ContentUris.withAppendedId(ViajesContract.CategoriasEntry.URI_CONTENIDO, id);
         getActivity().getContentResolver().delete(uri, null, null); //funciona
     }
-    /**
-     * Envía todos los datos de la actividad hacia el formulario
-     * de actualización
-     */
+
     private void beginUpdate() {
-        /*
-        getActivity().startActivity(new Intent(getActivity(), UpdateActivity.class)
-                                .putExtra(TechsContract.Columnas._ID, id)
-                                .putExtra(TechsContract.Columnas.PRIORIDAD, prioridad.getText())
-                                .putExtra(TechsContract.Columnas.ESTADO, estado.getText())
-                );
-                */
     }
 
     private void saveData() { //insert funciona
         // Obtención de valores actuales
         ContentValues values = new ContentValues();
         values.put(ViajesContract.CategoriasEntry.CAT_CGT, categoria.getText().toString());
-    //    values.put(TechsContract.Columnas.PRIORIDAD, prioridad.getSelectedItem().toString());
-    //    values.put(TechsContract.Columnas.DESCRIPCION, descripcion.getText().toString());
-
         getActivity().getContentResolver().insert(
                 ViajesContract.URI_BASE,
                 values
@@ -169,7 +133,6 @@ public class ListFragmentCt extends ListFragment implements
         // Consultar todos los registros
         return new CursorLoader(
                 getActivity(),
-          //      ViajesContract.MonedasEntry.URI_CONTENIDO,
                 ViajesContract.CategoriasEntry.URI_CONTENIDO,
                 null, null, null, null);
     }
@@ -187,7 +150,6 @@ public class ListFragmentCt extends ListFragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         registerForContextMenu(this.getListView());
     }
 
@@ -209,21 +171,9 @@ public class ListFragmentCt extends ListFragment implements
         inflater.inflate(R.menu.menu_ctx_list, menu);
             Log.i(TAG, "En onCreateContextMenu doooooossssssssssss");
 
-   //     registerForContextMenu(getListView());
-     //   Log.i(TAG, "En onCreateContextMenu trrrrrrrrrrrres");
-
-        /*
-        //menu.add("Action Button");  INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
-        menu.add(0, INSERT_CT,0, R.string.afegir_mc); // afegir_mc editar_mc borrar_mc
-        menu.add(0, EDIT_CT,0, R.string.editar_mc);
-        menu.add(0, DELET_CT,0, R.string.borrar_mc);
-*/
-        //MenuItem actionItem = menu.add("Action Button");
-        //actionItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-    }
+       }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-     //   Intent intent;
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch(item.getItemId()) {
             case R.id.ctx_delete:
@@ -238,7 +188,8 @@ public class ListFragmentCt extends ListFragment implements
                 AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                     Log.i(TAG, "En onContextItemSelected Edit: " + infoEd.id);
                 Intent intent = new Intent(getActivity(), EditCt.class);
-                intent.putExtra(ViajesContract.CategoriasEntry.CAT_ID, infoEd.id);
+                intent.putExtra(ViajesContract.CategoriasEntry.CAT_ID, infoEd.id)
+                      .putExtra(esEdit, true);
                     Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
                 startActivityForResult(intent, EDIT_CT);
                 return true;

@@ -10,6 +10,7 @@ import gg.pp.myappviajes.R;
  * Created by pepe on 14/03/16.
  */
 public class EditCt extends AppCompatActivity {
+    public static final String TAG = "En EditCt: ";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

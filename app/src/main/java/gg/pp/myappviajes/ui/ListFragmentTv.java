@@ -23,7 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import gg.pp.myappviajes.ActivitiesAdapterMn;
+import gg.pp.myappviajes.ActivitiesAdapterTv;
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
@@ -35,11 +35,11 @@ import gg.pp.myappviajes.modelo.ViajesContract;
 public class ListFragmentTv extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static final String TAG = "En ListFragmentMn: ";
+    public static final String TAG = "En ListFragmentTv: ";
     /**
      * Adaptador
      */
-    private ActivitiesAdapterMn adaptador;
+    private ActivitiesAdapterTv adaptador;
 
     /**
      * Views del formulario
@@ -50,7 +50,7 @@ public class ListFragmentTv extends ListFragment implements
     String nomTabla;
     String miTabla;
 
-    private static final int INSERT_CT = Menu.FIRST; //INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
+    private static final int INSERT_CT = Menu.FIRST;
     private static final int EDIT_CT = Menu.FIRST + 1;
     private static final int DELET_CT = Menu.FIRST + 2;
 
@@ -63,14 +63,11 @@ public class ListFragmentTv extends ListFragment implements
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-                Log.i(TAG, "MainFragmento OnCrete  TRES");
-/*
-//////////////////////////El nombre de la tabla: /////////////////////////////////////////////////////
+                Log.i(TAG, " OnCrete  TRES");
         nomTabla = getActivity().getIntent().getStringExtra("NombreTabla");
                 Log.i(TAG, " OnCrete view T4444444444444444444444444RES  " + nomTabla);
-//////////////////////////////////////////////////////////////////////////
-*/
-        adaptador = new ActivitiesAdapterMn(getActivity());
+
+        adaptador = new ActivitiesAdapterTv(getActivity());
                 // Relacionar adaptador a la lista
         setListAdapter(adaptador);
                 // Iniciar Loader
@@ -87,7 +84,6 @@ public class ListFragmentTv extends ListFragment implements
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //
         super.onCreateOptionsMenu(menu, inflater);
     }
     //esto es para el menú de la barra, 
@@ -101,8 +97,8 @@ public class ListFragmentTv extends ListFragment implements
                 getActivity().finish();
                 return true;
             case R.id.action_nuevo:
-                String nomTabla = ViajesContract.MonedasEntry.TABLE_NAME.toString();
-                Intent intent = new Intent(getActivity(), EditCt.class); //funciona
+                String nomTabla = ViajesContract.TipoVEntry.TABLE_NAME.toString();
+                Intent intent = new Intent(getActivity(), EditVi.class); //funciona
                 intent.putExtra("NombreTabla", nomTabla);
                 startActivity(intent);
                 return true;
@@ -115,14 +111,14 @@ public class ListFragmentTv extends ListFragment implements
     }
     private void deleteData(long id) {
             Log.i(TAG, "En delete data id: " + id); //aqui llega 
-        Uri uri = ContentUris.withAppendedId(ViajesContract.MonedasEntry.URI_CONTENIDO, id);
+        Uri uri = ContentUris.withAppendedId(ViajesContract.TipoVEntry.URI_CONTENIDO, id);
         getActivity().getContentResolver().delete(uri, null, null); //funciona
     }
 
-    private void saveData() { //insert funciona
+    private void saveData() {
         // Obtención de valores actuales
         ContentValues values = new ContentValues();
-        values.put(ViajesContract.MonedasEntry.MON_NOM, categoria.getText().toString());
+        values.put(ViajesContract.TipoVEntry.TIPO_TIPO, categoria.getText().toString());
          getActivity().getContentResolver().insert(
                 ViajesContract.URI_BASE,
                 values
@@ -135,7 +131,7 @@ public class ListFragmentTv extends ListFragment implements
         // Consultar todos los registros
         return new CursorLoader(
                 getActivity(),
-                ViajesContract.MonedasEntry.URI_CONTENIDO,
+                ViajesContract.TipoVEntry.URI_CONTENIDO,
                 null, null, null, null);
     }
 
@@ -152,15 +148,14 @@ public class ListFragmentTv extends ListFragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         registerForContextMenu(this.getListView());
     }
 
-    @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
+    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.i(TAG, " onListItemClick ===> id: " + id);
-        getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
-                .putExtra(ViajesContract.MonedasEntry.MON_NOM, id));
+        getActivity().startActivity(new Intent(getActivity(), EditTv.class)
+                .putExtra(ViajesContract.TipoVEntry.TIPO_TIPO, id));
     }
 
     // el menu contextual, con clic prolongado
@@ -176,7 +171,6 @@ public class ListFragmentTv extends ListFragment implements
     }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-     //   Intent intent;
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch(item.getItemId()) {
             case R.id.ctx_delete:
@@ -190,8 +184,8 @@ public class ListFragmentTv extends ListFragment implements
             case R.id.ctx_edit:
                 AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                     Log.i(TAG, "En onContextItemSelected Edit: " + infoEd.id);
-                Intent intent = new Intent(getActivity(), EditCt.class);
-                intent.putExtra(ViajesContract.MonedasEntry.MON_ID, infoEd.id);
+                Intent intent = new Intent(getActivity(), EditTv.class);
+                intent.putExtra(ViajesContract.TipoVEntry.TIPO_TIPO, infoEd.id);
                     Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
                 startActivityForResult(intent, EDIT_CT);
                 return true;

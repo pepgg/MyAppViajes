@@ -1,9 +1,9 @@
 package gg.pp.myappviajes.ui;
 
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,12 +28,16 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
 {
     /*   * Views del formulario      */
     private EditText mNomText;
-    private TextView mlabelV;
+    private TextView nuevoIt;
+    private TextView labelitem;
+    private TextView labelvalor;
     private EditText mValor;
 
     private long id_item; //id del item que voy a editar
-
-  //  public Long mId;
+    private long id_categ;
+    public boolean es_Edit;
+    private String esEdit;
+    
     private static final String TAG = "En EditFragmentCt: ";
 
     private OnFragmentInteractionListener mListener;
@@ -46,50 +50,68 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        ////// para el edit, llega el id del item a editarrrrrrr:
-        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt primero onCreate un poquito: "); // aquí llega
+        es_Edit = getActivity().getIntent().getBooleanExtra(esEdit, false);
+                ////// para el edit, llega el id del item a editarrrrrrr:
+            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt primero onCreate un poquito: " + es_Edit); // aquí llega
         id_item = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
-        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  onCreate un idITEMMM: " + id_item); //llega el id del item
-
+            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  onCreate un idITEMMM: " + id_item); //llega el id del item
+        if (es_Edit) {
+            Log.d(TAG, "------ES updateeeeeeeeeeeeeee id : " + es_Edit + id_item ); //llegsa bien
+            //es_Edit = true;
+        }
+        /*
+        else {
+            Log.d(TAG, "------ES NUEVOOOOOOO " + es_Edit  );
+            //es_Edit = false;
+        }
+        */
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_insert_datam, container, false);
+        Log.d(TAG, "------ES EDIT " + es_Edit  );
          // Obtener views del layout
+        if (es_Edit = false) {
+            Log.d(TAG, "------ES NUEVOOOOOOO " + es_Edit  ); //no entra
+            nuevoIt = (TextView) view.findViewById(R.id.textView2);
+        }
+        labelitem = (TextView) view.findViewById(R.id.label_item);
         mNomText = (EditText) view.findViewById(R.id.nom_item);
-////////////////////////////////////////
-///// Falta el Campo valor para monedas /////////
-////////////////////////////////////////
+        labelvalor = (TextView) view.findViewById(R.id.label_valor);
+        mValor = (EditText) view.findViewById(R.id.valor);
 
-   //     mlabelV.setVisibility(View.INVISIBLE)   ;  //
-   //     mValor.setVisibility(View.INVISIBLE);
+        labelvalor.setEnabled(false);
+        mValor.setEnabled(false);
 
         return view;
     }
 
-    /*     * Actualizar datos de la actividad      */
-    private void updateData() {
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.i(TAG, "ESSSSSSSSSSS onActivityCreated 90: " + id_item);
+        if (es_Edit) {
+            Log.i(TAG, "ESSSSSSSSSSS onActivityCreated 92" + es_Edit);
+            //aquí la consulta para comseguir select * where id = id_item
+            Uri urimn = ViajesContract.CategoriasEntry.URI_CONTENIDO;
+            ContentResolver cr = getActivity().getContentResolver();
+            final Cursor cur = cr.query(urimn, null,
+                    ViajesContract.CategoriasEntry.CAT_ID + " = " + id_item,
+                    null, null);
+            if (cur.moveToFirst()) { // ha trobat el evento: estic editant un registre fet anteriorment
+                Log.i(TAG, "Viajecitosssssss onActivityCreated  100 updateView nombre: " + cur.getString(cur.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT))); //  llega el nombre
+                mNomText.setText(cur.getString(cur.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)));
 
-        // Unir Uri principal con identificador
-        Uri uri = ContentUris.withAppendedId(ViajesContract.CategoriasEntry.URI_CONTENIDO, id_item);
-        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  87 updateDATA uri: " + uri); //  llega el uri bien, con su id
-        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  88 updateDATA nomcateg: " +  mNomText.getText().toString()); //lo coge biennnnn
-        ContentValues values = new ContentValues();
-        values.put(ViajesContract.CategoriasEntry.CAT_CGT, mNomText.getText().toString());
+            }
+        }
 
-        // Actualiza datos del Content Provider
-        getActivity().getContentResolver().update(
-                uri,
-                values,
-                null,
-                null
-        );
     }
 
+
     private void updateView() {
+        /*
         Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  104 updateView id: " + id_item); //llega el id del item BIEN
 
         // Obtener datos del formulario
@@ -97,12 +119,31 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
 
         Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  109 updateView i: " + i); //llega el i del intent BIEN
 
-        String nom_text = i.getStringExtra(ViajesContract.CategoriasEntry.CAT_CGT);
-        Log.i(TAG, "ViajecitosssssssInsertFrag   112 updateView El dato: " + ViajesContract.CategoriasEntry.CAT_CGT); // Bien. es el nombre del campo
-        Log.i(TAG, "ViajecitosssssssInsertFrag   113 updateView El nombre: " + nom_text); //llega NULLLLLL por eso falla Creo que pierde el id en algun sitio
+       // String nom_text = i.getStringExtra(ViajesContract.CategoriasEntry.CAT_CGT);
+       // Log.i(TAG, "ViajecitosssssssInsertFrag   112 updateView El dato: " + ViajesContract.CategoriasEntry.CAT_CGT); // Bien. es el nombre del campo
 
         // Actualizar la vista
-        mNomText.setText(nom_text);     ///////////////aquí fallllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      //  mNomText.setText(nom_text);     ///////////////aquí fallllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+
+        if (es_Edit = true) {
+            Log.i(TAG, "ESSSSSSSSSSS updateView 125");
+            //aquí la consulta para comseguir select * where id = id_item
+            Uri urimn = ViajesContract.CategoriasEntry.URI_CONTENIDO;
+            ContentResolver cr = getActivity().getContentResolver();
+            final Cursor cur = cr.query(urimn, null,
+                    ViajesContract.CategoriasEntry.CAT_ID + " = " + id_item,
+                    null, null);
+            if (cur.moveToFirst()) { // ha trobat el evento: estic editant un registre fet anteriorment
+                Log.i(TAG, "Viajecitosssssss updateView  133 updateView nombre: " + cur.getString(cur.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT))); //  llega el nombre
+                mNomText.setText(cur.getString(cur.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)));
+
+            }
+        }
+
+
+
+*/
 
     }
 
@@ -141,15 +182,13 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
 
         switch (id) {
             case android.R.id.home:
-                if (id_item > 0) {
+                if (es_Edit) {
                     updateData();
                     getActivity().finish();
                 } else {
                     saveData(); // Guardar datos
                     getActivity().finish();
                 }
-
-               // getActivity().finish();
                 return true;
               case R.id.action_discard:
                   getActivity().finish();
@@ -158,17 +197,35 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
                 return super.onOptionsItemSelected(item);
         }
     }
+    private void updateData() {
+
+        // Unir Uri principal con identificador
+        Uri uri = ContentUris.withAppendedId(ViajesContract.CategoriasEntry.URI_CONTENIDO, id_item);
+        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  204 updateDATA uri: " + es_Edit + uri); //
+        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  205 updateDATA nomcateg: "+es_Edit +  mNomText.getText().toString()); //
+        ContentValues values = new ContentValues();
+        values.put(ViajesContract.CategoriasEntry.CAT_CGT, mNomText.getText().toString());
+
+        // Actualiza datos del Content Provider
+        getActivity().getContentResolver().update(
+                uri,
+                values,
+                null,
+                null
+        );
+    }
+
 
     private void saveData() {
         // Obtención de valores actuales
+        Log.i(TAG, "En saveDDDDDDDDDDDDDataAAAAAAAAAA " + es_Edit);
         ContentValues values = new ContentValues();
         values.put(ViajesContract.CategoriasEntry.CAT_CGT, mNomText.getText().toString());
-        Log.i(TAG, "En saveDDDDDDDDDDDDDataAAAAAAAAAA");
+
 
         getActivity().getContentResolver().insert(
                 ViajesContract.CategoriasEntry.URI_CONTENIDO,
-                values
-        );
+                values);
     }
     // TODO: Ver que passa con este onAttach:
 

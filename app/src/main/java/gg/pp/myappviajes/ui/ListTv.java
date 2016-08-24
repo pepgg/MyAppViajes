@@ -14,13 +14,13 @@ public class ListTv extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (getSupportActionBar() != null)
-            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
+            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_launcher);
 
         if (savedInstanceState == null) {
-            ListFragmentMn fragment = new ListFragmentMn();
+            ListFragmentTv fragment = new ListFragmentTv();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(android.R.id.content, fragment, ListFragmentMn.class.getSimpleName())
+                    .add(android.R.id.content, fragment, ListFragmentTv.class.getSimpleName())
                     .commit();
         }
     }

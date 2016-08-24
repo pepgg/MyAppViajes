@@ -65,10 +65,9 @@ public class ListFragmentMn extends ListFragment implements
 
                 Log.i(TAG, "MainFragmento OnCrete  TRES");
 
-//////////////////////////El nombre de la tabla: /////////////////////////////////////////////////////
+//El nombre de la tabla:
         nomTabla = getActivity().getIntent().getStringExtra("NombreTabla");
                 Log.i(TAG, " OnCrete view T4444444444444444444444444RES  " + nomTabla);
-//////////////////////////////////////////////////////////////////////////
 
         adaptador = new ActivitiesAdapterMn(getActivity());
                 // Relacionar adaptador a la lista

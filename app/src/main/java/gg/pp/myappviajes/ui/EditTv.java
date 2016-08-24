@@ -19,7 +19,7 @@ public class EditTv extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
 
         if (savedInstanceState == null) {
-            EditFragmentMn fragment = new EditFragmentMn();
+            EditFragmentTv fragment = new EditFragmentTv();
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(android.R.id.content, fragment, fragment.getClass().getSimpleName())

@@ -70,17 +70,6 @@ public class ListFragmentEv extends ListFragment implements
         setListAdapter(adaptador);
                 // Iniciar Loader
         getLoaderManager().initLoader(0, null, this);
-    //    registerForContextMenu(categ_list_text);
-      //  registerForContextMenu(list_categor);
-/*
-
-* el menu contextual deberia ser así:
-  //Obtenemos las referencias a los controles
-    lblMensaje = (TextView)findViewById(R.id.LblMensaje);
-
-    //Asociamos los menús contextuales a los controles
-    registerForContextMenu(lblMensaje);
-        */
 
     }
 
@@ -88,9 +77,9 @@ public class ListFragmentEv extends ListFragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.i(TAG, "MainFragmento OnCrete  onCreateView 91");
         View view = inflater.inflate(R.layout.list_categor, container, false);
-      ///  Object list_categor;
-       // registerForContextMenu(this.getListView());
+        Log.i(TAG, "MainFragmento OnCrete  onCreateView 93");
 
         return view;
     }
@@ -110,7 +99,7 @@ public class ListFragmentEv extends ListFragment implements
                 return true;
             case R.id.action_nuevo:
                 String nomTabla = ViajesContract.ViajesEntry.TABLE_NAME.toString();
-                Intent intent = new Intent(getActivity(), InsertEvento.class); //funciona
+                Intent intent = new Intent(getActivity(), EditEv.class); //funciona?
                 intent.putExtra("NombreTabla", nomTabla);
                 startActivity(intent);
                 return true;
@@ -126,17 +115,8 @@ public class ListFragmentEv extends ListFragment implements
         Uri uri = ContentUris.withAppendedId(ViajesContract.EventosEntry.URI_CONTENIDO, id);
         getActivity().getContentResolver().delete(uri, null, null); //funciona
     }
-    /**
-     * Envía todos los datos de la actividad hacia el formulario de actualización
-     */
+
     private void beginUpdate() {
-        /*
-        getActivity().startActivity(new Intent(getActivity(), UpdateActivity.class)
-                                .putExtra(TechsContract.Columnas._ID, id)
-                                .putExtra(TechsContract.Columnas.PRIORIDAD, prioridad.getText())
-                                .putExtra(TechsContract.Columnas.ESTADO, estado.getText())
-                );
-                */
     }
 
     private void saveData() { //insert funciona
@@ -155,7 +135,7 @@ public class ListFragmentEv extends ListFragment implements
         // Consultar todos los registros
         if (idCate == null) {
 
-        return new CursorLoader(
+            return new CursorLoader(
                 getActivity(),                              // Parent activity context
                 ViajesContract.EventosEntry.URI_CONTENIDO,  // Table to query
                 null,                                       // Projection to return
@@ -163,8 +143,8 @@ public class ListFragmentEv extends ListFragment implements
                 null,                                       // No selection arguments
                 null);                                      // No selection arguments
 
-        } else {    // solo los de la categoria idCate
-            return new CursorLoader(
+            } else {    // solo los de la categoria idCate
+                return new CursorLoader(
                     getActivity(),                              // Parent activity context
                     ViajesContract.EventosEntry.URI_CONTENIDO,  // Table to query
                     null,                                       // Projection to return

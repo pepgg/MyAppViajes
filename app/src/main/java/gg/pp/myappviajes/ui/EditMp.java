@@ -19,7 +19,7 @@ public class EditMp extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
 
         if (savedInstanceState == null) {
-            EditFragmentMn fragment = new EditFragmentMn();
+            EditFragmentMp fragment = new EditFragmentMp();
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(android.R.id.content, fragment, fragment.getClass().getSimpleName())

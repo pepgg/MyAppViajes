@@ -14,7 +14,7 @@ public class ListMn extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (getSupportActionBar() != null)
-            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
+            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_launcher);
 
         if (savedInstanceState == null) {
             ListFragmentMn fragment = new ListFragmentMn();
