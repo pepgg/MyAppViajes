@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,9 +21,7 @@ import android.widget.TextView;
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
-/**
- * Fragment con formulario de inserción de viajes
- */
+/** * Fragment con formulario de inserción de categorias */
 public class EditFragmentCt extends android.support.v4.app.Fragment
        // implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener
 {
@@ -37,7 +36,7 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
     private long id_categ;
     public boolean es_Edit;
     private String esEdit;
-    
+
     private static final String TAG = "En EditFragmentCt: ";
 
     private OnFragmentInteractionListener mListener;
@@ -50,38 +49,33 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
         es_Edit = getActivity().getIntent().getBooleanExtra(esEdit, false);
                 ////// para el edit, llega el id del item a editarrrrrrr:
-            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt primero onCreate un poquito: " + es_Edit); // aquí llega
+            Log.i(TAG, "InsertFragmentCCCtttt  onCreate un poquito: " + es_Edit); // aquí llega
         id_item = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
             Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  onCreate un idITEMMM: " + id_item); //llega el id del item
         if (es_Edit) {
             Log.d(TAG, "------ES updateeeeeeeeeeeeeee id : " + es_Edit + id_item ); //llegsa bien
-            //es_Edit = true;
         }
-        /*
         else {
             Log.d(TAG, "------ES NUEVOOOOOOO " + es_Edit  );
-            //es_Edit = false;
         }
-        */
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout
         View view = inflater.inflate(R.layout.fragment_insert_datam, container, false);
-        Log.d(TAG, "------ES EDIT " + es_Edit  );
+
          // Obtener views del layout
-        if (es_Edit = false) {
-            Log.d(TAG, "------ES NUEVOOOOOOO " + es_Edit  ); //no entra
-            nuevoIt = (TextView) view.findViewById(R.id.textView2);
-        }
+
         labelitem = (TextView) view.findViewById(R.id.label_item);
         mNomText = (EditText) view.findViewById(R.id.nom_item);
         labelvalor = (TextView) view.findViewById(R.id.label_valor);
         mValor = (EditText) view.findViewById(R.id.valor);
-
         labelvalor.setEnabled(false);
         mValor.setEnabled(false);
 
@@ -92,16 +86,22 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "ESSSSSSSSSSS onActivityCreated 90: " + id_item);
+
+        Intent i = getActivity().getIntent();
+        Log.i(TAG, "Viajecitosssssss EditFragmentCt  96 onActivityCreated i: " + i); //llega?
+        String nom_text = i.getStringExtra(ViajesContract.CategoriasEntry.CAT_CGT);
+        Log.i(TAG, "Viajecitosssssss EdFrag   98 onActivityCreated El nombre: " + nom_text); //llega null, porque no lo he buscado con una consulta
+
         if (es_Edit) {
-            Log.i(TAG, "ESSSSSSSSSSS onActivityCreated 92" + es_Edit);
+            Log.i(TAG, "ESSSSSSSSSSS EDIT onActivityCreated 101" + es_Edit);
             //aquí la consulta para comseguir select * where id = id_item
             Uri urimn = ViajesContract.CategoriasEntry.URI_CONTENIDO;
             ContentResolver cr = getActivity().getContentResolver();
             final Cursor cur = cr.query(urimn, null,
                     ViajesContract.CategoriasEntry.CAT_ID + " = " + id_item,
                     null, null);
-            if (cur.moveToFirst()) { // ha trobat el evento: estic editant un registre fet anteriorment
-                Log.i(TAG, "Viajecitosssssss onActivityCreated  100 updateView nombre: " + cur.getString(cur.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT))); //  llega el nombre
+            if (cur.moveToFirst()) { // ha trobat el categ: estic editant un registre fet anteriorment
+                Log.i(TAG, "Viajecitosssssss onActivityCreated  103 updateView nombre: " + cur.getString(cur.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT))); //  llega el nombre
                 mNomText.setText(cur.getString(cur.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT)));
 
             }
@@ -201,8 +201,8 @@ public class EditFragmentCt extends android.support.v4.app.Fragment
 
         // Unir Uri principal con identificador
         Uri uri = ContentUris.withAppendedId(ViajesContract.CategoriasEntry.URI_CONTENIDO, id_item);
-        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  204 updateDATA uri: " + es_Edit + uri); //
-        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  205 updateDATA nomcateg: "+es_Edit +  mNomText.getText().toString()); //
+        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  209 updateDATA uri: " + es_Edit + uri); //
+        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  210 updateDATA nomcateg: "+es_Edit +  mNomText.getText().toString()); //
         ContentValues values = new ContentValues();
         values.put(ViajesContract.CategoriasEntry.CAT_CGT, mNomText.getText().toString());
 

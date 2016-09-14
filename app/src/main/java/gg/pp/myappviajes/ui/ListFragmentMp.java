@@ -36,20 +36,16 @@ public class ListFragmentMp extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = "En ListFragmentMp: ";
-    /**
-     * Adaptador
-     */
+    /**     * Adaptador     */
     private ActivitiesAdapterMp adaptador;
 
-    /**
-     * Views del formulario
-     */
+    /**     * Views del formulario     */
     private TextView categoria;
     private TextView valormoneda;
 
     String nomTabla;
     String miTabla;
-
+    String esEdit;
     private static final int INSERT_MP = Menu.FIRST;
     private static final int EDIT_MP = Menu.FIRST + 1;
     private static final int DELET_MP = Menu.FIRST + 2;
@@ -184,7 +180,8 @@ public class ListFragmentMp extends ListFragment implements
                 AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                     Log.i(TAG, "En onContextItemSelected Edit: " + infoEd.id);
                 Intent intent = new Intent(getActivity(), EditMp.class);
-                intent.putExtra(ViajesContract.MPagoEntry.MPAG_ID, infoEd.id);
+                intent.putExtra(ViajesContract.MPagoEntry.MPAG_ID, infoEd.id)
+                      .putExtra(esEdit, true);
                     Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
                 startActivityForResult(intent, EDIT_MP);
                 return true;

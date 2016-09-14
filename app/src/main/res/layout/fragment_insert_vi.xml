@@ -151,20 +151,20 @@
 
 
     </ScrollView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView"
-        android:layout_gravity="right" />
     <!--
-    <Button
-        android:id="@+id/btnAddViaje"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/guardar"
-        android:onClick="onClickAddViaje"
-        />
--->
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="New Text"
+           android:id="@+id/textView"
+           android:layout_gravity="right" />
+
+       <Button
+           android:id="@+id/btnAddViaje"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/guardar"
+           android:onClick="onClickAddViaje"
+           />
+   -->
 </LinearLayout>

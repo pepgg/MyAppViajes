@@ -19,7 +19,7 @@ public class EditVi extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
 
         if (savedInstanceState == null) {
-            EditFragmentVi fragment = new EditFragmentVi();
+            EditFragmentVVi fragment = new EditFragmentVVi();
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(android.R.id.content, fragment, fragment.getClass().getSimpleName())

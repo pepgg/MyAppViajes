@@ -62,9 +62,7 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
     };
     private static final int INITIAL_REQUEST=1337;
     private static final int LOCATION_REQUEST=INITIAL_REQUEST+1;
-
     /*     * Views del formulario     */
-
     Context mContext;
 
     private TextView nomcateg;
@@ -141,10 +139,9 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
             Log.i(TAG, "EditFragmentMn  onCreate un iditem: " + id_categ); //
         if (es_Edit) {
             Log.d(TAG, "------ES updateeeeeeeeeeeeeee id : " +  id_item ); //llegsa bien
-            //es_Edit = true;
-              } else {
+        } else {
                 Log.d(TAG, "------ES NUEVOOOOOOO "   );
-            //es_Edit = false;
+
             id_categ = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
             id_viaj =  getActivity().getIntent().getStringExtra("idv");
 
@@ -505,13 +502,13 @@ public Float valMoneda() {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.i(TAG, "Viajecitosssssss EditFragmentCCCtttt  443 updateView id: " + id_item); //llega si
+        Log.i(TAG, "Viajecitosssssss EditFragmentEv  505 onActivityCreated id: " + id_item); //llega si
 
         // Obtener datos del formulario
         Intent i = getActivity().getIntent();
-        Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  446 updateView i: " + i); //llega si
+        Log.i(TAG, "ViajecitosssssssInsertFragmentEv  509 onActivityCreated i: " + i); //llega si
         String nom_text = i.getStringExtra(ViajesContract.EventosEntry.E_NOM);
-        Log.i(TAG, "ViajecitosssssssInsertFrag   113 updateView El nombre: " + nom_text); //llega null, porque no lo he buscado con una consulta
+        Log.i(TAG, "ViajecitosssssssInsertFrag   113  El nombre: " + nom_text); //llega null, porque no lo he buscado con una consulta
 
         ////// hay que darles el valor que tenian
         //aqui Modopago
@@ -587,7 +584,7 @@ public Float valMoneda() {
                     ViajesContract.EventosEntry.E_ID + " = " + id_item,
                     null, null);
             if (cur.moveToFirst()) { // ha trobat el evento: estic editant un registre fet anteriorment
-                Log.i(TAG, "Viajecitosssssss EditFragmentMNNNNN  522 updateView nombre: " + cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_NOM))); //  llega el nombre
+                Log.i(TAG, "Viajecitosssssss EditFragmentEV  587  nombre: " + cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_NOM))); //  llega el nombre
 
                 nombre.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_NOM)));
                 datae.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_DATAH)));
@@ -689,8 +686,6 @@ private void onLoadFinishedModopag(Cursor data) {
         Log.d(TAG, "------onLoadFinishedMonedas<> "   );
         mMonedAdapter.swapCursor(data);
 
-        // cities.setEnabled(true);
-        // cities.setEnabled(false);
     }
 
     public void onLoaderReset(Loader<Cursor> loader) {
@@ -698,7 +693,7 @@ private void onLoadFinishedModopag(Cursor data) {
         switch (loader.getId())
         {
             case LOADER_MODPAG:
-                mMonedAdapter.swapCursor(null);
+                mModPagAdapter.swapCursor(null);
                 break;
             case LOADER_MONED:
                 mMonedAdapter.swapCursor(null);
@@ -743,9 +738,9 @@ private void onLoadFinishedModopag(Cursor data) {
 
         // Unir Uri principal con identificador
         Uri uri = ContentUris.withAppendedId(ViajesContract.EventosEntry.URI_CONTENIDO, id_item);
-            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  712 updateDATA uri: " + uri); //  llega el uri bien, con su id
-            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  713 updateDATA fecha: " + datae.getText().toString()); //lo coge biennnnn
-            Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  714 updateDATA nombre: " + nombre.getText().toString());
+            Log.i(TAG, "ViajecitosssssssInsertFragmentEv  742 updateDATA uri: " + uri); //  llega el uri bien, con su id
+            Log.i(TAG, "ViajecitosssssssInsertFragmentEv  743 updateDATA fecha: " + datae.getText().toString()); //lo coge biennnnn
+            Log.i(TAG, "ViajecitosssssssInsertFragmentEv  744 updateDATA nombre: " + nombre.getText().toString());
         ContentValues values = new ContentValues();
         if (botEuros == false) {
             Log.d(TAG, "-684-----precio botEuros falso es:<> " + botEuros + precio.getText().toString()  );

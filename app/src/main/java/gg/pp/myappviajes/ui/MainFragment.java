@@ -57,6 +57,7 @@ public class MainFragment extends ListFragment implements
     private int kmactu;
     private int kmparcial;
     private String strKmp;
+    private String strTotalGast;
 
     public static final String nomTabla = null;
     public static final String nomTabl = null;
@@ -101,15 +102,16 @@ public class MainFragment extends ListFragment implements
         Cursor cursar = getActivity().getContentResolver().query(
                 ViajesContract.EventosEntry.URI_CONTENIDO,
                 projection, //Columnas a devolver
-                null,   //Condición de la query
+                ViajesContract.EventosEntry.E_IDV + " = " + id_viaje,   //Condición de la query
                 null,       //Argumentos variables de la query
                 null);      //Orden de los resultados
 
         cursar.moveToFirst();
-        Log.i(TAG, "ennnnnn TOTAGAST: idviaje: 89 moveToFirst");
+
             int to_gast = cursar.getInt(0);
             totaGasto = Float.valueOf(to_gast); //
-
+       strTotalGast = Float.toString(totaGasto);
+        Log.i(TAG, "ennnnnn 112 TOTAGAST: "+ strTotalGast + "idviaje: " + id_viaje);
         if (!cursar.isClosed()){
             cursar.close();
         }
@@ -150,6 +152,7 @@ public class MainFragment extends ListFragment implements
         Cursor c = cr.query(idViajeUri,
                 projection, //Columnas a devolver
                 ViajesContract.ViajesEntry.V_DATAFI + " LIKE '%'",       //Condición de la query
+               // ViajesContract,
                 null,       //Argumentos variables de la query
                 null);      //Orden de los resultados
 
@@ -173,7 +176,8 @@ public class MainFragment extends ListFragment implements
 // la consulta
         Cursor c = cr.query(idViajeUri,
                 projection, //Columnas a devolver
-                ViajesContract.ViajesEntry.V_DATAFI + " LIKE '%'",       //Condición de la query
+               // ViajesContract.ViajesEntry.V_DATAFI + " LIKE '%'",       //Condición de la query
+                ViajesContract.ViajesEntry.V_ID + " = " + id_viaje,
                 null,       //Argumentos variables de la query
                 null);      //Orden de los resultados
         if (c.moveToFirst())
@@ -196,7 +200,7 @@ public class MainFragment extends ListFragment implements
 // la consulta
         Cursor c = cr.query(uri,
                 projection, //Columnas a devolver
-                null,      //Condición de la query: sin condiciones para que salgan todos
+                ViajesContract.EventosEntry.E_IDV + " = " + id_viaje,      //Condición de la query: sin condiciones para que salgan todos
                 null,       //Argumentos variables de la query
                 null);      //Orden de los resultados
         ////supongo que con la consulta anterior me saca el campo kmp de todos los registros
@@ -217,14 +221,14 @@ public class MainFragment extends ListFragment implements
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id){
             case LOADER_MVIAJE:
-                Log.i(TAG, "InsertFragmentEVV onCreateLoader AAAAA-modopag-AAAAA un poquito");
+                Log.i(TAG, "InsertFragmentEVV onCreateLoader LOADER_MVIAJE 224 -modopag-AAAAA un poquito");
                 return new CursorLoader(
                         getActivity(),                              // Parent activity context
                         ViajesContract.ViajesEntry.URI_CONTENIDO,    // Table to query
                         null,      // Projection to return
                         null,                                       // No selection clause
                         null,                                       // No selection arguments
-                        null);                                      // Default sort order
+                        "datain DESC");                                      // Default sort order
             case LOADER_MCATEG:
                 Log.i(TAG, "MainFragmentito onCreateLoader CINCO");
                 return new CursorLoader(
@@ -294,7 +298,16 @@ public class MainFragment extends ListFragment implements
                 Cursor nomv = (Cursor) parent.getItemAtPosition(position);
                 id_viaje = nomv.getString(nomv.getColumnIndexOrThrow(ViajesContract.ViajesEntry.V_ID));
                 //idviaje = Integer.valueOf(id_viaje);
-                        Log.d(TAG, "onItemSelected(.adaspter id viajes..) -> id_viaje: = " + id_viaje);
+                        Log.d(TAG, "onItemSelected 300 (.adaspter id viajes..) -> id_viaje: = " + id_viaje);
+/////////////////////////////este ^ es el bueno
+
+
+                totaGast();
+                totaKM();
+                totalKm.setText(strKmp);
+                //totalGast.setText(totaGasto.toString());
+                totalGast.setText(strTotalGast);
+
 
             }
             @Override
@@ -318,7 +331,7 @@ public class MainFragment extends ListFragment implements
                     public void onClick(View v) {
                         getActivity()
                                 .startActivity(
-                                       new Intent(getActivity(), InsertViaje.class)
+                                       new Intent(getActivity(), EditVi.class)
                                 );
                     }
                 });
@@ -417,8 +430,8 @@ public class MainFragment extends ListFragment implements
 
        /// nomViaje.setText(nombreViaje);
         totalKm.setText(strKmp);
-        totalGast.setText(totaGasto.toString());
-
+        totalGast.setText(strTotalGast);
+        Log.i(TAG, "MainFragmentito onActivityCreated 422 " + strTotalGast);
         // Iniciar adaptador
         adaptador = new ActivitiesAdapterCt(getActivity());
         // Relacionar adaptador a la lista
@@ -433,8 +446,9 @@ public class MainFragment extends ListFragment implements
         totaKM();
 
         totalKm.setText(strKmp);
-        totalGast.setText(totaGasto.toString());
-
+        //totalGast.setText(totaGasto.toString());
+        totalGast.setText(strTotalGast);
+        Log.i(TAG, "MainFragmentito onResume 438 " + strTotalGast);
         // Iniciar adaptador
         adaptador = new ActivitiesAdapterCt(getActivity());
         // Relacionar adaptador a la lista
@@ -503,7 +517,7 @@ public class MainFragment extends ListFragment implements
                 return true;
             */
             case R.id.ctx_m_listevent:
-                // esto viene de lista eventos, del menú principal
+                // menu contextual, con clic prolongado lleva a la lista de eventos de la categ seleccionada
                 AdapterView.AdapterContextMenuInfo infoDel = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                         Log.i(TAG, "En onContextItemSelected idCATEGORIAAAAAAAAA id: " + infoDel.id); //esta si que lo tiene
                 String idcat = String.valueOf(infoDel.id);

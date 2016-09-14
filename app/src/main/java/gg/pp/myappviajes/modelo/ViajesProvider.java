@@ -366,12 +366,11 @@ public class ViajesProvider extends ContentProvider {
                 afectados = bd.update(Tablas.EVENTOS, values,
                         EventosEntry.E_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
-                ///////////
 
-                ///////
                 break;
 
             case VIAJES_ID:
+                id = ViajesEntry.obtenerIdViaje(uri);
                 Log.d(TAG, "Esty en 362 UPDATE con case VIAJES_ID uri:" + uri );
                 afectados = bd.update(Tablas.VIAJES, values,
                         ViajesEntry.V_ID + " = ?", new String[]{id});
@@ -396,6 +395,7 @@ public class ViajesProvider extends ContentProvider {
                 break;
 
             case M_PAGO_ID:
+                id = MPagoEntry.obtenerIdMPago(uri);
                 Log.d(TAG, "Esty en 383 UPDATE con case MPAGO_ID uri:" + uri );
                 afectados = bd.update(Tablas.MPAGO, values,
                         MPagoEntry.MPAG_ID + " = ?", new String[]{id});
@@ -403,7 +403,8 @@ public class ViajesProvider extends ContentProvider {
                 break;
 
             case TIPO_V_ID:
-                Log.d(TAG, "Esty en 390 UPDATE con case TIPOV_ID uri:" + uri );
+                id = TipoVEntry.obtenerIdTipoV(uri);
+                        Log.d(TAG, "Esty en 390 UPDATE con case TIPOV_ID uri:" + uri );
                 afectados = bd.update(Tablas.TIPOVIAJE, values,
                         TipoVEntry.TIPO_ID + " = ?", new String[]{id});
                 notificarCambio(uri);

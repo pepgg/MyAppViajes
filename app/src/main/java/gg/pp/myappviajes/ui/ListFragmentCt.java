@@ -78,7 +78,6 @@ public class ListFragmentCt extends ListFragment implements
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.list_categor, container, false);
-
         return view;
     }
     @Override

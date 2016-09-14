@@ -41,7 +41,7 @@ public class InsertFragmentVi extends android.support.v4.app.Fragment implements
      */
 
     private EditText mNomText;
-   private Button btDataIn;
+    private Button btDataIn;
     private Button btDataFi;
     private int mYear;
     private int mMonth;
@@ -89,9 +89,6 @@ public class InsertFragmentVi extends android.support.v4.app.Fragment implements
     public InsertFragmentVi() {
         // Required empty public constructor
     }
-    //TODO: poner la fecha actual al boton datain
-    //TODO: El calendario en español. primer dia de la semana el lunes
-    //TODO: activar desactivar el spinner
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -209,6 +206,7 @@ public class InsertFragmentVi extends android.support.v4.app.Fragment implements
                 newCalendar.get(Calendar.MONTH),
                 newCalendar.get(Calendar.DAY_OF_MONTH));
     }
+
     @Override
     public void onResume() {
         // TODO: Ver passa con esto onResume()

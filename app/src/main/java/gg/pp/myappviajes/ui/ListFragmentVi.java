@@ -36,20 +36,16 @@ public class ListFragmentVi extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = "En ListFragmentVi: ";
-    /**
-     * Adaptador
-     */
+    /**     * Adaptador     */
     private ActivitiesAdapterVi adaptador;
 
-    /**
-     * Views del formulario
-     */
+    /**     * Views del formulario     */
     private TextView categoria;
     private TextView valormoneda;
 
     String nomTabla;
     String miTabla;
-
+    String esEdit;
     private static final int INSERT_CT = Menu.FIRST; //INSERT_ID_G EDITAR_GASTO DELETE_ID_G EXPORTAR_GASTOS IMPORTAR_GASTOS
     private static final int EDIT_VI = Menu.FIRST + 1;
     private static final int DELET_CT = Menu.FIRST + 2;
@@ -85,10 +81,9 @@ public class ListFragmentVi extends ListFragment implements
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //
-        super.onCreateOptionsMenu(menu, inflater);
+           super.onCreateOptionsMenu(menu, inflater);
     }
-    //esto es para el menú de la barra, que aquí solo hay el hoe y el discard
+    //esto es para el menú de la barra, que aquí solo hay el home y el discard
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -150,7 +145,6 @@ public class ListFragmentVi extends ListFragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         registerForContextMenu(this.getListView());
     }
 
@@ -189,7 +183,8 @@ public class ListFragmentVi extends ListFragment implements
                 AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                     Log.i(TAG, "En onContextItemSelected Edit: " + infoEd.id);
                 Intent intent = new Intent(getActivity(), EditVi.class);
-                intent.putExtra(ViajesContract.ViajesEntry.V_ID, infoEd.id);
+                intent.putExtra(ViajesContract.ViajesEntry.V_ID, infoEd.id)
+                        .putExtra(esEdit, true);
                     Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + infoEd.id);
                 startActivityForResult(intent, EDIT_VI);
                 return true;
