@@ -13,6 +13,31 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"		>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+                <Spinner
+                    android:id="@+id/spinner_nom_vi"
+                    android:prompt="@string/spin_nv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawSelectorOnTop="true" />
+                <Spinner
+                    android:id="@+id/spinner_catg"
+                    android:prompt="@string/spin_catg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawSelectorOnTop="true" />
+            </LinearLayout>
+
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -190,30 +215,33 @@
                     android:layout_height="wrap_content"
                     android:text="@string/map"
                     android:layout_weight="0.2" />
-                <TextView
+                <EditText
                     android:id="@+id/longitud"
                     android:hint="@string/longi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"/>
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center" >
-                <TextView
+                <EditText
                     android:id="@+id/latitud"
                     android:hint="@string/lati"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />/>
-                <TextView
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"/>
+                <EditText
                     android:id="@+id/altitud"
                     android:hint="@string/alti"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />/>
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"/>
 
             </LinearLayout>
             <LinearLayout

@@ -151,9 +151,17 @@ public class ListFragmentVi extends ListFragment implements
     @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.i(TAG, " onListItemClick ===> id: " + id);
-        getActivity().startActivity(new Intent(getActivity(), EditVi.class)
-               .putExtra(ViajesContract.ViajesEntry.V_ID, id));
-    }
+     //   getActivity().startActivity(new Intent(getActivity(), EditVi.class)
+      //         .putExtra(ViajesContract.ViajesEntry.V_ID, id));
+        /////////////////
+     //   AdapterView.AdapterContextMenuInfo infoEd = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Log.i(TAG, "En onContextItemSelected Edit: " + id);
+        Intent intent = new Intent(getActivity(), EditVi.class);
+        intent.putExtra(ViajesContract.ViajesEntry.V_ID, id)
+                .putExtra(esEdit, true);
+        Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + id);
+        startActivityForResult(intent, EDIT_VI);
+        }
 
     // el menu contextual, con clic prolongado
     @Override

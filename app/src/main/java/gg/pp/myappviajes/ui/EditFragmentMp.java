@@ -97,7 +97,7 @@ public class EditFragmentMp extends android.support.v4.app.Fragment
                     ViajesContract.MPagoEntry.MPAG_ID + " = " + id_item,
                     null, null);
             if (cur.moveToFirst()) { // ha trobat el categ: estic editant un registre fet anteriorment
-                Log.i(TAG, "Viajecitosssssss onActivityCreated  103 updateView nombre: " + cur.getString(cur.getColumnIndex(ViajesContract.CategoriasEntry.CAT_CGT))); //  llega el nombre
+                Log.i(TAG, "Viajecitosssssss onActivityCreated  103 updateView nombre: " + cur.getString(cur.getColumnIndex(ViajesContract.MPagoEntry.MPAG_MP))); //  llega el nombre
                 mNomText.setText(cur.getString(cur.getColumnIndex(ViajesContract.MPagoEntry.MPAG_MP)));
 
             }

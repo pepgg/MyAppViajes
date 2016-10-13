@@ -7,10 +7,24 @@
         android:orderInCategory="1"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item android:id="@+id/action_vermapa"
+        android:title="@string/action_vermapa"
+        android:orderInCategory="2"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/m_eventos"
+        android:orderInCategory="3"
+        android:title="@string/menu_eventos"
+        app:showAsAction="never" />
     <item
         android:id="@+id/m_catgor"
         android:orderInCategory="4"
         android:title="@string/menu_categor"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/m_tipov"
+        android:orderInCategory="5"
+        android:title="@string/menu_tipov"
         app:showAsAction="never" />
     <item
         android:id="@+id/m_modopag"
@@ -23,34 +37,25 @@
         android:title="@string/menu_moneda"
         app:showAsAction="never" />
     <item
-        android:id="@+id/m_tipov"
-        android:orderInCategory="5"
-        android:title="@string/menu_tipov"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/m_viajes"
         android:orderInCategory="8"
         android:title="@string/menu_viajes"
         app:showAsAction="never" />
     <item
-        android:id="@+id/m_eventos"
-        android:orderInCategory="3"
-        android:title="@string/menu_eventos"
+        android:id="@+id/m_exportcsv"
+        android:orderInCategory="9"
+        android:title="@string/menu_exportcsv"
         app:showAsAction="never" />
     <item
         android:id="@+id/m_export"
-        android:orderInCategory="9"
+        android:orderInCategory="10"
         android:title="@string/menu_export"
         app:showAsAction="never" />
     <item
         android:id="@+id/m_import"
-        android:orderInCategory="10"
+        android:orderInCategory="11"
         android:title="@string/menu_import"
         app:showAsAction="never" />
 
-    <item android:id="@+id/action_vermapa"
-        android:title="@string/action_vermapa"
-        android:orderInCategory="2"
-        app:showAsAction="never"
-       />
+
 </menu>

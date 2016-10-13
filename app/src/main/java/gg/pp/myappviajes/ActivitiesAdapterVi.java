@@ -29,6 +29,8 @@ public class ActivitiesAdapterVi extends CursorAdapter {
         Log.i(TAG, "enn ActivitiesAdapterCt bindView  " );
         TextView categ_list = (TextView) view.findViewById(R.id.categ_list_text);
         categ_list.setText(cursor.getString(cursor.getColumnIndex(ViajesContract.ViajesEntry.V_NOM)));
+        TextView valor_list = (TextView) view.findViewById(R.id.valor_list_text);
+        valor_list.setText(cursor.getString(cursor.getColumnIndex(ViajesContract.ViajesEntry.V_DATAIN)));
 
                 Log.i(TAG, "enn ActivitiesAdapterCt bindView la getColumnIndex de: " + cursor.getColumnIndex(ViajesContract.ViajesEntry.V_NOM)); // esto es 1
 

@@ -1,9 +1,11 @@
 package gg.pp.myappviajes.ui;
 
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,9 +20,7 @@ import android.widget.TextView;
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
-/**
- * Fragment con formulario de inserción de viajes
- */
+/** * Fragment con formulario de inserción de tipos viajes */
 public class EditFragmentTv extends android.support.v4.app.Fragment
 {
     /**
@@ -28,12 +28,13 @@ public class EditFragmentTv extends android.support.v4.app.Fragment
      */
     private EditText mNomText;
     private TextView mlabelV;
+    private TextView labelitem;
+    private TextView labelvalor;
     private EditText mValor;
 
     private long id_item; //id del item que voy a editar
 
-  //  public Long mId;
-    private static final String TAG = "En EditFragmentMn: ";
+    private static final String TAG = "En EditFragmentTV: ";
 
     private OnFragmentInteractionListener mListener;
 
@@ -47,9 +48,9 @@ public class EditFragmentTv extends android.support.v4.app.Fragment
         setHasOptionsMenu(true);
 
             // para el edit, llega el id del item a editar:
-            Log.i(TAG, "EditFragmentMn primero onCreate: "); // aquí llega
-        id_item = getActivity().getIntent().getLongExtra(ViajesContract.MonedasEntry.MON_ID, -1);
-            Log.i(TAG, "EditFragmentMn  onCreate un iditem: " + id_item); //llega el id del item
+            Log.i(TAG, "EditFragmentTV primero onCreate: "); // aquí llega
+        id_item = getActivity().getIntent().getLongExtra(ViajesContract.TipoVEntry.TIPO_ID, -1);
+            Log.i(TAG, "EditFragmentTV  onCreate un iditem: " + id_item); //llega el id del item
     }
 
     @Override
@@ -57,26 +58,25 @@ public class EditFragmentTv extends android.support.v4.app.Fragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_insert_datam, container, false);
          // Obtener views del layout
+        labelitem = (TextView) view.findViewById(R.id.label_item);
         mNomText = (EditText) view.findViewById(R.id.nom_item);
+        labelvalor = (TextView) view.findViewById(R.id.label_valor);
         mValor = (EditText) view.findViewById(R.id.valor);
-
-        mlabelV.setVisibility(View.VISIBLE);
-        mValor.setVisibility(View.VISIBLE);
+        labelvalor.setEnabled(false);
+        mValor.setEnabled(false);
 
         return view;
     }
 
-    /**
-     * Actualizar datos de la actividad
-     */
+    /**     * Actualizar datos de la actividad     */
     private void updateData() {
 
         // Unir Uri principal con identificador
-        Uri uri = ContentUris.withAppendedId(ViajesContract.MonedasEntry.URI_CONTENIDO, id_item);
+        Uri uri = ContentUris.withAppendedId(ViajesContract.TipoVEntry.URI_CONTENIDO, id_item);
             Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  87 updateDATA uri: " + uri); //  llega el uri bien, con su id
             Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  88 updateDATA nomcateg: " + mNomText.getText().toString()); //lo coge biennnnn
         ContentValues values = new ContentValues();
-        values.put(ViajesContract.MonedasEntry.MON_NOM, mNomText.getText().toString());
+        values.put(ViajesContract.TipoVEntry.TIPO_TIPO, mNomText.getText().toString());
         // Actualiza datos del Content Provider
         getActivity().getContentResolver().update(
                 uri,
@@ -91,17 +91,28 @@ public class EditFragmentTv extends android.support.v4.app.Fragment
         // Obtener datos del formulario
         Intent i = getActivity().getIntent();
             Log.i(TAG, "ViajecitosssssssInsertFragmentCCCtttt  109 updateView i: " + i); //llega
-        String nom_text = i.getStringExtra(ViajesContract.MonedasEntry.MON_NOM);
+        String nom_text = i.getStringExtra(ViajesContract.TipoVEntry.TIPO_TIPO);
             Log.i(TAG, "ViajecitosssssssInsertFrag   113 updateView El nombre: " + nom_text); //llega
+//aquí la consulta para cpmseguir select nombre, valor, where id = id_item
 
-        // Actualizar la vista
-        mNomText.setText(nom_text);
+        Uri urimn = ViajesContract.TipoVEntry.URI_CONTENIDO;
+        ContentResolver cr = getActivity().getContentResolver();
+        Cursor cur = cr.query(urimn, null,
+                ViajesContract.TipoVEntry.TIPO_ID + " = " + id_item,
+                null, null);
+        if (cur.moveToFirst()) {
+            Log.i(TAG, "Viajecitosssssss EditFragmentTTVV  109 updateView uri: " + cur.getString(cur.getColumnIndex(ViajesContract.TipoVEntry.TIPO_TIPO))); //  llega el uri bien, con su id
+            //
+
+            mNomText.setText(cur.getString(cur.getColumnIndex(ViajesContract.TipoVEntry.TIPO_TIPO)));
+           // mValor.setText(cur.getString(cur.getColumnIndex(ViajesContract.MonedasEntry.MON_VAL)));
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        id_item = getActivity().getIntent().getLongExtra(ViajesContract.MonedasEntry.MON_ID, -1);
+        id_item = getActivity().getIntent().getLongExtra(ViajesContract.TipoVEntry.TIPO_ID, -1);
         updateView(); // Cargar datos iniciales
     }
     @Override
@@ -133,11 +144,11 @@ public class EditFragmentTv extends android.support.v4.app.Fragment
     private void saveData() {
         // Obtención de valores actuales
         ContentValues values = new ContentValues();
-        values.put(ViajesContract.MonedasEntry.MON_NOM, mNomText.getText().toString());
+        values.put(ViajesContract.TipoVEntry.TIPO_TIPO, mNomText.getText().toString());
         Log.i(TAG, "En saveData");
 
         getActivity().getContentResolver().insert(
-                ViajesContract.MonedasEntry.URI_CONTENIDO,
+                ViajesContract.TipoVEntry.URI_CONTENIDO,
                 values
         );
     }

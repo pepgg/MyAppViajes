@@ -1,7 +1,29 @@
 package gg.pp.myappviajes.exportimport;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.opencsv.CSVWriter;
+
+import java.io.FileWriter;
+import java.io.IOException;
+
+import gg.pp.myappviajes.R;
+import gg.pp.myappviajes.modelo.DatabaseHelper;
+
+import static android.os.Environment.getExternalStorageDirectory;
+
 public class ExportCSV extends Exportar {
-	@Override
+    /*
+    @Override
 	protected String getHelpTitle() {
 		return null;
 	}
@@ -10,92 +32,150 @@ public class ExportCSV extends Exportar {
 	protected String getHelp() {
 		return null;
 	}
-	/*
-	private static final String TAG = "ExportCSV";
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState, "csv");
-		
-		if (MiMateria.mId != null) { //si hay un id de la materia => es una materia
-			
-			Log.i(TAG, "EXPORTARCSV mattt");
-			final String[] columns = {"idmat", "idclas", "data", "tema", "activitat", "descrip", "recursos"};
-			Log.i(TAG, "filename EN EXPORTARCSV oncreate  " + m_filename);
-			super.m_exporter = new Runnable() {
-				@Override
-				public void run() {
-				
-					Log.i(TAG, "filename EN EXPORTARCSV run  " + m_filename);
-					// busca tots els registres 
-					SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/pep.gg/databases/" + PromiclanDbAdapter.DATABASE_NOM, null, SQLiteDatabase.OPEN_READONLY);
-					Cursor mater = db.query(PromiclanDbAdapter.TABLE_MAT, new String[] {"nom"}, "_id = " + MiMateria.mId, null, null, null, null, null);
-					mater.moveToFirst();
-					int nomMater = mater.getColumnIndexOrThrow(PromiclanDbAdapter.MAT_NOM);
-					Log.i(TAG, "En Promiclandbadapter INT nommmmmmmmmmmmMATERIA ES " + nomMater);
-	   	 			String nomMateria = mater.getString(nomMater);
-	   	 			Log.i(TAG, "En Promiclandbadapter nommmmmmmmmmmmMATERIA ES " + nomMateria);
-	   	 			m_filename = nomMateria + ".csv";
-	   	 			
-	   	 			try {
-	   	 				CSVWriter csv = new CSVWriter(new FileWriter(Environment.getExternalStorageDirectory() + "/" + m_filename));
-	   	 				Cursor c = db.query(PromiclanDbAdapter.TABLE_CL, new String[] {"idmat", "idclas", "data", "tema", "activitat", "descrip", "recursos"}, "idmat = " + MiMateria.mId, null, null, null, null, null);
-	   	 				c.moveToFirst();
-	   	 				while (!c.isAfterLast()) {
-	   	 					int COLUM_INDEX_IDCLAS = c.getColumnIndexOrThrow(PromiclanDbAdapter.CL_IDCLAS);
-	   	 					int COLUM_INDEX_DATA = c.getColumnIndexOrThrow(PromiclanDbAdapter.CL_DATA);
-	   	 					int COLUM_INDEX_TEMA = c.getColumnIndexOrThrow(PromiclanDbAdapter.CL_TEMA);
-	   	 					int COLUM_INDEX_ACTIV = c.getColumnIndexOrThrow(PromiclanDbAdapter.CL_ACTIV);
-	   	 					int COLUM_INDEX_DESCRIP = c.getColumnIndexOrThrow(PromiclanDbAdapter.CL_DESCRIP);
-	   	 					int COLUM_INDEX_RECUR = c.getColumnIndexOrThrow(PromiclanDbAdapter.CL_RECUR);
-						
-	   	 					columns[0] = String.valueOf(c.getLong(COLUM_INDEX_IDCLAS));
-	   	 					columns[1] = String.valueOf(c.getString(COLUM_INDEX_DATA));
-	   	 					columns[2] = String.valueOf(c.getString(COLUM_INDEX_TEMA));
-	   	 					columns[3] = String.valueOf(c.getString(COLUM_INDEX_ACTIV));
-	   	 					columns[4] = String.valueOf(c.getString(COLUM_INDEX_DESCRIP));
-	   	 					columns[5] = String.valueOf(c.getString(COLUM_INDEX_RECUR));
-						
-	   	 					csv.writeNext(columns);					
-	   	 					c.moveToNext();
-	   	 				}
-	   	 				c.close();
-	   	 				db.close();
-	   	 				csv.close();
-	   	 				m_handler.post(new Runnable() {
-	   	 					@Override
-							public void run() {
-	   	 						Bundle data = new Bundle();
-	   	 						data.putString(MESSAGE, getString(R.string.export_acabat_msg) + "\n" + m_filename);
-	   	 						data.putString(TITLE, getString(R.string.export_be));
-	   	 						data.putBoolean(SUCCESS, true);
+	*/
+    private static final String TAG = "ExportCSV";
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+    //CSV file header
+    private static final String FILE_HEADER = "ID, idcateg, nom, descripcio, modpag, moneda, totaleur, fechah, foto1, " +
+            "foto2, callenum, cp, ciudad, telef, mail, web, longitud, latitud, altitud, valoracion, kmp, comentari";
 
-	   	 						Message msg = new Message();
-	   	 						msg.setData(data);
-	   	 						m_handler.handleMessage(msg);
-	   	 						MiMateria.mId = null;
-	   	 					}
-	   	 				});
-	   	 			} catch (final IOException e) {
-	   	 				e.printStackTrace();
-	   	 				m_handler.post(new Runnable() {
-	   	 					@Override
-							public void run() {
-	   	 						Bundle data = new Bundle();
-	   	 						data.putString(MESSAGE, e.getMessage());
-	   	 						data.putString(TITLE, getString(R.string.error));
-	   	 						data.putBoolean(SUCCESS, false);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState, "csv");
 
-	   	 						Message msg = new Message();
-	   	 						msg.setData(data);
-	   	 						m_handler.handleMessage(msg);
-	   	 					}
-	   	 				});
-	   	 				return;
-	   	 			} //catch
-				}//run()
-			};//runable()
-	
-		}else { // si no hay un id de la materia tiene que ser festius
+        //	if (MiMateria.mId != null) { //si hay un id de la materia => es una materia
+
+        Log.i(TAG, "EXPORTARCSV Eventos: ");
+
+        final String[] columns = {"ID","IVIAJ","ICATG","NOM","DESCRIP","MODp","MON","TOT€","FECHA","FOT1","FOT2",
+                "DIRECC","CP","CIUDAD","TELEF","eMAIL","WEB","LONGIT","LATIT","ALTIT","VALOR","KMp","COMENT"};
+        Log.i(TAG, "filename EN EXPORTARCSV oncreate  " + m_filename);
+        super.m_exporter = new Runnable() {
+            @Override
+            public void run() {
+
+                Log.i(TAG, "filename EN EXPORTARCSV run  " + m_filename);
+                // busca tots els registres
+                SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/gg.pp.myappviajes/databases/cpviajes.db"
+                     // +  DatabaseHelper.mDbHelper, null, SQLiteDatabase.OPEN_READONLY);
+                        , null, SQLiteDatabase.OPEN_READONLY);
+                ////////////////// aquí el cursorrrrrr: select * from eventos
+
+                m_filename = "vi_notas.csv";
+                //CSV file header
+
+                try {
+                    CSVWriter csv = null;
+                    csv = new CSVWriter(new FileWriter(getExternalStorageDirectory() + "/Bkviajes/" + m_filename));
+                   // CSVWriter csv = new CSVWriter(new FileWriter(csv, true));
+//Write the CSV file header
+                  csv.writeNext(columns);
+
+                  //  csv.writeNext(FILE_HEADER.toString());
+
+                    Cursor c = db.query(DatabaseHelper.mDbHelper.TABLE_EVENT, new String[]{"_id", "idviaje", "idcateg", "nom", "descripcio",
+                            "modpag", "moneda", "totaleur", "fechah", "foto1", "foto2", "callenum", "cp", "ciudad", "telef", "mail", "web",
+                            "longitud", "latitud", "altitud", "valoracion", "kmp", "comentari"}, null, null, null, null, null);
+                    c.moveToFirst();
+
+                  //  java.sql.ResultSet myResultSet = c();
+                 //   csv.writeAll(myResultSet, includeHeaders); //writer is instance of CSVWriter
+
+                    while (!c.isAfterLast()) {
+                        int COLUM_INDEX_IDEV = c.getColumnIndexOrThrow(DatabaseHelper.E_ID);
+                        int COLUM_INDEX_IDVIAJ = c.getColumnIndexOrThrow(DatabaseHelper.E_IDV);
+                        int COLUM_INDEX_IDCATEG = c.getColumnIndexOrThrow(DatabaseHelper.E_IDCGT);
+                        int COLUM_INDEX_NOM = c.getColumnIndexOrThrow(DatabaseHelper.E_NOM);
+                        int COLUM_INDEX_DESCRIP = c.getColumnIndexOrThrow(DatabaseHelper.E_DESC);
+                        int COLUM_INDEX_MODPAG = c.getColumnIndexOrThrow(DatabaseHelper.E_MPAG);
+                        int COLUM_INDEX_NONED = c.getColumnIndexOrThrow(DatabaseHelper.E_MON);
+                        int COLUM_INDEX_TOTEUR = c.getColumnIndexOrThrow(DatabaseHelper.E_TOT);
+                        int COLUM_INDEX_FECHA = c.getColumnIndexOrThrow(DatabaseHelper.E_DATAH);
+                        int COLUM_INDEX_FOT1 = c.getColumnIndexOrThrow(DatabaseHelper.E_FOT1);
+                        int COLUM_INDEX_FOT2 = c.getColumnIndexOrThrow(DatabaseHelper.E_FOT2);
+                        int COLUM_INDEX_CALLE = c.getColumnIndexOrThrow(DatabaseHelper.E_DIR);
+                        int COLUM_INDEX_CP = c.getColumnIndexOrThrow(DatabaseHelper.E_CP);
+                        int COLUM_INDEX_CIUD = c.getColumnIndexOrThrow(DatabaseHelper.E_CIUD);
+                        int COLUM_INDEX_TELEF = c.getColumnIndexOrThrow(DatabaseHelper.E_TEL);
+                        int COLUM_INDEX_MAIL = c.getColumnIndexOrThrow(DatabaseHelper.E_MAIL);
+                        int COLUM_INDEX_WEB = c.getColumnIndexOrThrow(DatabaseHelper.E_WEB);
+                        int COLUM_INDEX_LONGI = c.getColumnIndexOrThrow(DatabaseHelper.E_LON);
+                        int COLUM_INDEX_LATIT = c.getColumnIndexOrThrow(DatabaseHelper.E_LAT);
+                        int COLUM_INDEX_ALTIT = c.getColumnIndexOrThrow(DatabaseHelper.E_ALT);
+                        int COLUM_INDEX_VALOR = c.getColumnIndexOrThrow(DatabaseHelper.E_VAL);
+                        int COLUM_INDEX_KMP = c.getColumnIndexOrThrow(DatabaseHelper.E_KMP);
+                        int COLUM_INDEX_COMEN = c.getColumnIndexOrThrow(DatabaseHelper.E_COM);
+
+                        columns[0] = String.valueOf(c.getLong(COLUM_INDEX_IDEV));
+                        columns[1] = String.valueOf(c.getString(COLUM_INDEX_IDVIAJ));
+                        columns[2] = String.valueOf(c.getString(COLUM_INDEX_IDCATEG));
+                        columns[3] = String.valueOf(c.getString(COLUM_INDEX_NOM));
+                        columns[4] = String.valueOf(c.getString(COLUM_INDEX_DESCRIP));
+                        columns[5] = String.valueOf(c.getString(COLUM_INDEX_MODPAG));
+                        columns[6] = String.valueOf(c.getString(COLUM_INDEX_NONED));
+                        columns[7] = String.valueOf(c.getString(COLUM_INDEX_TOTEUR));
+                        columns[8] = String.valueOf(c.getString(COLUM_INDEX_FECHA));
+                        columns[9] = String.valueOf(c.getString(COLUM_INDEX_FOT1));
+                        columns[10] = String.valueOf(c.getString(COLUM_INDEX_FOT2));
+                        columns[11] = String.valueOf(c.getString(COLUM_INDEX_CALLE));
+                        columns[12] = String.valueOf(c.getString(COLUM_INDEX_CP));
+                        columns[13] = String.valueOf(c.getString(COLUM_INDEX_CIUD));
+                        columns[14] = String.valueOf(c.getString(COLUM_INDEX_TELEF));
+                        columns[15] = String.valueOf(c.getString(COLUM_INDEX_MAIL));
+                        columns[16] = String.valueOf(c.getString(COLUM_INDEX_WEB));
+                        columns[17] = String.valueOf(c.getString(COLUM_INDEX_LONGI));
+                        columns[18] = String.valueOf(c.getString(COLUM_INDEX_LATIT));
+                        columns[19] = String.valueOf(c.getString(COLUM_INDEX_ALTIT));
+                        columns[20] = String.valueOf(c.getString(COLUM_INDEX_VALOR));
+                        columns[21] = String.valueOf(c.getString(COLUM_INDEX_KMP));
+                        columns[22] = String.valueOf(c.getString(COLUM_INDEX_COMEN));
+
+                        csv.writeNext(columns);
+                        c.moveToNext();
+                    }
+                    c.close();
+                    db.close();
+                    csv.close();
+                    m_handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Bundle data = new Bundle();
+                            data.putString(MESSAGE, getString(R.string.export_acabat_msg) + "\n" + m_filename);
+                            data.putString(TITLE, getString(R.string.export_be));
+                            data.putBoolean(SUCCESS, true);
+
+                            Message msg = new Message();
+                            msg.setData(data);
+                            m_handler.handleMessage(msg);
+                         //   MiMateria.mId = null;
+                        }
+                    });
+                } catch (final IOException e) {
+                  //  e.printStackTrace();
+                    e.printStackTrace();
+                    m_handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Bundle data = new Bundle();
+                            data.putString(MESSAGE, e.getMessage());
+                            data.putString(TITLE, getString(R.string.error));
+                            data.putBoolean(SUCCESS, false);
+
+                            Message msg = new Message();
+                            msg.setData(data);
+                            m_handler.handleMessage(msg);
+                        }
+                    });
+                    return;
+                } //catch
+            }//run()
+        };//runable()
+    /*
+        }else { // si no hay un id de la materia tiene que ser festius
 			Log.i(TAG, "EXPORTARCSV FESTTTTTT  ");
 			final String[] columns = {"festiu"};
 			super.m_exporter = new Runnable() {
@@ -157,16 +237,56 @@ public class ExportCSV extends Exportar {
 				}//run()
 			};//runable()
 		}//if
-	}
-		
-//el help no funciona todavia
-	@Override
-	protected String getHelp() {
-		return getString(R.string.help_export_csv);
-	}
-	@Override
-	protected String getHelpTitle() {
-		return getString(R.string.help_export_csv_title);
-	}
-*/
+        */
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    //el help no funciona todavia
+    @Override
+    protected String getHelp() {
+        return getString(R.string.help_export_csv);
+    }
+
+    @Override
+    protected String getHelpTitle() {
+        return getString(R.string.help_export_csv_title);
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("ExportCSV Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
 }

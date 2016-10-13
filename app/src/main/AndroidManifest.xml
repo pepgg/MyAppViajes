@@ -189,6 +189,14 @@
                 android:value=".ui.DetailActivity" />
         </activity>
         <activity
+            android:name=".exportimport.ExportCSV"
+            android:label="@string/menu_exportcsv"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.DetailActivity" />
+        </activity>
+        <activity
             android:name=".exportimport.ExportImport">
         </activity>
         <activity

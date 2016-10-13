@@ -29,6 +29,7 @@ import android.widget.TextView;
 import gg.pp.myappviajes.ActivitiesAdapterCt;
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.exportimport.Export;
+import gg.pp.myappviajes.exportimport.ExportCSV;
 import gg.pp.myappviajes.exportimport.Import;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
@@ -108,17 +109,20 @@ public class MainFragment extends ListFragment implements
 
         cursar.moveToFirst();
 
-            int to_gast = cursar.getInt(0);
-            totaGasto = Float.valueOf(to_gast); //
+           // int to_gast = cursar.getInt(0);
+
+        totaGasto = cursar.getFloat(0);
+        //  totaGasto = Float.valueOf(to_gast);
+
        strTotalGast = Float.toString(totaGasto);
         Log.i(TAG, "ennnnnn 112 TOTAGAST: "+ strTotalGast + "idviaje: " + id_viaje);
         if (!cursar.isClosed()){
             cursar.close();
         }
-
             return Float.valueOf(totaGasto);
     }
     public String nombrViaje() {
+        Log.i(TAG, "ennnnnn 123 nombrViaje: ");
         String[] projection = new String[] {
                 ViajesContract.ViajesEntry.V_NOM,
         };
@@ -133,7 +137,7 @@ public class MainFragment extends ListFragment implements
 
         if (cu.moveToFirst())
         {
-            Log.i(TAG, "ennnnnn IDVIAJE: idviaje: 434 moveToFirst");
+            Log.i(TAG, "ennnnnn IDVIAJE: idviaje: 138 moveToFirst");
             int id_viaj = cu.getColumnIndex(ViajesContract.ViajesEntry.V_NOM);
             nombreViaje = cu.getString(id_viaj) ; //
         }
@@ -143,6 +147,7 @@ public class MainFragment extends ListFragment implements
         return nombreViaje;
     }
     public String viajesAct() {
+        Log.i(TAG, "ennnnnn 147 viajesAct: ");
         String[] projection = new String[] {
                 ViajesContract.ViajesEntry.V_ID
         };
@@ -222,13 +227,19 @@ public class MainFragment extends ListFragment implements
         switch (id){
             case LOADER_MVIAJE:
                 Log.i(TAG, "InsertFragmentEVV onCreateLoader LOADER_MVIAJE 224 -modopag-AAAAA un poquito");
+                String[] projection = new String[] {
+                        ViajesContract.ViajesEntry.V_NOM,
+                        ViajesContract.ViajesEntry.V_DATAIN + " as data",
+                        ViajesContract.ViajesEntry.V_ID
+                };
                 return new CursorLoader(
+
                         getActivity(),                              // Parent activity context
                         ViajesContract.ViajesEntry.URI_CONTENIDO,    // Table to query
-                        null,      // Projection to return
+                        projection,      // Projection to return
                         null,                                       // No selection clause
                         null,                                       // No selection arguments
-                        "datain DESC");                                      // Default sort order
+                        "data DESC");                                      // Default sort order
             case LOADER_MCATEG:
                 Log.i(TAG, "MainFragmentito onCreateLoader CINCO");
                 return new CursorLoader(
@@ -285,7 +296,6 @@ public class MainFragment extends ListFragment implements
                 null,
                 new String[]{ViajesContract.ViajesEntry.COLUMN_NAME},
                 new int[]{android.R.id.text1}, 2);
-
         viajeActAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     Log.d(TAG, "onItemSviajeActAdaptersetDropDownViewResource BBBBBBBBBBBBBBBBBBBBBB ");
         nomViaje.setAdapter(viajeActAdapter);
@@ -300,22 +310,17 @@ public class MainFragment extends ListFragment implements
                 //idviaje = Integer.valueOf(id_viaje);
                         Log.d(TAG, "onItemSelected 300 (.adaspter id viajes..) -> id_viaje: = " + id_viaje);
 /////////////////////////////este ^ es el bueno
-
-
                 totaGast();
                 totaKM();
                 totalKm.setText(strKmp);
                 //totalGast.setText(totaGasto.toString());
                 totalGast.setText(strTotalGast);
-
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                         Log.d(TAG, "onNothingSelected");
             }
         });
-
         // aquí el adapter de la listaCateg
         adaptador = new ActivitiesAdapterCt(getActivity());
         // Relacionar adaptador a la lista
@@ -323,7 +328,6 @@ public class MainFragment extends ListFragment implements
         // Iniciar Loader
         getLoaderManager().initLoader(LOADER_MCATEG, null, this);
         getLoaderManager().initLoader(LOADER_MVIAJE, null, this);
-
         Button button = (Button) view.findViewById(R.id.buttnviaje);
         button.setOnClickListener(
                 new View.OnClickListener() {
@@ -352,7 +356,8 @@ public class MainFragment extends ListFragment implements
             case R.id.m_catgor:
                 String nomTabla = ViajesContract.CategoriasEntry.TABLE_NAME.toString();
                 Intent intent = new Intent(getActivity(), ListCt.class);
-                intent.putExtra("NombreTabla", nomTabla);
+                intent.putExtra("NombreTabla", nomTabla)
+                      .putExtra("idv", String.valueOf(id_viaje));
                 startActivity(intent);
                 return true;
             case R.id.m_modopag:
@@ -382,8 +387,13 @@ public class MainFragment extends ListFragment implements
             case R.id.m_eventos:
                 nomTabla = ViajesContract.EventosEntry.TABLE_NAME.toString();
                 Intent intnte = new Intent(getActivity(), ListEv.class);
-                intnte.putExtra("NombreTabla", nomTabla);
+                intnte.putExtra("NombreTabla", nomTabla)
+                      .putExtra("idv", String.valueOf(id_viaje));
                 startActivity(intnte);
+                return true;
+            case R.id.m_exportcsv:
+                Intent incsv = new Intent(getActivity(), ExportCSV.class);
+                startActivity(incsv);
                 return true;
             case R.id.m_export:
                 Intent in = new Intent(getActivity(), Export.class);
@@ -413,13 +423,7 @@ public class MainFragment extends ListFragment implements
 
     /** Envía los datos de la actividad hacia el formulario de actualización     */
     private void beginUpdate() {
-        /*
-        getActivity().startActivity(
-                        new Intent(getActivity(), UpdateActivity.class)
-                                .putExtra(TechsContract.Columnas._ID, id)
-                                .putExtra(TechsContract.Columnas.DESCRIPCION, descripcion.getText())
-                                .putExtra(TechsContract.Columnas.ESTADO, estado.getText())  );
-        */
+
     }
 
     @Override
@@ -460,13 +464,14 @@ public class MainFragment extends ListFragment implements
     @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long idc) {
         Log.i(TAG, "MainFragmentito onListItemClick SEIS");
-        Log.d(TAG, "onListItemClick(.-----..) -> id_viaje: = " + id_viaje);
-
+        Log.d(TAG, "onListItemClick(.---470--..:-)))));-) -> id_viajeee: = " + id_viaje);
+        Log.d(TAG, "onListItemClick(.---471--..:-)))));-) -> id_categgg: = " + idc);
+        id_categ = String.valueOf(idc);
 
         Bundle bundle = new Bundle();
        getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
-               .putExtra(ViajesContract.CategoriasEntry.CAT_ID, idc) // este pasa bien el idcateg
-             //  .putExtra("idc", id_categ)
+            //   .putExtra(ViajesContract.CategoriasEntry.CAT_ID, idc)
+               .putExtra("idc", id_categ)// este pasa bien el idcateg
                .putExtra("idv", id_viaje));
            }
 
@@ -506,23 +511,15 @@ public class MainFragment extends ListFragment implements
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch(item.getItemId()) {
-            /*
-            case R.id.ctx_delete:
-                //esborra un existent
-                Log.i(TAG, "En onContextItemSelected delete id: " + getId());
-                AdapterView.AdapterContextMenuInfo infoDel = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                Log.i(TAG, "En onContextItemSelected deleeeeettttttte el III_DDDDD: " + infoDel.id); //funciona
-                deleteData(infoDel.id);
-                getActivity().finish();
-                return true;
-            */
+
             case R.id.ctx_m_listevent:
                 // menu contextual, con clic prolongado lleva a la lista de eventos de la categ seleccionada
                 AdapterView.AdapterContextMenuInfo infoDel = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                         Log.i(TAG, "En onContextItemSelected idCATEGORIAAAAAAAAA id: " + infoDel.id); //esta si que lo tiene
                 String idcat = String.valueOf(infoDel.id);
                 Intent intnte = new Intent(getActivity(), ListEv.class);
-                intnte.putExtra( "idCategoria" , idcat );
+                intnte.putExtra( "idCategoria" , idcat )
+                      .putExtra("idv", id_viaje);
                 startActivity(intnte);
                 return true;
             default:

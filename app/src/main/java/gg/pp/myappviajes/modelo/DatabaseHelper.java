@@ -117,6 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String E_LAT = "latitud";
     public static final String E_ALT = "altitud";
     public static final String E_COM = "comentari";
+    public static final String E_PREU = "precio";
 
     public static DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
@@ -149,7 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + E_NOM + " text, " + E_DESC + " text, " + E_MPAG + " integer, "
                     + E_MON +" integer, " + E_TOT + " float, " + E_FOT1 + " text, " + E_FOT2 + " text, " + E_VAL + " text, "
                     + E_DIR + " text, " + E_CP + " text, " + E_CIUD + " text, " + E_TEL + " text, " + E_MAIL + " text, "
-                    + E_WEB + " text, " + E_LON + " text, " + E_LAT + " text, " + E_ALT + " text, " + E_COM + " text);";
+                    + E_WEB + " text, " + E_LON + " text, " + E_LAT + " text, " + E_ALT + " text, " + E_COM + " text, " + E_PREU + " float);";
 
     private static final String TIPO_TABLE =
             "create table " + TABLE_TIPO +" (_id integer primary key autoincrement, "

@@ -39,13 +39,6 @@ public abstract class Exportar extends Activity {
 	public void onCreate(Bundle savedInstanceState, String ext) {
 		super.onCreate(savedInstanceState);
 		mDbHelper = new DatabaseHelper(this);
-		/*
-		if (MiMateria.mId != null){
-			Log.i(TAG, "MiD EN EXPORTAR oncreate  " + MiMateria.mId);
-			mId = MiMateria.mId;
-			m_ext = ext;
-		}
-		*/
 	}
 
 	@Override

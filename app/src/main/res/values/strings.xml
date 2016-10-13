@@ -45,6 +45,8 @@
     <string name="km_">Km </string>
     <string name="gps">GPS</string>
     <string name="fecha">fecha</string>
+    <string name="spin_nv">Nombre de viaje</string>
+    <string name="spin_catg">Categoria</string>
     <string name="spin_tv">Tipo de viaje</string>
     <string name="spin_mp">Modo de pago</string>
     <string name="spin_mon">Moneda</string>
@@ -57,6 +59,9 @@
     <string name="menu_tipov">Tipos de viaje</string>
     <string name="menu_viajes">Viajes</string>
     <string name="menu_eventos">Eventos</string>
+    <string name="menu_exportcsv">Exportar csv</string>
+    <string name="help_export_csv">Exportar la taula al format csv crear\à una c\òpia en l\'SD en aquest tipus de format (valors separats per comes). La podr\às obrir i editar amb un full de c\àlcul.</string>
+    <string name="help_export_csv_title">Exportar la taula al format csv</string>
     <string name="menu_export">Exportar</string>
     <string name="menu_import">Importar</string>
     <string name="sin_datos">No hay datos</string>

@@ -15,6 +15,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -98,7 +99,7 @@ public class EditFragmentVVi extends android.support.v4.app.Fragment
   //  private LocationListener locListener;
 
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
-            "dd-MM-yyyy", Locale.getDefault()); //.FRENCH);//  . .US);
+            "yyyy-MM-dd", Locale.getDefault()); //.FRENCH);//  . .US);
     DatePickerDialog datePickerDialog;
     Calendar dateCalendar;
 
@@ -162,6 +163,9 @@ public class EditFragmentVVi extends android.support.v4.app.Fragment
         mkmfi = (EditText) view.findViewById(R.id.kmfi);
         mDescrip = (EditText) view.findViewById(R.id.descripv);
         mTipoV = (Spinner) view.findViewById(R.id.spinner_tv);
+        String midate = (DateFormat.format("yyyy-MM-dd", new Date()).toString());
+        Log.d(TAG, "onCreateView(.EV..) -> fechh222222222222222222a: = " + midate);
+        btDataIn.setText(midate);
 
         return view;
     }
@@ -179,7 +183,8 @@ public class EditFragmentVVi extends android.support.v4.app.Fragment
                         dateCalendar = Calendar.getInstance();
                         dateCalendar.set(year, monthOfYear, dayOfMonth);
                         Log.i(TAG, " antes delllll datae change_data__209 ");
-
+                        btDataIn.setText(formatter.format(dateCalendar
+                                .getTime()));
                         switch(fecha1){
                             case DATE_DIALOG_IN: //R.id.change_data_in:
                                 Log.i(TAG, " switch(viewgetId change_data_in " + fecha);

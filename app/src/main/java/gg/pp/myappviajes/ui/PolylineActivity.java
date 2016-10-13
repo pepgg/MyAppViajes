@@ -67,7 +67,8 @@ public class PolylineActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_polyline);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        idviaj = getIntent().getStringExtra("idv");
+        Log.i(TAG, "Polyline OnCrete 71 id VIAJE " + idviaj);
      //   getLoaderManager().initLoader(LOADER_MAP, null,  (android.app.LoaderManager.LoaderCallbacks<Cursor>) this);
         getSupportLoaderManager().initLoader(LOADER_MAP, null, this);
       //  getLoaderManager().initLoader(LOADER_MAP, null, this);
@@ -75,8 +76,7 @@ public class PolylineActivity extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
 
-        idviaj = getIntent().getStringExtra("idv");
-        Log.i(TAG, "Polyline OnCrete 61 id VIAJE " + idviaj); // llega biennnnnn
+        Log.i(TAG, "Polyline OnCrete 79 id VIAJE " + idviaj); // llega biennnnnn
         //iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
         latLongAdapter = new SimpleCursorAdapter(
                 this, android.R.layout.simple_spinner_item,
@@ -149,22 +149,48 @@ public class PolylineActivity extends AppCompatActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.i(TAG, "Polyline onCreateLoader 152 idviaje: " + idviaj); //NOOOOO llega null
+        Log.i(TAG, "Polyline onMapReady 153 id VIAJE " + idviaj); //NOOOOO llega
         switch (id) {
             case LOADER_MAP:
                 ArrayList<LatLng> markerPoints = new ArrayList<LatLng>();
-                Log.i(TAG, "Polyline onCreateLoader 159: ");  //llega
+                Log.i(TAG, "Polyline onCreateLoader 155 idviaje: " + idviaj);  //NOOOOO llega
                 String[] PROJECTION = new String[]{ViajesContract.EventosEntry.E_LAT,
-                        ViajesContract.EventosEntry.E_LON};
+                        ViajesContract.EventosEntry.E_LON,
+                        ViajesContract.EventosEntry.E_IDV};
+                String select = "((" + ViajesContract.EventosEntry.E_LAT + " != '' ) AND ("
+                        + ViajesContract.EventosEntry.E_IDV + " = " + idviaj + ") )";
+
 
                 CursorLoader cl = new CursorLoader(
                         this,                              // Parent activity context
                         ViajesContract.EventosEntry.URI_CONTENIDO,    // Table to query
                         PROJECTION,      // Projection to return: latitud y longitud
-                        // ViajesContract.EventosEntry.E_LAT + " LIKE '%'",   // selection clause
-                        //ViajesContract.EventosEntry.E_LAT + " != '' and " + ViajesContract.EventosEntry.E_IDV + "=" + idviaj,   // selection clause
-                        ViajesContract.EventosEntry.E_LAT + " != '' ",
+                        select,
+                     //   ViajesContract.EventosEntry.E_LAT + " != '' " , // selection clause ESTA funciona
+                       // (ViajesContract.EventosEntry.E_LAT  + " != '' " +  " and " +
+                         //       ViajesContract.EventosEntry.E_IDV + " = " + idviaj), // selection clause Funciona pero saca todos los viajes
                         null,                                       // No selection arguments
                         null);                                      // Default sort order
+
+                /*
+                (ViajesContract.EventosEntry.E_LAT  + " != '' " +  " and " +
+                        ViajesContract.EventosEntry.E_IDV + " = " + idviaj)
+                        ******************************
+            String select = "((" + ViajesContract.EventosEntry.E_LAT + " NOTNULL) AND ("
+                + ViajesContract.EventosEntry.E_IDV + " = " + idviaj + ") )";
+-------------------------------------------------------
+            String select = "((" + Contacts.DISPLAY_NAME + " NOTNULL) AND ("
+                + Contacts.HAS_PHONE_NUMBER + "=1) AND ("
+                + Contacts.DISPLAY_NAME + " != '' ))";
+
+
+
+
+                */
+
+
+
 
                 //el cursorloader se llama cl
 
@@ -225,7 +251,7 @@ public class PolylineActivity extends AppCompatActivity
         ArrayList<LatLng> points = new ArrayList<LatLng>();
 
         locationCount = args.getCount();
-        Log.i(TAG, "Polylkine onLoadFinished 231 locationCount: " + locationCount); // llega perp locatiomcount = 0
+        Log.i(TAG, "Polylkine onLoadFinished 240 idviaje = " + idviaj + " locationCount: " + locationCount); // llega perp locatiomcount = 0
         // Move the current record pointer to the first row of the table
         args.moveToFirst();
 

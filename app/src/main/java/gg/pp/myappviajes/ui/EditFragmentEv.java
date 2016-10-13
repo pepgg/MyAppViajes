@@ -1,6 +1,5 @@
 package gg.pp.myappviajes.ui;
 
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -48,8 +47,7 @@ import gg.pp.myappviajes.modelo.ViajesContract;
 
 import static android.view.View.OnClickListener;
 
-/**
- * Fragment con formulario de EDIción de eventos */
+/** * Fragment con formulario de EDIción de eventos */
 public class EditFragmentEv extends android.support.v4.app.Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, OnClickListener {
 
@@ -64,13 +62,12 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
     private static final int LOCATION_REQUEST=INITIAL_REQUEST+1;
     /*     * Views del formulario     */
     Context mContext;
-
     private TextView nomcateg;
     private EditText nombre;
     private EditText descripcio;
     private EditText precio;
     private TextView totaleur;
-    Spinner modpag, monedas;
+    Spinner modpag, monedas, nomviaj, nomcatg;
     private Button eur;
     private Button datae;
     private Button fotoe;
@@ -82,9 +79,9 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
     private EditText web;
     private Button gps;
     private Button maps;
-    private TextView longi;
-    private TextView latit;
-    private TextView altit;
+    private EditText longi;
+    private EditText latit;
+    private EditText altit;
     private EditText kmactual;
     private RatingBar valoracio;
     private EditText comentaris;
@@ -97,29 +94,28 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
     private String nomFoto;
     private int idviaje;
     private String id_viaj;
-    private String id_event;
+    private String id_cate;
+    private String id_viaj_ed;
+    private String id_cate_ed;
     public Float valorMon;
     public int kmparcial;
     public Float totaleuros;
     boolean botEuros;
     public static final int LOADER_MODPAG = 1; // Loader identifier for ModPag
     public static final int LOADER_MONED = 2; // Loader identifier for Monedas
-    /////// Adapters for both spinners:
-    SimpleCursorAdapter mModPagAdapter, mMonedAdapter, sAdapter;
-
+    public static final int LOADER_NOMVIAJ = 3;
+    public static final int LOADER_NOMCATG = 4;
+    SimpleCursorAdapter mModPagAdapter, mMonedAdapter, nomviajAdapter, nomcatgAdapter, sAdapter;
     private LocationManager locManager;
     private LocationListener locListener;
-
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
             "dd-MM-yyyy", Locale.getDefault()); //.FRENCH);//  . .US);
     DatePickerDialog datePickerDialog;
     Calendar dateCalendar;
-
     private final String ruta_fotos = Environment.getExternalStorageDirectory() +"/Bkviajes/";   //.getAbsolutePath() +"/Bkviajes"; // yo usaré la carpeta de Bkkkk!!!!
     private File file = new File(ruta_fotos);
     Uri uri;
     File mi_foto;
-
     private long id_item; //
     private String esEdit;
     private boolean es_Edit;
@@ -127,37 +123,27 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
     public static final String TAG = "En EditFragmentEv: ";
     public EditFragmentEv() {
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         es_Edit = getActivity().getIntent().getBooleanExtra(esEdit, false);
-        id_categ = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
-        id_item = getActivity().getIntent().getLongExtra(ViajesContract.EventosEntry.E_ID, -1);
-
-            Log.i(TAG, "EditFragmentMn  onCreate un iditem: " + id_categ); //
+            Log.i(TAG, "EditFragmentEvvvv  140 onCreate un es_Edit: " + es_Edit); //
         if (es_Edit) {
-            Log.d(TAG, "------ES updateeeeeeeeeeeeeee id : " +  id_item ); //llegsa bien
-        } else {
-                Log.d(TAG, "------ES NUEVOOOOOOO "   );
-
-            id_categ = getActivity().getIntent().getLongExtra(ViajesContract.CategoriasEntry.CAT_ID, -1);
+            id_item = getActivity().getIntent().getLongExtra(ViajesContract.EventosEntry.E_ID, -1);
+            Log.d(TAG, "--- 143 --onCreate-ES updateeeeeeeeeeeeeee id : " +  id_item ); //llegsa bien
+        } else { //es nuevo
+                Log.d(TAG, "---onCreate--136-ES NUEVOOOOOOO "   );
             id_viaj =  getActivity().getIntent().getStringExtra("idv");
-
-            Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un jjkkkkkkkkkkkkkkkkkk idCAT: " + id_categ); // lo tienexxxxxxxxbvn
-            //idViaje();
-            Log.i(TAG, "ViajecitosssssssInsertFragmentEV  onCreate un <<<<<<<<<<<<ID-------Viaje: " + id_viaj); // lo tiene bien ?
+            id_cate =  getActivity().getIntent().getStringExtra("idc");
+                Log.i(TAG, "nuevo  onCreate un jjkkkkk 140 kkkk idCAT: " + id_cate); // lo SI
+                Log.i(TAG, "nuevo  onCreate un <<<<<  142  <<<ID-------Viaje: " + id_viaj); // lo SI
         }
-
         nomFoto = "";
-            Log.i(TAG, "Viajecitosssssss EDITFragmentEV  onCreate un poquitokkkkkkkkkkkkkkkkkkkkk idCAT: " + id_categ); // lo tienexxxxxxxxbvn
-
-        //Si no existe crea la carpeta donde se guardaran las fotos
+                  //Si no existe crea la carpeta donde se guardaran las fotos
         file.mkdirs();
         botEuros = false; // por omisión, no se clica el boton
     }
-
     @SuppressLint("SimpleDateFormat")
     private String getCode() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault().US);
@@ -168,18 +154,13 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
         return photoCode;
     }
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout
         View view = inflater.inflate(R.layout.fragment_insert_ev, container, false);
         // Obtener views
-        nomcateg = (TextView) view.findViewById(R.id.categor_input);
-        ///////tambien tendria que poner: Estás de viaje a: nombredelviaje !!!!!!!!!!!!!!!!!!
+        nomviaj = (Spinner) view.findViewById(R.id.spinner_nom_vi);
+        nomcatg = (Spinner) view.findViewById(R.id.spinner_catg);
         nombre = (EditText) view.findViewById(R.id.nom_e);
         descripcio = (EditText) view.findViewById(R.id.descripcio_e);
         precio = (EditText)view.findViewById(R.id.preu_e);
@@ -197,14 +178,15 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
         web = (EditText) view.findViewById(R.id.web);
         gps = (Button) view.findViewById(R.id.gps);
         maps = (Button) view.findViewById(R.id.map);
-        longi = (TextView) view.findViewById(R.id.longitud);
-        latit = (TextView) view.findViewById(R.id.latitud);
-        altit = (TextView) view.findViewById(R.id.altitud);
+        longi = (EditText) view.findViewById(R.id.longitud);
+        latit = (EditText) view.findViewById(R.id.latitud);
+        altit = (EditText) view.findViewById(R.id.altitud);
         kmactual = (EditText) view.findViewById(R.id.Km_p);
         valoracio = (RatingBar) view.findViewById(R.id.ratingBar);
         comentaris = (EditText) view.findViewById(R.id.coment);
-            String midate = (DateFormat.format("dd-MM-yyyy", new Date()).toString());
-              Log.d(TAG, "onCreateView(.EV..) -> fechh222222222222222222a: = " + midate);
+
+        String midate = (DateFormat.format("dd-MM-yyyy", new Date()).toString());
+                Log.d(TAG, "onCreateView(.EV..) -> fechh222222222222222222a: = " + midate);
         datae.setText(midate);
 
         ///// EL GPSSSSSSSSSSSSSSSSSSS
@@ -221,9 +203,6 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
                 mostrarMapa();
             }
         });
-
-            Log.i(TAG, "edittttFragmentTT T TT onCreateView 183 un poquito: " + id_categ); //Si lo tiene
-///////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         eur.setOnClickListener(new View.OnClickListener() {
             //clic al boton EUR >> saca el valor float de precio, le aplica el valmonedas(),
             // lo multiplica por precio y lo escribe en totaleur
@@ -233,15 +212,12 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
                         Log.d(TAG, " -> id_monedas: = " + id_monedas);
                 String m_precio = precio.getText().toString();
                 if (m_precio == "") {
-
                     Toast.makeText(getActivity(), R.string.sin_precio,
                             Toast.LENGTH_LONG).show();
                 } else {
-                    Log.d(TAG, " -> precio: = " + precio.getText().toString());
-
+                        Log.d(TAG, " -> precio: = " + precio.getText().toString());
                     Float miprecio = Float.valueOf(precio.getText().toString());
-                    Log.d(TAG, " -> precio en float: = " + miprecio);
-
+                        Log.d(TAG, " -> precio en float: = " + miprecio);
                     valMoneda();
                     Log.d(TAG, " -> valor moneda: = " + valorMon + " ID_MONEDA: " + id_monedas);
                     Float preu = Float.valueOf(precio.getText().toString());
@@ -251,10 +227,8 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
                     botEuros = true; // Se ha clicado el boton
                     Log.d(TAG, " -> Clicado el botón: = pasa a " + botEuros);
                 }
-
             }
         });
-
         fotoe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -265,7 +239,6 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
                 } catch (IOException ex) {
                     Log.e("ERROR ", "Error:" + ex);
                 }
-                //
                 uri = Uri.fromFile(mi_foto);
                 nomFoto = getCode() + ".png";
                 //Abre la camara para tomar la foto
@@ -276,18 +249,14 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
                 startActivityForResult(cameraIntent, 0);
             }
         });
-//////////// >>>>>>>>>>>>>>>>>>>>>>>>><los spinnerssssssssssssssssssssssssss modopag, monedas
-
         return view;
-    }
+    } //onCreateView
     ///////////////////////////la fecha/////////////////////////////////////////////////
     private void setListeners() {
         datae.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
-
         datePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
-
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
                         dateCalendar = Calendar.getInstance();
@@ -302,44 +271,19 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
     }
     /////////////// el GPSSSSSSSSSSSSSSSSSS
     private void comenzarLocalizacion() {
-
         //Si el GPS no está habilitado
-  //      if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             //  mostrarAvisoGpsDeshabilitado();
             Log.i(TAG, "ElGPSSS  eSta activado ?????????????????¡¡¡¡"); //llega aquí
-   //     }
-        /////////////////////////////////////// modo simple para Maps de http://stackoverflow.com/questions/32083913/android-gps-requires-access-fine-location-error-even-though-my-manifest-file
-/*
-        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
-                        PackageManager.PERMISSION_GRANTED) {
-                map.setMyLocationEnabled(true);
-                gps.getUiSettings().setMyLocationButtonEnabled(true); {
-*/
-
-            /////////////////////////////////////
+// modo simple para Maps de http://stackoverflow.com/questions/32083913/android-gps-requires-access-fine-location-error-even-though-my-manifest-file
             Log.i(TAG, "ElGPSSS  eStan los permisossss activado ?????????????????¡¡¡¡");
             //Obtenemos una referencia al LocationManager
             Log.i(TAG, "Provider Status: ppSSSSSSSSSS");
             locManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
             Log.i(TAG, "Provider Status: ppSSSS22222222SSSSSS");
             //Obtenemos la �ltima posici�n conocida
-/*********************
-            if (ActivityCompat.checkSelfPermission(getContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Log.i(TAG, "Provider Status: dentron del ifff");
-                // return;
-*/
-
                 Log.i(TAG, "Provider Status: fuera del ifff");
         Location loc = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                //    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener)loc);
-
                 Log.i(TAG, "Provider Status: ppSSS33333333SS");
-
                 //Mostramos la �ltima posici�n conocida
         mostrarPosicion(loc);
 //sgoliver:
@@ -383,9 +327,7 @@ private void mostrarMapa(){
             .putExtra("lt", latitu)
             .putExtra("nb", nombr)
             .putExtra("dt", datafot));
-
 }
-
 public Float valMoneda() {
    // valorMon = Float.valueOf(1);
     Log.i(TAG, "EEEEEEEEEEEENNNNNNNNNNNNN valmoneda el idmoneda: " + id_monedas);
@@ -415,102 +357,83 @@ public Float valMoneda() {
     }
     return valorMon;
 }
-
-
-    public String idViaje() {
-        String[] projection = new String[] {
-                ViajesContract.ViajesEntry.V_ID,
-        };
-        Uri idViajeUri =  ViajesContract.ViajesEntry.URI_CONTENIDO;
-        ContentResolver cr = getActivity().getContentResolver();
-// la consulta
-        Cursor cur = cr.query(idViajeUri,
-                projection, //Columnas a devolver
-                ViajesContract.ViajesEntry.V_DATAFI + " LIKE '%'",       //Condición de la query
-                null,       //Argumentos variables de la query
-                null);      //Orden de los resultados
-
-        if (cur.moveToFirst())
-
-        {
-            Log.i(TAG, "ennnnnn IDVIAJE: idviaje: 434 moveToFirst");
-            int id_viaj = cur.getColumnIndex(ViajesContract.ViajesEntry.V_ID);
-            do
-            {
-                idviaje = cur.getInt(id_viaj) ;
-               // Log.i(TAG, "ennnnnn IDVIAJE: idviaje: " + idviaje);
-            } while (cur.moveToNext());
-        }
-        if (!cur.isClosed()){
-            cur.close();
-        }
-        return String.valueOf(idviaje);
-    }
-    public int kmParcial() {
-        Log.i(TAG, "En kmParcial()  " );
-        String[] projection = new String[] {
-                ViajesContract.EventosEntry.E_KMP
-        };
-        Uri kmparcialUri =  ViajesContract.EventosEntry.URI_CONTENIDO;
-        ContentResolver cr = getActivity().getContentResolver();
-        // la consulta
-        Cursor cur = cr.query(kmparcialUri,
-                projection, //Columnas a devolver
-                ViajesContract.EventosEntry.E_KMP + " != " + "''"  ,       //Condición de la query
-                null,       //Argumentos variables de la query
-                null);      //Orden de los resultados
-        if (cur.moveToFirst())  //se cumple si la consulta ha dado un resultado con datos
-        {
-            int numkm = cur.getCount();
-            int kmparci = cur.getColumnIndex(ViajesContract.EventosEntry.E_KMP);
-            // do
-            // {
-            cur.moveToLast();
-            kmparcial = cur.getInt(kmparci);
-            Log.i(TAG, "en kmParcial() hay " + numkm + " el valor de kmparcial es: " + kmparcial);
-
-            // } while (cur.moveToLast());
-        }
-        if (!cur.isClosed()){
-            cur.close();
-        }
-        return kmparcial;
-    }
-
-
     //sgoliver
    private void mostrarPosicion(Location loc){
         if(loc!=null)
         {
         latit.setText(String.valueOf(loc.getLatitude()));
         longi.setText(String.valueOf(loc.getLongitude()));
-        //lblPrecision.setText("Precision: " + String.valueOf(loc.getAccuracy()));
         altit.setText(String.valueOf(loc.getAltitude()));
+            Log.i(TAG,"!GPSSS posicion: "+loc.getLongitude());
 
-        Log.i(TAG,"!GPSSS posicion: "+loc.getLongitude());
-        //+ String.valueOf(loc.getLatitude() + " - " + String.valueOf(loc.getLongitude())));
-        }
-        else
-        {
+        }        else        {
         Log.i(TAG,"GPSSSSS sindatossssssssssss");
         latit.setText("Latitud: (sin_datos)");
         longi.setText("Longitud: (sin_datos)");
         altit.setText("Altitud: (sin_datos)");
-        }
+            }
         }
     /////////////////////////////
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.i(TAG, "Viajecitosssssss EditFragmentEv  505 onActivityCreated id: " + id_item); //llega si
-
+        Log.i(TAG, "Viajecitosssssss EditFragmentEv  379 onActivityCreated id: " + id_item); //llega si
+        Log.i(TAG, "Viajecitosssssss EditFragmentEv  380 onActivityCreated id_viaj: " + id_viaj); // null si EDIT
+        Log.i(TAG, "Viajecitosssssss EditFragmentEv  381 onActivityCreated id_ cate: " + id_cate); //null si edit
         // Obtener datos del formulario
         Intent i = getActivity().getIntent();
-        Log.i(TAG, "ViajecitosssssssInsertFragmentEv  509 onActivityCreated i: " + i); //llega si
-        String nom_text = i.getStringExtra(ViajesContract.EventosEntry.E_NOM);
-        Log.i(TAG, "ViajecitosssssssInsertFrag   113  El nombre: " + nom_text); //llega null, porque no lo he buscado con una consulta
-
-        ////// hay que darles el valor que tenian
+        //aqui NomViaje
+        Log.d(TAG, "onActivityCreated(.EV..) 386 id_viaj_ed es: = " + id_viaj_ed);
+        Log.d(TAG, "onActivityCreated(.EV..) 387 id_viaj es: = " + id_viaj);
+        nomviajAdapter = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_spinner_item,
+                null,
+                new String[]{ViajesContract.ViajesEntry.COLUMN_NAME},
+                new int[]{android.R.id.text1}, 2);
+        nomviajAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nomviaj.setAdapter(nomviajAdapter);
+        Log.d(TAG, "onActivityCreated(.EV..) 395 id_viaj_ed es: = " + id_viaj_ed);
+        Log.d(TAG, "onActivityCreated(.EV..) 396 id_viaj es: = " + id_viaj);
+        nomviaj.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemSelected EV...) 397 id_viaj -> position: " + position + " id: = " + id);
+                Cursor nvj = (Cursor) parent.getItemAtPosition(position);
+                id_viaj = nvj.getString(nvj.getColumnIndexOrThrow(ViajesContract.ViajesEntry.V_ID));
+                Log.d(TAG, "onItemSelected(.EV..) 400 id_viaj es: = " + id_viaj);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d(TAG, "onNothingSelected");
+            }
+        });
+        //aqui Categorias
+        Log.d(TAG, "onActivityCreated(.EV..) 411 id_cate_ed es: = " + id_cate_ed);
+        Log.d(TAG, "onActivityCreated(.EV..) 412 id_cate es: = " + id_cate);
+        nomcatgAdapter = new SimpleCursorAdapter(
+                getActivity(), android.R.layout.simple_spinner_item,
+                null,
+                new String[]{ViajesContract.CategoriasEntry.COLUMN_NAME},
+                new int[]{android.R.id.text1}, 0);
+        nomcatgAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nomcatg.setAdapter(nomcatgAdapter);
+        Log.d(TAG, "onActivityCreated(.EV..) 415 id_cate_ed es: = " + id_cate_ed);
+        Log.d(TAG, "onActivityCreated(.EV..) 416 id_cate es: = " + id_cate);
+        nomcatg.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d(TAG, "onItemSelected EV...) 419 id_cate -> position: " + position + " id: = " + id);
+                Cursor nctg = (Cursor) parent.getItemAtPosition(position);
+             //   Cursor nctg = (Cursor) parent.getItemAtPosition((int) id);
+             //  Log.d(TAG, "onItemSelected(.EV..) 427 id_cate es: = " + nctg);
+                id_cate = nctg.getString(nctg.getColumnIndexOrThrow(ViajesContract.CategoriasEntry.CAT_ID)) ;
+                    Log.d(TAG, "onItemSelected(.EV..) 423 id_cate es: = " + id_cate); //aquí añade 2 al id
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d(TAG, "onNothingSelected");
+            }
+        });
         //aqui Modopago
         mModPagAdapter = new SimpleCursorAdapter(
                 getActivity(), android.R.layout.simple_spinner_item,
@@ -519,18 +442,14 @@ public Float valMoneda() {
                 new int[]{android.R.id.text1}, 2);
         mModPagAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         modpag.setAdapter(mModPagAdapter);
-        //modpag.setSelection(mp);
         modpag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemSelected EV...)modopag -> position: " + position + " id: = " + id);
-
+                    Log.d(TAG, "onItemSelected EV...) 568 modopag -> position: " + position + " id: = " + id);
                 Cursor mdp = (Cursor) parent.getItemAtPosition(position);
                 id_modopag = mdp.getString(mdp.getColumnIndexOrThrow(ViajesContract.MPagoEntry.MPAG_ID));
-
-                Log.d(TAG, "onItemSelected(.EV..) -> id_modopag: = " + id_modopag);
+                    Log.d(TAG, "onItemSelected(.EV..) 573 -> id_modopag: = " + id_modopag);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 Log.d(TAG, "onNothingSelected");
@@ -547,13 +466,10 @@ public Float valMoneda() {
         monedas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemSelected EV...)monedas -> position: " + position + " id: = " + id);
-
+                    Log.d(TAG, "onItemSelected EV...) 592 monedas -> position: " + position + " id: = " + id);
                 Cursor mon = (Cursor) parent.getItemAtPosition(position);
                 id_monedas = mon.getString(mon.getColumnIndexOrThrow(ViajesContract.MonedasEntry.MON_ID));
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 Log.d(TAG, "onNothingSelected");
@@ -568,52 +484,90 @@ public Float valMoneda() {
                 dateCalendar.setTime(new Date(savedInstanceState
                         .getLong("dateCalendar")));
         }
-        /////////////
+
+        getLoaderManager().initLoader(LOADER_NOMCATG, null, this);
+        getLoaderManager().initLoader(LOADER_NOMVIAJ, null, this);
         getLoaderManager().initLoader(LOADER_MODPAG, null, this);
         getLoaderManager().initLoader(LOADER_MONED, null, this);
 
+        if(!es_Edit) { //es nuevooooooooooooooooooooooooooooooooooooo
+            Log.i(TAG, "Viajecitosssssss  487    NUEVITTTTO");
+/////////////// CATEG nuevo
+            final int n_cgt = Integer.valueOf(id_cate)  ;
+            Log.i(TAG, "onActivityCreated Edit 486 antes del setSelection   int ncgt: " + n_cgt); //  llega el id SIIII
+            nomcatg.post(new Runnable() {
+                @Override
+                public void run() {
+                    nomcatg.setSelection(n_cgt);
+                    Log.i(TAG, "onActivityCreated Edit 491 despues del setSelection   int ncgt: " + n_cgt);
+                }
+              });
+/////////// VIAJES nuevo
+            final int n_v = Integer.valueOf(id_viaj);
+            Log.i(TAG, "onActivityCreated Edii 495  antes del setSelection int n_v: " + n_v); //  llega SI
+            nomviaj.post(new Runnable() {
+                @Override
+                public void run() {
+                    nomviaj.setSelection(n_v);
+                    Log.i(TAG, "onActivityCreated Edii 501  despues del setSelection int n_v: " + n_v);
+                }
+            });
 
-        /////////// >>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<
-
-        if (es_Edit) {
-            Log.i(TAG, "ESSSSSSSSSSS UPDATEEEEE 567");
-            //aquí la consulta para comseguir select * where id = id_item
+        } else  { /////////// ES EDIT ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
+                 //aquí la consulta para comseguir select * where id = id_item
             Uri urimn = ViajesContract.EventosEntry.URI_CONTENIDO;
             ContentResolver cr = getActivity().getContentResolver();
             final Cursor cur = cr.query(urimn, null,
                     ViajesContract.EventosEntry.E_ID + " = " + id_item,
                     null, null);
             if (cur.moveToFirst()) { // ha trobat el evento: estic editant un registre fet anteriorment
-                Log.i(TAG, "Viajecitosssssss EditFragmentEV  587  nombre: " + cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_NOM))); //  llega el nombre
+                Log.i(TAG, "Viajecitosssssss EditFragmentEV  653 nombre: "
+                        + cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_NOM))); //  llega el nombre
 
                 nombre.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_NOM)));
                 datae.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_DATAH)));
                 kmactual.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_KMP)));
                 descripcio.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_DESC)));
+//////////////// CATEG edit
+                final int e_cgt = Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_IDCGT))) -2  ;
+                Log.i(TAG, "Viajecitosssssss EditFragmentEVVVVVVVVVV  531 ESTE   int ecgt: " + e_cgt); //  llega el id SIIII
 
+                Log.i(TAG, " EditFragmentEVVVVVVVVVV  524 ESTE   int ecgt: " + e_cgt);
+                nomcatg.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        nomcatg.setSelection(e_cgt);
+                        Log.i(TAG, " EditFragmentEVVVVVVVVVV  528 ESTE   int ecgt: " + e_cgt);
+                    }
+                });
+/////////// VIAJES edit        *************************************************--------------------------------
+                final int e_vj = Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_IDV))) -1;
+                Log.i(TAG, "Viajecitosssssss EditFragmentEVVVVVVVVVV  534  ESTE int evvj: " + e_vj); //  llega? SI
+                nomviaj.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        nomviaj.setSelection(e_vj);
+                    }
+                });
+////////// MODOPAGO edit
                 final int mp = Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MPAG))) - 1;
-                Log.i(TAG, "Viajecitosssssss EditFragmentMNNNNN  529 int MMPP: " + mp); //  llega el id
+                Log.i(TAG, "Viajecitosssssss EditFragment-EV  703 int MMPP: " + mp); //  llega el id
                 Uri urimp = ViajesContract.MPagoEntry.URI_CONTENIDO;
-                ContentResolver crs = getActivity().getContentResolver();
-                Cursor curs = crs.query(urimp, null,
+                ContentResolver crsm = getActivity().getContentResolver();
+                Cursor cursmp = crsm.query(urimp, null,
                         ViajesContract.MPagoEntry.MPAG_MP + " = " + mp,
                         null, null);
-
-
                 modpag.post(new Runnable() {
                     @Override
                     public void run() {
                         modpag.setSelection(mp);
                     }
                 });
+                Log.i(TAG, "Viajecitosssssss EditFragment-EV<<<<<<<  716 int modPag: " + Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MPAG))));
 
-                Log.i(TAG, "Viajecitosssssss EditFragmentMNNNNN<<<<<<<  553 int modPag: " + Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MPAG))));
-
-                totaleur.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_TOT)));
-
+////////////// MONEDAS edit
                 final int mond = Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_MON))) - 1;
-                Log.i(TAG, "Viajecitosssssss EditFragmentMNNNNN  562 int mond: " + mond); //  llega el id
-
+                    Log.i(TAG, "Viajecitosssssss EditFragmentEVVVVVVVV 720 int mond: " + mond); //  llega el id
                 monedas.post(new Runnable() {
                     @Override
                     public void run() {
@@ -623,7 +577,7 @@ public Float valMoneda() {
 
                 float valo = Float.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_VAL)));
                 valoracio.setRating(valo);
-
+                totaleur.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_TOT)));
                 direccio.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_DIR)));
                 cp.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_CP)));
                 ciudad.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_CIUD)));
@@ -634,11 +588,10 @@ public Float valMoneda() {
                 latit.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_LAT)));
                 altit.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_ALT)));
                 comentaris.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_COM)));
+                precio.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_PREU)));
             }
-            //////////////////////////////////////////////////
         }
     }
-
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id){
             case LOADER_MODPAG:
@@ -659,11 +612,28 @@ public Float valMoneda() {
                     null,                                       // No selection clause
                     null,                                       // No selection arguments
                     null);                                      // No selection arguments
+            case LOADER_NOMVIAJ:
+                Log.i(TAG, "InsertFragmentEVV onCreateLoader AAAAA-nomviaje un poquito");
+                return new CursorLoader(
+                        getActivity(),                              // Parent activity context
+                        ViajesContract.ViajesEntry.URI_CONTENIDO,    // Table to query
+                        ViajesContract.ViajesEntry.TAG_COLUMNS,      // Projection to return
+                        null,                                       // No selection clause
+                        null,                                       // No selection arguments
+                        null);                                      // Default sort order
+            case LOADER_NOMCATG:
+                Log.i(TAG, "InsertFragmentEVV onCreateLoader AAAAA-nomcateg un poquito");
+                return new CursorLoader(
+                        getActivity(),                              // Parent activity context
+                        ViajesContract.CategoriasEntry.URI_CONTENIDO,    // Table to query
+                        ViajesContract.CategoriasEntry.TAG_COLUMNS,      // Projection to return
+                        null,                                       // No selection clause
+                        null,                                       // No selection arguments
+                        null);                                      // Default sort order
             default:
                 return null;
         }
     }
-
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId())
         {
@@ -673,23 +643,32 @@ public Float valMoneda() {
             case LOADER_MONED:
                 onLoadFinishedMonedas(data);
                 break;
+            case LOADER_NOMCATG:
+                onLoadFinishedNomCateg(data);
+                break;
+            case LOADER_NOMVIAJ:
+                onLoadFinishedNomViaje(data);
+                break;
         }
     }
 private void onLoadFinishedModopag(Cursor data) {
-    // se puede usar para deshabilitar el spinner
-    Log.d(TAG, "----onLoadFinishedModopag<> "   );
+        Log.d(TAG, "----onLoadFinishedModopag<> "   );
     mModPagAdapter.swapCursor(data);
-
 }
-    private void onLoadFinishedMonedas(Cursor data)
-    {
+    private void onLoadFinishedMonedas(Cursor data)  {
         Log.d(TAG, "------onLoadFinishedMonedas<> "   );
         mMonedAdapter.swapCursor(data);
-
+    }
+    private void onLoadFinishedNomViaje(Cursor data)  {
+        Log.d(TAG, "----652--onLoadFinishednomviaje<> "  + id_viaj );
+        nomviajAdapter.swapCursor(data);
+    }
+    private void onLoadFinishedNomCateg(Cursor data)  {
+        Log.d(TAG, "---656---onLoadFinishednomCateg<> "  + id_cate );
+        nomcatgAdapter.swapCursor(data);
     }
 
     public void onLoaderReset(Loader<Cursor> loader) {
-       // mModPagAdapter.swapCursor(null);
         switch (loader.getId())
         {
             case LOADER_MODPAG:
@@ -698,13 +677,17 @@ private void onLoadFinishedModopag(Cursor data) {
             case LOADER_MONED:
                 mMonedAdapter.swapCursor(null);
                 break;
+            case LOADER_NOMVIAJ:
+                nomviajAdapter.swapCursor(null);
+                break;
+            case LOADER_NOMCATG:
+                nomcatgAdapter.swapCursor(null);
+                break;
         }
     }
-////////////////////////////////
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id) {
             case android.R.id.home:
                 Log.d(TAG, "------Es NU<<<<*****case android.R.id.home***** 748 "   );
@@ -735,36 +718,28 @@ private void onLoadFinishedModopag(Cursor data) {
         }
     }
     private void updateData() {
-
-        // Unir Uri principal con identificador
         Uri uri = ContentUris.withAppendedId(ViajesContract.EventosEntry.URI_CONTENIDO, id_item);
             Log.i(TAG, "ViajecitosssssssInsertFragmentEv  742 updateDATA uri: " + uri); //  llega el uri bien, con su id
             Log.i(TAG, "ViajecitosssssssInsertFragmentEv  743 updateDATA fecha: " + datae.getText().toString()); //lo coge biennnnn
             Log.i(TAG, "ViajecitosssssssInsertFragmentEv  744 updateDATA nombre: " + nombre.getText().toString());
         ContentValues values = new ContentValues();
-        if (botEuros == false) {
-            Log.d(TAG, "-684-----precio botEuros falso es:<> " + botEuros + precio.getText().toString()  );
-            values.put(ViajesContract.EventosEntry.E_TOT, precio.getText().toString());
-            // values.put(ViajesContract.EventosEntry.E_TOT, precio.getText().toString());
-        }
-        if (botEuros == true) {
             Log.d(TAG, "-688-----totaleurrrrrrrrr botEur verdadero es:<> " + botEuros  + precio.getText().toString()  );
-            values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
-        }
+        values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
+        values.put(ViajesContract.EventosEntry.E_PREU, precio.getText().toString());
+
         if  (latit.getText().toString() == "Latitud: (sin_datos)"){
             latit.setText("");
             longi.setText("");
-            altit.setText("");
-        }
+            altit.setText("");        }
+        values.put(ViajesContract.EventosEntry.E_IDV, id_viaj.toString());
+        values.put(ViajesContract.EventosEntry.E_IDCGT, id_cate.toString());
         values.put(ViajesContract.EventosEntry.E_DATAH, datae.getText().toString());
         values.put(ViajesContract.EventosEntry.E_KMP, kmactual.getText().toString());
         values.put(ViajesContract.EventosEntry.E_NOM, nombre.getText().toString());
         values.put(ViajesContract.EventosEntry.E_DESC, descripcio.getText().toString());
-
         values.put(ViajesContract.EventosEntry.E_MPAG, id_modopag.toString());
         values.put(ViajesContract.EventosEntry.E_MON, id_monedas.toString());
         values.put(ViajesContract.EventosEntry.E_VAL, valoracio.getRating()); //funciona
-
         values.put(ViajesContract.EventosEntry.E_DIR, direccio.getText().toString());
         values.put(ViajesContract.EventosEntry.E_CP, cp.getText().toString());
         values.put(ViajesContract.EventosEntry.E_CIUD, ciudad.getText().toString());
@@ -789,31 +764,22 @@ private void onLoadFinishedModopag(Cursor data) {
     private void saveData() {
         // Obtención de valores actuales
         ContentValues values = new ContentValues();
-        if (botEuros == false) {
-            Log.d(TAG, "-684-----precio botEuros falso es:<> " + botEuros + precio.getText().toString()  );
-            values.put(ViajesContract.EventosEntry.E_TOT, precio.getText().toString());
-            // values.put(ViajesContract.EventosEntry.E_TOT, precio.getText().toString());
-        }
-        if (botEuros == true) {
-            Log.d(TAG, "-688-----totaleurrrrrrrrr botEur verdadero es:<> " + botEuros  + precio.getText().toString()  );
-            values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
-        }
+        values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
+        values.put(ViajesContract.EventosEntry.E_PREU, precio.getText().toString());
         if  (latit.getText().toString() == "Latitud: (sin_datos)"){
             latit.setText("");
             longi.setText("");
             altit.setText("");
         }
         values.put(ViajesContract.EventosEntry.E_IDV, id_viaj);
-        values.put(ViajesContract.EventosEntry.E_IDCGT, id_categ);
+        values.put(ViajesContract.EventosEntry.E_IDCGT, id_cate);
         values.put(ViajesContract.EventosEntry.E_DATAH, datae.getText().toString());
         values.put(ViajesContract.EventosEntry.E_KMP, kmactual.getText().toString());
         values.put(ViajesContract.EventosEntry.E_NOM, nombre.getText().toString());
         values.put(ViajesContract.EventosEntry.E_DESC, descripcio.getText().toString());
-
         values.put(ViajesContract.EventosEntry.E_MPAG, id_modopag.toString());
         values.put(ViajesContract.EventosEntry.E_MON, id_monedas.toString());
         values.put(ViajesContract.EventosEntry.E_VAL, valoracio.getRating()); //funciona
-
         values.put(ViajesContract.EventosEntry.E_DIR, direccio.getText().toString());
         values.put(ViajesContract.EventosEntry.E_CP, cp.getText().toString());
         values.put(ViajesContract.EventosEntry.E_CIUD, ciudad.getText().toString());

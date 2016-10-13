@@ -35,6 +35,7 @@ public class ViajesContract {
         String E_LAT = DatabaseHelper.E_LAT;
         String E_ALT = DatabaseHelper.E_ALT;
         String E_COM = DatabaseHelper.E_COM;
+        String E_PREU = DatabaseHelper.E_PREU;
     }
 
     interface ColumnasViajes {
@@ -152,6 +153,8 @@ public static final String AUTORIDAD = "gg.pp.myappviajes";
     public static class CategoriasEntry implements ColumnasCategorias {
         public static final String TABLE_NAME = RUTA_CATEGORIAS;
         public static final Uri URI_CONTENIDO = URI_BASE.buildUpon().appendPath(RUTA_CATEGORIAS).build();
+        public static final String COLUMN_NAME = "categoria";
+        public static final String[] TAG_COLUMNS = {"_id","categoria"};
 
         public static Uri crearUriCategorias(String id) {
             return URI_CONTENIDO.buildUpon().appendPath(id).build();

@@ -94,10 +94,12 @@ public class ListFragmentMn extends ListFragment implements
         int id = item.getItemId();
 
         switch (id) {
+            /*
             case android.R.id.home:
                 saveData(); // Guardar datos
                 getActivity().finish();
                 return true;
+            */
             case R.id.action_nuevo:
                 String nomTabla = ViajesContract.MonedasEntry.TABLE_NAME.toString();
                 Intent intent = new Intent(getActivity(), EditMn.class); //funciona

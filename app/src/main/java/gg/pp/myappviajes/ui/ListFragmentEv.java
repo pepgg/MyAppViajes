@@ -2,7 +2,6 @@ package gg.pp.myappviajes.ui;
 
 
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -47,6 +46,8 @@ public class ListFragmentEv extends ListFragment implements
     String miTabla;
     private long id_categ;
     String idCate;
+    private int idviaje;
+    private String id_viaj;
     String esEdit;
     private static final int INSERT_EV = Menu.FIRST; //En la barra icon +
     private static final int EDIT_EV = Menu.FIRST + 1; //contextuales
@@ -61,9 +62,10 @@ public class ListFragmentEv extends ListFragment implements
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-                Log.i(TAG, "MainFragmento OnCrete  TRES");
         idCate = getActivity().getIntent().getStringExtra( "idCategoria" ) ;
-             Log.i(TAG, " OnCrete view 78 idCATEGORIAAAAAAAAA  " + idCate); //lo tengo<<<<<<<<<<<<<<>>
+             Log.i(TAG, " OnCrete view 67 idCATEGORIAAAAAAAAA  " + idCate); //lo tengo<<<<<<<<<<<<<<>>
+        id_viaj = getActivity().getIntent().getStringExtra("idv");
+            Log.i(TAG, " OnCrete view 69 idVIAJJJJJJJJJJJE  " + id_viaj); //lo tengo<
 
         adaptador = new ActivitiesAdapterEv(getActivity());
                 // Relacionar adaptador a la lista
@@ -77,9 +79,9 @@ public class ListFragmentEv extends ListFragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.i(TAG, "MainFragmento OnCrete  onCreateView 91");
+            Log.i(TAG, "MainFragmento OnCrete  onCreateView 91");
         View view = inflater.inflate(R.layout.list_categor, container, false);
-        Log.i(TAG, "MainFragmento OnCrete  onCreateView 93");
+            Log.i(TAG, "MainFragmento OnCrete  onCreateView 93");
 
         return view;
     }
@@ -93,16 +95,20 @@ public class ListFragmentEv extends ListFragment implements
         int id = item.getItemId();
 
         switch (id) {
+            /*
             case android.R.id.home:
                 saveData(); // Guardar datos
                 getActivity().finish();
                 return true;
+
             case R.id.action_nuevo:
-                String nomTabla = ViajesContract.ViajesEntry.TABLE_NAME.toString();
-                Intent intent = new Intent(getActivity(), EditEv.class); //funciona?
-                intent.putExtra("NombreTabla", nomTabla);
+               // String nomTabla = ViajesContract.ViajesEntry.TABLE_NAME.toString();
+               // Intent intent = new Intent(getActivity(), EditEv.class); //funciona?
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+               // intent.putExtra("NombreTabla", nomTabla);
                 startActivity(intent);
                 return true;
+            */
             case R.id.action_discard:
                 getActivity().finish();
                 return true;
@@ -111,14 +117,14 @@ public class ListFragmentEv extends ListFragment implements
         }
     }
     private void deleteData(long id) {
-        Log.i(TAG, "En DEEEEEEEEEEEEEEELTEEEEEE data id: " + id); //aqui llega con el id
+            Log.i(TAG, "En DEEEEEEEEEEEEEEELTEEEEEE data id: " + id); //aqui llega con el id
         Uri uri = ContentUris.withAppendedId(ViajesContract.EventosEntry.URI_CONTENIDO, id);
         getActivity().getContentResolver().delete(uri, null, null); //funciona
     }
 
     private void beginUpdate() {
     }
-
+/*
     private void saveData() { //insert funciona
         // Obtención de valores actuales
         ContentValues values = new ContentValues();
@@ -128,7 +134,7 @@ public class ListFragmentEv extends ListFragment implements
                 values
         );
     }
-
+*/
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.i(TAG, " onCreateLoader ");
@@ -148,7 +154,8 @@ public class ListFragmentEv extends ListFragment implements
                     getActivity(),                              // Parent activity context
                     ViajesContract.EventosEntry.URI_CONTENIDO,  // Table to query
                     null,                                       // Projection to return
-                    (ViajesContract.EventosEntry.E_IDCGT  + " = " +  idCate),  // selection clause
+                    (ViajesContract.EventosEntry.E_IDCGT  + " = " +  idCate + " and " +
+                        ViajesContract.EventosEntry.E_IDV + " = " + id_viaj),  // selection clause
                     null,                                       // No selection arguments
                     null);                                      // No selection arguments
         }

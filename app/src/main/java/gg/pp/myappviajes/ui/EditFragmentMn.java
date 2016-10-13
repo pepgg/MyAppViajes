@@ -20,9 +20,7 @@ import android.widget.TextView;
 import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
-/**
- * Fragment con formulario de inserción de viajes
- */
+/** * Fragment con formulario de inserción de monedas */
 public class EditFragmentMn extends android.support.v4.app.Fragment
 {
     /**
@@ -34,7 +32,6 @@ public class EditFragmentMn extends android.support.v4.app.Fragment
 
     private long id_item; //id del item que voy a editar
 
-  //  public Long mId;
     private static final String TAG = "En EditFragmentMn: ";
 
     private OnFragmentInteractionListener mListener;
@@ -68,9 +65,7 @@ public class EditFragmentMn extends android.support.v4.app.Fragment
         return view;
     }
 
-    /**
-     * Actualizar datos de la actividad
-     */
+    /**     * Actualizar datos de la actividad     */
     private void updateData() {
 
         // Unir Uri principal con identificador
