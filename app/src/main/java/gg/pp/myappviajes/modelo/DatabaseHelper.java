@@ -207,9 +207,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.i(TAG, "insertado en la tabla " + TABLE_MPAG);
 
         db.execSQL("INSERT INTO monedas (nom, valor) VALUES ('EUR', '1')");
-        db.execSQL("INSERT INTO monedas (nom, valor) VALUES ('NOK', '1,6')");
-        db.execSQL("INSERT INTO monedas (nom, valor) VALUES ('SEK', '1,2')");
-        db.execSQL("INSERT INTO monedas (nom, valor) VALUES ('DNK', '0,4')");
+        db.execSQL("INSERT INTO monedas (nom, valor) VALUES ('NOK', '1.6')");
+        db.execSQL("INSERT INTO monedas (nom, valor) VALUES ('SEK', '1.2')");
+        db.execSQL("INSERT INTO monedas (nom, valor) VALUES ('DNK', '1.4')");
         Log.i(TAG, "insertado en la tabla " + TABLE_MON);
 
     }
@@ -232,7 +232,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         mDb = mDbHelper.getWritableDatabase();
         return this;
     }
-///esto que sygue no funcionaba en MyCPViajes::::::::::::::::::::::::::::::::::::::::: para buscar el viaje activo
+///esto que sigue no funcionaba en MyCPViajes::::::::::::::::::::::::::::::::::::::::: para buscar el viaje activo
     public Cursor buscaViaje(long mId) throws SQLException {
         Log.i(TAG, "En <miDbadapter buscaViaje El MiD viajes " + mId); //este recibe el id del que vamos a editar. podria estar acabado
         Cursor mCursor =

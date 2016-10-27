@@ -106,21 +106,20 @@ public class ViajesProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         /////////////////////////////////////////aqui cambiaba la uri y pone categorias  por qué¿¿¿¿¿¿¿¿¿¿¿¿
-        Log.i(TAG, "ViajecitosProvider primero QUERY 109 uri un poquito: " + uri);
+        Log.i(TAG, "ViajecitosProvider primero QUERY 109 uri un poquito con la uri: " + uri);
         // Abrir base de datos
         SQLiteDatabase bd = databaseHelper.getReadableDatabase();
     //   final SQLiteDatabase db = databaseHelper.getWritableDatabase();
         // Comparar Uri
         int match = uriMatcher.match(uri);
-        Log.i(TAG, "ViajecitosProvider el mathc de la URRRRRRIIIIII query uri un poquito match: " + match);
-////////////////////////////////////////////////el match que llega es el 300, el de categorias
+        Log.i(TAG, "ViajecitosProvider el mathc de la URRRRRRIIIIII query 114 uri un poquito match: " + match);
         // string auxiliar para los ids
         String id;
         Cursor c;
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder(); //esto no lo usa
 
         Log.i(TAG, "ViajecitosProvider query uri un poquito uri y match: " + uri + " " + match); //el uri llega bien
-        /////////////////////EN este sswitch fallaaaaaaaaaaaaaaaaaaaaaaa
+        /////////////////////EN este sswitch fallaaaaaaaaaaaaaaaaaaaaaaa NO LO CREO
         switch (match) {
       //  switch(sUriMatcher.match(uri)){
 
@@ -141,10 +140,12 @@ public class ViajesProvider extends ContentProvider {
             case VIAJES:
                 c = bd.query(Tablas.VIAJES, projection,
                         selection, selectionArgs, null, null, sortOrder);
+                Log.i(TAG, "ViajecitosProvider query 144 uri un VIAJES uri y match: " + uri + " " + match);
                 //c.setNotificationUri(getContext().getContentResolver(), ViajesContract.ViajesEntry.URI_CONTENIDO);
                 break;
             case VIAJES_ID:
                 id = ViajesEntry.obtenerIdViaje(uri);
+                Log.i(TAG, "ViajesProvider query 148 uri un VIAJES id: " + id );
                 c = bd.query(Tablas.VIAJES, projection,
                         ViajesEntry.V_ID + " = ?",
                         new String[]{id}, null, null, null);
@@ -153,11 +154,12 @@ public class ViajesProvider extends ContentProvider {
             case CATEGORIAS:
                 c = bd.query(Tablas.CATEGORIAS, projection,
                         selection, selectionArgs, null, null, sortOrder);
-                Log.i(TAG, "ViajecitosProvider query 156 uri un CATEGORIAS uri y match: " + uri + " " + match);
+                Log.i(TAG, "ViajecitosProvider query 157 uri un CATEGORIAS uri y match: " + uri + " " + match);
                 //c.setNotificationUri(getContext().getContentResolver(), ViajesContract.CategoriasEntry.URI_CONTENIDO);
                 break;
             case CATEGORIAS_ID:
                 id = CategoriasEntry.obtenerIdCategoria(uri);
+                Log.i(TAG, "CategoriasProvider query 162 uri un CATEGORIAS id: " + id );
                 c = bd.query(Tablas.CATEGORIAS, projection,
                         CategoriasEntry.CAT_ID + " = ?",
                         new String[]{id}, null, null, null);
@@ -170,6 +172,7 @@ public class ViajesProvider extends ContentProvider {
                 break;
             case MONEDAS_ID:
                 id = MonedasEntry.obtenerIdMoneda(uri);
+                Log.i(TAG, "MonedassProvider query 175 uri un MONEDAS id: " + id );
                 c = bd.query(Tablas.MONEDAS, projection,
                         MonedasEntry.MON_ID + " = ?",
                         new String[]{id}, null, null, null);
@@ -183,6 +186,7 @@ public class ViajesProvider extends ContentProvider {
                 break;
             case M_PAGO_ID:
                 id = MPagoEntry.obtenerIdMPago(uri);
+                Log.i(TAG, "MPagoProvider query 189 uri un MPAGO id: " + id );
                 c = bd.query(Tablas.MPAGO, projection,
                         MPagoEntry.MPAG_ID + " = ?",
                         new String[]{id}, null, null, null);
@@ -357,7 +361,7 @@ public class ViajesProvider extends ContentProvider {
         SQLiteDatabase bd = databaseHelper.getWritableDatabase();
         int afectados;
         String id = null;
-        Log.d(TAG, "Esty en 360 UPDATE con " + uri );
+        Log.d(TAG, "Esty en 362 UPDATE con " + uri );
         switch (uriMatcher.match(uri)) {
 
             case EVENTOS_ID:

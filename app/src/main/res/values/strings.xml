@@ -16,7 +16,7 @@
     <string name="title_activity_detail">Detalle</string>
     <string name="title_activity_insert">nuevo</string>
     <string name="title_activity_update">actualiza</string>
-    <string name="title_insert_evento">Nuevo evento</string>
+    <string name="title_insert_evento">Nueva nota</string>
     <string name="viaje_label">Estás en el viaje a: </string>
     <string name="nuevo_viaje">Nuevo viaje</string>
     <string name="nom_viaje">Nombre viaje: </string>
@@ -58,7 +58,7 @@
     <string name="menu_moneda">Monedas</string>
     <string name="menu_tipov">Tipos de viaje</string>
     <string name="menu_viajes">Viajes</string>
-    <string name="menu_eventos">Eventos</string>
+    <string name="menu_eventos">Notas</string>
     <string name="menu_exportcsv">Exportar csv</string>
     <string name="help_export_csv">Exportar la taula al format csv crear\à una c\òpia en l\'SD en aquest tipus de format (valors separats per comes). La podr\às obrir i editar amb un full de c\àlcul.</string>
     <string name="help_export_csv_title">Exportar la taula al format csv</string>
@@ -73,8 +73,8 @@
     <string name="borrar_mc">Suprimir</string>
     <string name="error">Error !!</string>
     <string name="export_acabat_msg">El fichero exportado est\á en la SD en el fichero\:</string>
-    <string name="export_be">Exportación con éxito! </string>
-    <string name="help_export_db">Exportar la base de datos crear\á una copia en la SD en formato Sqlite. La podr\ás abrir y editar con un gestor de bases de datos</string>
+    <string name="export_be">Exportaci\ón con \éxito\! </string>
+    <string name="help_export_db">Exportar la base de datos crear\á una copia en la carpeta Bkviajes de la SD, en formato Sqlite. La podr\ás compartir, abrir y editar con un gestor de bases de datos</string>
     <string name="help_export_db_title">Exportar la base de datos</string>
     <string name="exporting_title">Exportando la base de datos</string>
     <string name="exporting">Exportando...</string>
@@ -86,7 +86,7 @@
     <string name="importing">Importando...</string>
     <string name="error_permission_gps">Problemas con los permisos de uso del GPS</string>
     <string name="foto_e">Foto</string>
-    <string name="list_event">Lista eventos</string>Primero tienes que escribir el precio...
+    <string name="list_event">Lista de notas</string>
     <string name="sin_precio">Primero tienes que escribir el precio...</string>
     <string name="action_vermapa">Mapa del viaje</string>
     <string name="map">mapa</string>

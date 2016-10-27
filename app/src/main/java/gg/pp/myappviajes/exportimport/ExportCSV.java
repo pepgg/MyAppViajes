@@ -40,7 +40,7 @@ public class ExportCSV extends Exportar {
      */
     private GoogleApiClient client;
     //CSV file header
-    private static final String FILE_HEADER = "ID, idcateg, nom, descripcio, modpag, moneda, totaleur, fechah, foto1, " +
+    private static final String FILE_HEADER = "ID, idcateg, nom, descripcio, precio, modpag, moneda, totaleur, fechah, foto1, " +
             "foto2, callenum, cp, ciudad, telef, mail, web, longitud, latitud, altitud, valoracion, kmp, comentari";
 
     @Override
@@ -51,7 +51,7 @@ public class ExportCSV extends Exportar {
 
         Log.i(TAG, "EXPORTARCSV Eventos: ");
 
-        final String[] columns = {"ID","IVIAJ","ICATG","NOM","DESCRIP","MODp","MON","TOT€","FECHA","FOT1","FOT2",
+        final String[] columns = {"ID","IVIAJ","ICATG","NOM","DESCRIP", "PREU", "MODp","MON","TOT€","FECHA","FOT1","FOT2",
                 "DIRECC","CP","CIUDAD","TELEF","eMAIL","WEB","LONGIT","LATIT","ALTIT","VALOR","KMp","COMENT"};
         Log.i(TAG, "filename EN EXPORTARCSV oncreate  " + m_filename);
         super.m_exporter = new Runnable() {
@@ -78,7 +78,7 @@ public class ExportCSV extends Exportar {
                   //  csv.writeNext(FILE_HEADER.toString());
 
                     Cursor c = db.query(DatabaseHelper.mDbHelper.TABLE_EVENT, new String[]{"_id", "idviaje", "idcateg", "nom", "descripcio",
-                            "modpag", "moneda", "totaleur", "fechah", "foto1", "foto2", "callenum", "cp", "ciudad", "telef", "mail", "web",
+                            "precio", "modpag", "moneda", "totaleur", "fechah", "foto1", "foto2", "callenum", "cp", "ciudad", "telef", "mail", "web",
                             "longitud", "latitud", "altitud", "valoracion", "kmp", "comentari"}, null, null, null, null, null);
                     c.moveToFirst();
 
@@ -91,6 +91,7 @@ public class ExportCSV extends Exportar {
                         int COLUM_INDEX_IDCATEG = c.getColumnIndexOrThrow(DatabaseHelper.E_IDCGT);
                         int COLUM_INDEX_NOM = c.getColumnIndexOrThrow(DatabaseHelper.E_NOM);
                         int COLUM_INDEX_DESCRIP = c.getColumnIndexOrThrow(DatabaseHelper.E_DESC);
+                        int COLUM_INDEX_PREU = c.getColumnIndexOrThrow(DatabaseHelper.E_PREU);
                         int COLUM_INDEX_MODPAG = c.getColumnIndexOrThrow(DatabaseHelper.E_MPAG);
                         int COLUM_INDEX_NONED = c.getColumnIndexOrThrow(DatabaseHelper.E_MON);
                         int COLUM_INDEX_TOTEUR = c.getColumnIndexOrThrow(DatabaseHelper.E_TOT);
@@ -115,24 +116,25 @@ public class ExportCSV extends Exportar {
                         columns[2] = String.valueOf(c.getString(COLUM_INDEX_IDCATEG));
                         columns[3] = String.valueOf(c.getString(COLUM_INDEX_NOM));
                         columns[4] = String.valueOf(c.getString(COLUM_INDEX_DESCRIP));
-                        columns[5] = String.valueOf(c.getString(COLUM_INDEX_MODPAG));
-                        columns[6] = String.valueOf(c.getString(COLUM_INDEX_NONED));
-                        columns[7] = String.valueOf(c.getString(COLUM_INDEX_TOTEUR));
-                        columns[8] = String.valueOf(c.getString(COLUM_INDEX_FECHA));
-                        columns[9] = String.valueOf(c.getString(COLUM_INDEX_FOT1));
-                        columns[10] = String.valueOf(c.getString(COLUM_INDEX_FOT2));
-                        columns[11] = String.valueOf(c.getString(COLUM_INDEX_CALLE));
-                        columns[12] = String.valueOf(c.getString(COLUM_INDEX_CP));
-                        columns[13] = String.valueOf(c.getString(COLUM_INDEX_CIUD));
-                        columns[14] = String.valueOf(c.getString(COLUM_INDEX_TELEF));
-                        columns[15] = String.valueOf(c.getString(COLUM_INDEX_MAIL));
-                        columns[16] = String.valueOf(c.getString(COLUM_INDEX_WEB));
-                        columns[17] = String.valueOf(c.getString(COLUM_INDEX_LONGI));
-                        columns[18] = String.valueOf(c.getString(COLUM_INDEX_LATIT));
-                        columns[19] = String.valueOf(c.getString(COLUM_INDEX_ALTIT));
-                        columns[20] = String.valueOf(c.getString(COLUM_INDEX_VALOR));
-                        columns[21] = String.valueOf(c.getString(COLUM_INDEX_KMP));
-                        columns[22] = String.valueOf(c.getString(COLUM_INDEX_COMEN));
+                        columns[5] = String.valueOf(c.getString(COLUM_INDEX_PREU));
+                        columns[6] = String.valueOf(c.getString(COLUM_INDEX_MODPAG));
+                        columns[7] = String.valueOf(c.getString(COLUM_INDEX_NONED));
+                        columns[8] = String.valueOf(c.getString(COLUM_INDEX_TOTEUR));
+                        columns[9] = String.valueOf(c.getString(COLUM_INDEX_FECHA));
+                        columns[10] = String.valueOf(c.getString(COLUM_INDEX_FOT1));
+                        columns[11] = String.valueOf(c.getString(COLUM_INDEX_FOT2));
+                        columns[12] = String.valueOf(c.getString(COLUM_INDEX_CALLE));
+                        columns[13] = String.valueOf(c.getString(COLUM_INDEX_CP));
+                        columns[14] = String.valueOf(c.getString(COLUM_INDEX_CIUD));
+                        columns[15] = String.valueOf(c.getString(COLUM_INDEX_TELEF));
+                        columns[16] = String.valueOf(c.getString(COLUM_INDEX_MAIL));
+                        columns[17] = String.valueOf(c.getString(COLUM_INDEX_WEB));
+                        columns[18] = String.valueOf(c.getString(COLUM_INDEX_LONGI));
+                        columns[19] = String.valueOf(c.getString(COLUM_INDEX_LATIT));
+                        columns[20] = String.valueOf(c.getString(COLUM_INDEX_ALTIT));
+                        columns[21] = String.valueOf(c.getString(COLUM_INDEX_VALOR));
+                        columns[22] = String.valueOf(c.getString(COLUM_INDEX_KMP));
+                        columns[23] = String.valueOf(c.getString(COLUM_INDEX_COMEN));
 
                         csv.writeNext(columns);
                         c.moveToNext();

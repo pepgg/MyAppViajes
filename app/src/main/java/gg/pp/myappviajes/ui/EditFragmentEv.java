@@ -88,7 +88,8 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
     public int fecha1;
     static final int DATE_DIALOG = 0;
     Calendar c = Calendar.getInstance();
-    private long id_categ;
+    private String id_catego;
+    private String id_viaje;
     private String id_modopag;
     private String id_monedas;
     private String nomFoto;
@@ -128,7 +129,7 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         es_Edit = getActivity().getIntent().getBooleanExtra(esEdit, false);
-            Log.i(TAG, "EditFragmentEvvvv  140 onCreate un es_Edit: " + es_Edit); //
+            Log.i(TAG, "EditFragmentEvvvv  140 onCreate un es_Edit: " + es_Edit);
         if (es_Edit) {
             id_item = getActivity().getIntent().getLongExtra(ViajesContract.EventosEntry.E_ID, -1);
             Log.d(TAG, "--- 143 --onCreate-ES updateeeeeeeeeeeeeee id : " +  id_item ); //llegsa bien
@@ -377,6 +378,7 @@ public Float valMoneda() {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.i(TAG, "EditFragmentEvvvv  380 onActivityCreated un es_Edit: " + es_Edit);
         Log.i(TAG, "Viajecitosssssss EditFragmentEv  379 onActivityCreated id: " + id_item); //llega si
         Log.i(TAG, "Viajecitosssssss EditFragmentEv  380 onActivityCreated id_viaj: " + id_viaj); // null si EDIT
         Log.i(TAG, "Viajecitosssssss EditFragmentEv  381 onActivityCreated id_ cate: " + id_cate); //null si edit
@@ -399,7 +401,7 @@ public Float valMoneda() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "onItemSelected EV...) 397 id_viaj -> position: " + position + " id: = " + id);
                 Cursor nvj = (Cursor) parent.getItemAtPosition(position);
-                id_viaj = nvj.getString(nvj.getColumnIndexOrThrow(ViajesContract.ViajesEntry.V_ID));
+                id_viaje = nvj.getString(nvj.getColumnIndexOrThrow(ViajesContract.ViajesEntry.V_ID));
                 Log.d(TAG, "onItemSelected(.EV..) 400 id_viaj es: = " + id_viaj);
             }
             @Override
@@ -414,26 +416,30 @@ public Float valMoneda() {
                 getActivity(), android.R.layout.simple_spinner_item,
                 null,
                 new String[]{ViajesContract.CategoriasEntry.COLUMN_NAME},
-                new int[]{android.R.id.text1}, 0);
+                new int[]{android.R.id.text1}, 2);
         nomcatgAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         nomcatg.setAdapter(nomcatgAdapter);
         Log.d(TAG, "onActivityCreated(.EV..) 415 id_cate_ed es: = " + id_cate_ed);
-        Log.d(TAG, "onActivityCreated(.EV..) 416 id_cate es: = " + id_cate);
+        Log.d(TAG, "onActivityCreated(.EV..) 416 id_cate es: = " + id_cate); //si
+
         nomcatg.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //aquí es donde cambia de id y le suma 2 al iddddddddddddddddddddddddddddddddddddddddddddddddddd
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Log.d(TAG, "onItemSelected EV...) 419 id_cate -> position: " + position + " id: = " + id);
+                    Log.d(TAG, "onItemSelected EV...) 429 id_cate: " + id_cate + " -> position: " + position + " id: = " + id);
                 Cursor nctg = (Cursor) parent.getItemAtPosition(position);
              //   Cursor nctg = (Cursor) parent.getItemAtPosition((int) id);
-             //  Log.d(TAG, "onItemSelected(.EV..) 427 id_cate es: = " + nctg);
-                id_cate = nctg.getString(nctg.getColumnIndexOrThrow(ViajesContract.CategoriasEntry.CAT_ID)) ;
+              // Log.d(TAG, "onItemSelected(.EV..) 427 id_cate es: = " + nctg);
+                id_catego = nctg.getString(nctg.getColumnIndexOrThrow(ViajesContract.CategoriasEntry.CAT_ID) ) ;
                     Log.d(TAG, "onItemSelected(.EV..) 423 id_cate es: = " + id_cate); //aquí añade 2 al id
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 Log.d(TAG, "onNothingSelected");
             }
         });
+
         //aqui Modopago
         mModPagAdapter = new SimpleCursorAdapter(
                 getActivity(), android.R.layout.simple_spinner_item,
@@ -491,19 +497,22 @@ public Float valMoneda() {
         getLoaderManager().initLoader(LOADER_MONED, null, this);
 
         if(!es_Edit) { //es nuevooooooooooooooooooooooooooooooooooooo
-            Log.i(TAG, "Viajecitosssssss  487    NUEVITTTTO");
+            Log.i(TAG, "Viajecitosssssss  498    NUEVITTTTO idcate: "+ id_cate); //si
+            Log.i(TAG, "Viajecitosssssss  499    NUEVITTTTO idvije: "+ id_viaj);
 /////////////// CATEG nuevo
-            final int n_cgt = Integer.valueOf(id_cate)  ;
+            // quito el -2
+            final int n_cgt = Integer.valueOf(id_cate) -1 ;
+            // final int e_cgt = Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_IDCGT))) -2  ;
             Log.i(TAG, "onActivityCreated Edit 486 antes del setSelection   int ncgt: " + n_cgt); //  llega el id SIIII
             nomcatg.post(new Runnable() {
                 @Override
                 public void run() {
                     nomcatg.setSelection(n_cgt);
-                    Log.i(TAG, "onActivityCreated Edit 491 despues del setSelection   int ncgt: " + n_cgt);
+                    Log.i(TAG, "onActivityCreated Edit 491 despues del setSelection   int ncgt: " + n_cgt);//si
                 }
               });
 /////////// VIAJES nuevo
-            final int n_v = Integer.valueOf(id_viaj);
+            final int n_v = Integer.valueOf(id_viaj) -1;
             Log.i(TAG, "onActivityCreated Edii 495  antes del setSelection int n_v: " + n_v); //  llega SI
             nomviaj.post(new Runnable() {
                 @Override
@@ -529,7 +538,8 @@ public Float valMoneda() {
                 kmactual.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_KMP)));
                 descripcio.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_DESC)));
 //////////////// CATEG edit
-                final int e_cgt = Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_IDCGT))) -2  ;
+                //quito el -2
+                final int e_cgt = Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_IDCGT))) -1 ;
                 Log.i(TAG, "Viajecitosssssss EditFragmentEVVVVVVVVVV  531 ESTE   int ecgt: " + e_cgt); //  llega el id SIIII
 
                 Log.i(TAG, " EditFragmentEVVVVVVVVVV  524 ESTE   int ecgt: " + e_cgt);
@@ -540,7 +550,7 @@ public Float valMoneda() {
                         Log.i(TAG, " EditFragmentEVVVVVVVVVV  528 ESTE   int ecgt: " + e_cgt);
                     }
                 });
-/////////// VIAJES edit        *************************************************--------------------------------
+/////////// VIAJES edit
                 final int e_vj = Integer.valueOf(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_IDV))) -1;
                 Log.i(TAG, "Viajecitosssssss EditFragmentEVVVVVVVVVV  534  ESTE int evvj: " + e_vj); //  llega? SI
                 nomviaj.post(new Runnable() {
@@ -622,11 +632,12 @@ public Float valMoneda() {
                         null,                                       // No selection arguments
                         null);                                      // Default sort order
             case LOADER_NOMCATG:
-                Log.i(TAG, "InsertFragmentEVV onCreateLoader AAAAA-nomcateg un poquito");
+                Log.i(TAG, " onCreateLoader AAAAA-nomcateg un 629");
                 return new CursorLoader(
                         getActivity(),                              // Parent activity context
                         ViajesContract.CategoriasEntry.URI_CONTENIDO,    // Table to query
-                        ViajesContract.CategoriasEntry.TAG_COLUMNS,      // Projection to return
+                      //  ViajesContract.CategoriasEntry.TAG_COLUMNS,      // Projection to return
+                        null,
                         null,                                       // No selection clause
                         null,                                       // No selection arguments
                         null);                                      // Default sort order
@@ -644,7 +655,8 @@ public Float valMoneda() {
                 onLoadFinishedMonedas(data);
                 break;
             case LOADER_NOMCATG:
-                onLoadFinishedNomCateg(data);
+               // onLoadFinishedNomCateg(data);
+                nomcatgAdapter.swapCursor(data);
                 break;
             case LOADER_NOMVIAJ:
                 onLoadFinishedNomViaje(data);
@@ -723,7 +735,7 @@ private void onLoadFinishedModopag(Cursor data) {
             Log.i(TAG, "ViajecitosssssssInsertFragmentEv  743 updateDATA fecha: " + datae.getText().toString()); //lo coge biennnnn
             Log.i(TAG, "ViajecitosssssssInsertFragmentEv  744 updateDATA nombre: " + nombre.getText().toString());
         ContentValues values = new ContentValues();
-            Log.d(TAG, "-688-----totaleurrrrrrrrr botEur verdadero es:<> " + botEuros  + precio.getText().toString()  );
+            Log.d(TAG, "-688-----totaleurrrrrrrrr botEur verdadero es:<> " + botEuros  + " " + precio.getText().toString()  );
         values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
         values.put(ViajesContract.EventosEntry.E_PREU, precio.getText().toString());
 
@@ -731,8 +743,8 @@ private void onLoadFinishedModopag(Cursor data) {
             latit.setText("");
             longi.setText("");
             altit.setText("");        }
-        values.put(ViajesContract.EventosEntry.E_IDV, id_viaj.toString());
-        values.put(ViajesContract.EventosEntry.E_IDCGT, id_cate.toString());
+        values.put(ViajesContract.EventosEntry.E_IDV, id_viaje.toString());
+        values.put(ViajesContract.EventosEntry.E_IDCGT, id_catego.toString());
         values.put(ViajesContract.EventosEntry.E_DATAH, datae.getText().toString());
         values.put(ViajesContract.EventosEntry.E_KMP, kmactual.getText().toString());
         values.put(ViajesContract.EventosEntry.E_NOM, nombre.getText().toString());
@@ -771,8 +783,8 @@ private void onLoadFinishedModopag(Cursor data) {
             longi.setText("");
             altit.setText("");
         }
-        values.put(ViajesContract.EventosEntry.E_IDV, id_viaj);
-        values.put(ViajesContract.EventosEntry.E_IDCGT, id_cate);
+        values.put(ViajesContract.EventosEntry.E_IDV, id_viaje);
+        values.put(ViajesContract.EventosEntry.E_IDCGT, id_catego);
         values.put(ViajesContract.EventosEntry.E_DATAH, datae.getText().toString());
         values.put(ViajesContract.EventosEntry.E_KMP, kmactual.getText().toString());
         values.put(ViajesContract.EventosEntry.E_NOM, nombre.getText().toString());

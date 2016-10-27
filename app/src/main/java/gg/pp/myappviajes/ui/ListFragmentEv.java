@@ -178,11 +178,12 @@ public class ListFragmentEv extends ListFragment implements
         registerForContextMenu(this.getListView());
     }
 
-    @Override   //on list item click se va con el id a EditEvento
+    @Override   //on list item click se va con el id a InsertEvento
     public void onListItemClick(ListView l, View v, int position, long id) {
 
         Log.i(TAG, "En onContextItemSelected Edit: " + id);
-        Intent intent = new Intent(getActivity(), EditEv.class);
+     //   Intent intent = new Intent(getActivity(), EditEv.class);
+        Intent intent = new Intent(getActivity(), InsertEvento.class);
         intent.putExtra(ViajesContract.EventosEntry.E_ID, id)
                 .putExtra(esEdit, true);
         Log.i(TAG, "En onContextItemSelected EDDDDDDDIIIIIIIIIIIITTTT: " + id);
