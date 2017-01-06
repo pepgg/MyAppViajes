@@ -12,10 +12,12 @@ public class ImportCSVf extends Importar {
 	}
 
 	/*
+	//////este importa festius
 	public static final String INTENT_EXTRA = "intent_extra";
 	private static final String TAG = "ImportCSVf";
 	Context mContext;
 	private PromiclanDbAdapter mDbHelper;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, "festius.csv");

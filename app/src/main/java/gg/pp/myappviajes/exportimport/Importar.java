@@ -41,10 +41,11 @@ public abstract class Importar extends Activity {
 	protected static String s_message;
 	protected static boolean s_success = false;
 	private DatabaseHelper mDbHelper;
-	private static final String TAG = "Importar";
+	private static final String TAG = "En Importar";
 	public void onCreate(Bundle savedInstanceState, String ext) {
 		super.onCreate(savedInstanceState);
 		mDbHelper = new DatabaseHelper(this);
+		m_filename = "vi_notas.csv";
 		m_ext = ext;
 		Log.i(TAG, " ESTIC EN IMPORT onCreate i l'extensió es: " + m_ext);
 	//	Log.i(TAG, "MiD EN IMPORTAR oncreate  " + MiMateria.mId);

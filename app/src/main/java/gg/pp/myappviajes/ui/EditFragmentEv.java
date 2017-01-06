@@ -774,7 +774,7 @@ private void onLoadFinishedModopag(Cursor data) {
     }
 
     private void saveData() {
-        // Obtención de valores actuales
+        // guardar los valores actuales
         ContentValues values = new ContentValues();
         values.put(ViajesContract.EventosEntry.E_TOT, totaleur.getText().toString());
         values.put(ViajesContract.EventosEntry.E_PREU, precio.getText().toString());
@@ -787,6 +787,7 @@ private void onLoadFinishedModopag(Cursor data) {
         values.put(ViajesContract.EventosEntry.E_IDCGT, id_catego);
         values.put(ViajesContract.EventosEntry.E_DATAH, datae.getText().toString());
         values.put(ViajesContract.EventosEntry.E_KMP, kmactual.getText().toString());
+      //  values.put(ViajesContract.EventosEntry.E_KMP, kmactual.getText().toString());
         values.put(ViajesContract.EventosEntry.E_NOM, nombre.getText().toString());
         values.put(ViajesContract.EventosEntry.E_DESC, descripcio.getText().toString());
         values.put(ViajesContract.EventosEntry.E_MPAG, id_modopag.toString());

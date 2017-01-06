@@ -31,6 +31,7 @@ import gg.pp.myappviajes.R;
 import gg.pp.myappviajes.exportimport.Export;
 import gg.pp.myappviajes.exportimport.ExportCSV;
 import gg.pp.myappviajes.exportimport.Import;
+import gg.pp.myappviajes.exportimport.ImportCSV;
 import gg.pp.myappviajes.modelo.ViajesContract;
 
 /**
@@ -87,7 +88,7 @@ public class MainFragment extends ListFragment implements
     private void totaKM() {
         //primero busco el km inici en kminici() L 201
         kminici();
-                Log.i(TAG, "ennnnnn TOTAKM 77 INICI: " + kmini); // aquí dice que 100 ?????
+                Log.i(TAG, "ennnnnn TOTAKM 77 INICI: " + kmini); // aquí llega bien
         //luego busco el km actual del último evento en kmactual()
         kmactual();
                 Log.i(TAG, "ennnnnn TOTAKM 80 ACTUAL: " + kmactu);
@@ -197,26 +198,52 @@ public class MainFragment extends ListFragment implements
     }
 
     public int kmactual(){
+
         String[] projection = new String[] {
-                ViajesContract.EventosEntry.E_KMP,
-        };
+                ViajesContract.EventosEntry.E_KMP };
         Uri uri =  ViajesContract.EventosEntry.URI_CONTENIDO;
         ContentResolver cr = getActivity().getContentResolver();
 // la consulta
+
         Cursor c = cr.query(uri,
                 projection, //Columnas a devolver
-                ViajesContract.EventosEntry.E_IDV + " = " + id_viaje,      //Condición de la query: sin condiciones para que salgan todos
-                null,       //Argumentos variables de la query
+                ViajesContract.EventosEntry.E_IDV + " = " + id_viaje + " and " +
+                    ViajesContract.EventosEntry.E_KMP + " != '' ",
+                        //+ ViajesContract.EventosEntry.E_KMP + " <> " + "",      //Condición de la query
+            //    select _id, idviaje, kmp, fechah from eventos where kmp not null and kmp != "" and idviaje = "4" order by kmp asc ;
+               // null,       //Argumentos variables de la query
+                null,
+            ////////    kmp not null and kmp != ""
+                null,
                 null);      //Orden de los resultados
-        ////supongo que con la consulta anterior me saca el campo kmp de todos los registros
+              //  ViajesContract.EventosEntry.E_KMP+ " ASC");      //Orden de los resultados
+
+        ////con la consulta anterior me saca el campo kmp de todos los eventos de este idviaje
         if (c.moveToLast())
         {
             // si entra aquí es porque tiene resultados. Entonces se va al último registro
-            int kmactual = c.getColumnIndex(ViajesContract.EventosEntry.E_KMP);
-            kmactu = c.getInt(kmactual) ; // esto está bien si en el último evento está el kmp
-                    Log.i(TAG, "ennnnnn KMACTUAL 204: " + kmactu);
+            int totalreg = c.getCount();
+            Log.i(TAG, "ennnnnn TOTALREGISTROS 218: " + totalreg); //esto lo hace bien
+            c.moveToLast();
+            String kmactual = c.getString(c.getColumnIndex(ViajesContract.EventosEntry.E_KMP));
+          ///=>>> //  kmactual.setText(cur.getString(cur.getColumnIndex(ViajesContract.EventosEntry.E_KMP)));
+          //  kmactual = getText(getString(c.getColumnIndex(ViajesContract.EventosEntry.E_KMP)));
+            //  int kmactual = c.getColumnIndex(ViajesContract.EventosEntry.E_KMP);
+//            String nomevento = c.getString(c.getColumnIndex(ViajesContract.EventosEntry.E_NOM));
+            Log.i(TAG, "ennnnnn 231 --------------" + kmactual + " el nombre del evento");
+
+//kmactu = kmactual.;int kmactu = 0;
+
+            try {
+                kmactu = Integer.parseInt(kmactual);
+            } catch(NumberFormatException nfe) {
+                // Handle parse error.
+            }
+//          kmactu = c.getInt(Integer.parseInt(kmactual)) ; // esto está bien si en el último evento está el kmp
+         //   kmactu = Integer.parseInt(kmactual);
+  //                  Log.i(TAG, "ennnnnn KMACTU 218: " + kmactu);
         }
-                    Log.i(TAG, "ennnnnn KMACTUAL 214: " + kmactu);
+                   //Log.i(TAG, "ennnnnn KMACTUAL 224: " + kmactual());
         if (!c.isClosed()){
             c.close();
         }
@@ -403,6 +430,10 @@ public class MainFragment extends ListFragment implements
                  Intent i = new Intent(getActivity(), Import.class);
                  startActivity(i);
                 return true;
+            case R.id.m_importcsv:
+                Intent imcsv = new Intent(getActivity(), ImportCSV.class);
+                startActivity(imcsv);
+                return true;
             case R.id.action_vermapa:
                 Intent it = new Intent(getActivity(), PolylineActivity.class);
                 it.putExtra("idv", String.valueOf(id_viaje));
@@ -452,7 +483,8 @@ public class MainFragment extends ListFragment implements
         totalKm.setText(strKmp);
         //totalGast.setText(totaGasto.toString());
         totalGast.setText(strTotalGast);
-        Log.i(TAG, "MainFragmentito onResume 438 " + strTotalGast);
+        Log.i(TAG, "MainFragmentito onResume 464  totalgasto: " + strTotalGast);
+        Log.i(TAG, "MainFragmentito onResume 465  totalkm: " + strKmp  );
         // Iniciar adaptador
         adaptador = new ActivitiesAdapterCt(getActivity());
         // Relacionar adaptador a la lista

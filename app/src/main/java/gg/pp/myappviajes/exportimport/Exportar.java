@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -39,12 +40,15 @@ public abstract class Exportar extends Activity {
 	public void onCreate(Bundle savedInstanceState, String ext) {
 		super.onCreate(savedInstanceState);
 		mDbHelper = new DatabaseHelper(this);
+		m_ext = ext;
+		Log.i(TAG, " ESTIC EN EXPORT onCreate i l'extensió es: " + m_ext);
+
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		initUI(); // lo quito de momento, pero deberia restaurarlo si funciona
+		initUI();
 export();
 	}
 	//el helpdialog no funciona de momento
@@ -74,7 +78,7 @@ export();
 	protected void initUI() {
 		//m_filename = PromiclanDbAdapter.nomMateria + ".csv";
 		//Log.i(TAG, "NAME EN initUI EXPORTAR m_filename: " + m_filename);
-	//	export();  //muestra el dialog export
+		export();  //muestra el dialog export
 	}
 	protected void export() {
 		showDialog(DIALOG_EXPORTING);
