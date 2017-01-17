@@ -23,8 +23,8 @@ public class EditEv extends AppCompatActivity {
         String id_viaj = getIntent().getStringExtra("idv");
         String id_cate = getIntent().getStringExtra("idc");
 
-        Log.i(TAG, "idviajeeeeeeeeeeeee " + id_viaj); //lo tengo
-        Log.i(TAG, "idcateggggggggggggg " + id_cate); //Lo tengo
+        Log.i(TAG, "idviajeeeeeeeeeeeee " + id_viaj); //no lo tengo
+        Log.i(TAG, "idcateggggggggggggg " + id_cate); //no Lo tengo
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);
@@ -41,7 +41,7 @@ public class EditEv extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-      //  getMenuInflater().inflate(R.menu.insert, menu);
+        getMenuInflater().inflate(R.menu.insert_ev, menu);
         return true;
     }
 }

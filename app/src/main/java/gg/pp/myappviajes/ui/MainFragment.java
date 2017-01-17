@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +26,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import gg.pp.myappviajes.ActivitiesAdapterCt;
 import gg.pp.myappviajes.R;
@@ -97,7 +101,8 @@ public class MainFragment extends ListFragment implements
         strKmp = Integer.toString(kmparcial);
                     Log.i(TAG, "ennnnnn TOTAKM 85 de momentoooooooooooo: " + strKmp);
     }
-    private Float totaGast() {
+  //  private Float totaGast() {
+    private String totaGast() {
         String[] projection = new String[] {"sum(" + ViajesContract.EventosEntry.E_TOT + ")"
         };
         // la consulta
@@ -116,11 +121,24 @@ public class MainFragment extends ListFragment implements
         //  totaGasto = Float.valueOf(to_gast);
 
        strTotalGast = Float.toString(totaGasto);
-        Log.i(TAG, "ennnnnn 112 TOTAGAST: "+ strTotalGast + "idviaje: " + id_viaje);
+
+        //////
+     //   double d = 2.3d;
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.FRANCE)     ;
+        strTotalGast = formatter.format(totaGasto);
+       // totaGasto = Float.valueOf(formatter.format(d));
+
+
+      //  NumberFormat formatter = NumberFormat.getCurrencyInstance();
+       // String output = formatter.format(d);
+        /////////////
+        Log.i(TAG, "ennnnnn 134 TOTAGAST: "+ strTotalGast + "totagssto: " + totaGasto);
+
         if (!cursar.isClosed()){
             cursar.close();
         }
-            return Float.valueOf(totaGasto);
+           // return Float.valueOf(totaGasto);
+        return strTotalGast;
     }
     public String nombrViaje() {
         Log.i(TAG, "ennnnnn 123 nombrViaje: ");
@@ -253,6 +271,7 @@ public class MainFragment extends ListFragment implements
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id){
             case LOADER_MVIAJE:
+               // getLoaderManager().restartLoader(0, null, this);
                 Log.i(TAG, "InsertFragmentEVV onCreateLoader LOADER_MVIAJE 224 -modopag-AAAAA un poquito");
                 String[] projection = new String[] {
                         ViajesContract.ViajesEntry.V_NOM,
@@ -268,6 +287,7 @@ public class MainFragment extends ListFragment implements
                         null,                                       // No selection arguments
                         "data DESC");                                      // Default sort order
             case LOADER_MCATEG:
+             //   getLoaderManager().restartLoader(0, null, this);
                 Log.i(TAG, "MainFragmentito onCreateLoader CINCO");
                 return new CursorLoader(
                         getActivity(),
@@ -307,7 +327,7 @@ public class MainFragment extends ListFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i(TAG, "MainFragmentito OnCrete view TRES");
+        Log.i(TAG, "MainFragmentito OnCreateview TRES");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.layout_provi, container, false);
 
@@ -315,7 +335,9 @@ public class MainFragment extends ListFragment implements
         btnViajes = (Button) view.findViewById(R.id.buttnviaje);
         nomViaje = (Spinner) view.findViewById(R.id.spinner_nom_viaje);
         totalKm = (TextView) view.findViewById(R.id.totalkm);
+            totalKm.setGravity(Gravity.RIGHT);
         totalGast = (TextView) view.findViewById(R.id.totalg);
+            totalGast.setGravity(Gravity.RIGHT);
 
                  Log.d(TAG, "onItemSviajeActAdaptersetDropDownViewResource AAAAAAAAAAAAAAAAAAAAAA ");
         viajeActAdapter = new SimpleCursorAdapter(
@@ -349,12 +371,20 @@ public class MainFragment extends ListFragment implements
             }
         });
         // aquí el adapter de la listaCateg
+
+
+        Log.d(TAG, "aquí el adapter de la listaCateg 376 OnCreateView");
         adaptador = new ActivitiesAdapterCt(getActivity());
         // Relacionar adaptador a la lista
         setListAdapter(adaptador);
+
+
         // Iniciar Loader
+
         getLoaderManager().initLoader(LOADER_MCATEG, null, this);
+     //   getLoaderManager().restartLoader(LOADER_MCATEG, null, this);
         getLoaderManager().initLoader(LOADER_MVIAJE, null, this);
+      //  getLoaderManager().restartLoader(LOADER_MVIAJE, null, this);
         Button button = (Button) view.findViewById(R.id.buttnviaje);
         button.setOnClickListener(
                 new View.OnClickListener() {
@@ -467,12 +497,18 @@ public class MainFragment extends ListFragment implements
         totalKm.setText(strKmp);
         totalGast.setText(strTotalGast);
         Log.i(TAG, "MainFragmentito onActivityCreated 422 " + strTotalGast);
+
+
         // Iniciar adaptador
+        Log.d(TAG, "aquí el adapter de la listaCateg 503 OnActivityCreated");
         adaptador = new ActivitiesAdapterCt(getActivity());
         // Relacionar adaptador a la lista
         setListAdapter(adaptador);
         // Iniciar Loader
         getLoaderManager().initLoader(LOADER_MCATEG, null, this);
+      //  getLoaderManager().restartLoader(LOADER_MCATEG, null, this);
+        getLoaderManager().initLoader(LOADER_MVIAJE, null, this);
+      //  getLoaderManager().restartLoader(LOADER_MVIAJE, null, this);
     }
     @Override
     public void onResume() {
@@ -486,22 +522,24 @@ public class MainFragment extends ListFragment implements
         Log.i(TAG, "MainFragmentito onResume 464  totalgasto: " + strTotalGast);
         Log.i(TAG, "MainFragmentito onResume 465  totalkm: " + strKmp  );
         // Iniciar adaptador
+        Log.d(TAG, "aquí el adapter de la listaCateg 525 OnResume");
         adaptador = new ActivitiesAdapterCt(getActivity());
         // Relacionar adaptador a la lista
         setListAdapter(adaptador);
         // Iniciar Loader
         getLoaderManager().initLoader(LOADER_MCATEG, null, this);
+
     }
 
-    @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
+    @Override   //on list item click se va con el id a Insertar Evento<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long idc) {
         Log.i(TAG, "MainFragmentito onListItemClick SEIS");
-        Log.d(TAG, "onListItemClick(.---470--..:-)))));-) -> id_viajeee: = " + id_viaje);
-        Log.d(TAG, "onListItemClick(.---471--..:-)))));-) -> id_categgg: = " + idc);
+        Log.d(TAG, "onListItemClick(.---530--..:-)))));-) -> id_viajeee: = " + id_viaje);
+        Log.d(TAG, "onListItemClick(.---531--..:-)))));-) -> id_categgg: = " + idc);
         id_categ = String.valueOf(idc);
 
         Bundle bundle = new Bundle();
-       getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
+       getActivity().startActivity(new Intent(getActivity(), EditEv.class)
             //   .putExtra(ViajesContract.CategoriasEntry.CAT_ID, idc)
                .putExtra("idc", id_categ)// este pasa bien el idcateg
                .putExtra("idv", id_viaje));

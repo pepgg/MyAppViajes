@@ -23,8 +23,8 @@ public class InsertEvento extends AppCompatActivity {
            String id_viaj = getIntent().getStringExtra("idv");
            String id_cate = getIntent().getStringExtra("idc");
 
-        Log.i(TAG, "idviajeeeeeeeeeeeee " + id_viaj); //lo tengo
-        Log.i(TAG, "idcateggggggggggggg " + id_cate); //Lo tengo
+        Log.i(TAG, "idviajeeeeeeeeeeeee " + id_viaj); //Si lo tengo si nuevo
+        Log.i(TAG, "idcateggggggggggggg " + id_cate); //si Lo tengo  "   "
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_done);

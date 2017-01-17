@@ -40,8 +40,8 @@ public class ExportCSV extends Exportar {
      */
     private GoogleApiClient client;
     //CSV file header
-    private static final String FILE_HEADER = "ID, idcateg, nom, descripcio, precio, modpag, moneda, totaleur, fechah, foto1, " +
-            "foto2, callenum, cp, ciudad, telef, mail, web, longitud, latitud, altitud, valoracion, kmp, comentari";
+    private static final String FILE_HEADER = "_id, idviaje, idcateg, fechah, kmp, nom, descripcio, precio, modpag, moneda, totaleur, foto1, " +
+            "foto2, valoracion, callenum, cp, ciudad, telef, mail, web, longitud, latitud, altitud,  comentari";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,8 +51,8 @@ public class ExportCSV extends Exportar {
 
         Log.i(TAG, "EXPORTARCSV Eventos: ");
 
-        final String[] columns = {"ID","IVIAJ","ICATG","NOM","DESCRIP", "PREU", "MODp","MON","TOT€","FECHA","FOT1","FOT2",
-                "DIRECC","CP","CIUDAD","TELEF","eMAIL","WEB","LONGIT","LATIT","ALTIT","VALOR","KMp","COMENT"};
+        final String[] columns = {"ID","IVIAJ","ICATG","FECHA","KMP","NOM","DESCRIP","PRECIO","MODp","MONE","TOT€","FOT1","FOT2",
+                "VALOR","DIRECC","CP","CIUDAD","TELEF","eMAIL","WEB","LONGIT","LATIT","ALTIT","COMENT"};
         Log.i(TAG, "filename EN EXPORTARCSV oncreate  " + m_filename);
         super.m_exporter = new Runnable() {
             @Override

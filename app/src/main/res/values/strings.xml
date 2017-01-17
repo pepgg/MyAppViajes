@@ -37,12 +37,12 @@
     <string name="guardar">Guardar </string>
     <string name="precio">precio </string>
     <string name="eur_">EUR: </string>
-    <string name="eurgas">Euros gast</string>
+    <string name="eurgas"> Euros gast</string>
     <string name="telef">teléfono: </string>
     <string name="mail">mail: </string>
     <string name="web">web: </string>
     <string name="llevas">Llevas: </string>
-    <string name="km_">Km </string>
+    <string name="km_"> Km </string>
     <string name="gps">GPS</string>
     <string name="fecha">fecha</string>
     <string name="spin_nv">Nombre de viaje</string>
