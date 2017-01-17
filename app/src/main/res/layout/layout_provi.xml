@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- tarjeta de arriba *********************** -->
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        card_view:cardElevation="@dimen/card_elevation"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/postit"
+        android:layout_margin="@dimen/margin_right_form"
+        >
+        <LinearLayout
+            android:id="@+id/content1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/viaje_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/viaje_label"
+                android:textColor="@color/primary"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            <Spinner
+                android:id="@+id/spinner_nom_viaje"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/nom_viaje"
+                android:layout_gravity="end"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:clickable="true"
+                android:drawSelectorOnTop="true"  />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/llevas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/llevas"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/primary" />
+            <TextView
+                android:id="@+id/totalkm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="end" />
+
+            <TextView
+                android:id="@+id/km_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/km_"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/primary"/>
+            <TextView
+                android:id="@+id/totalg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.79"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="right" />
+            <TextView
+                android:id="@+id/eur_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/eurgas"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/primary" />
+        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nuevo_viaje"
+            android:id="@+id/buttnviaje"
+            android:onClick="iraNouViaje"
+            android:layout_gravity="center"
+            android:textColor="@color/primary"/>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
+    <!-- *******************************************
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       -->
+    <!-- Lista de categorias -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@android:id/list" />
+
+        <!-- Texto emergente por si no hay elementos -->
+        <TextView android:id="@+id/android:empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No hay datos"/>
+
+        <!-- Floating Action antiguo Button de adición
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@mipmap/ic_add"
+            fab:fab_colorNormal="@color/accent"
+            fab:fab_colorPressed="@color/accent"
+            fab:fab_colorRipple="@color/background"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true" />
+
+            <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fab"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/fab"
+            android:layout_alignStart="@+id/fab" />
+    -->
+        <!-- Floating Action Button de adición
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@mipmap/ic_add"
+            fab:fab_colorNormal="@color/accent"
+            fab:fab_colorPressed="@color/accent"
+            fab:fab_colorRipple="@color/background"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true" />
+-->
+
+
+
+
+    </LinearLayout>
+    <!--
+   </ScrollView>
+   -->
+       <android.support.design.widget.FloatingActionButton
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:id="@+id/fab"
+           android:src="@mipmap/ic_add"
+           android:layout_alignParentBottom="true"
+           android:layout_alignParentRight="true"
+           android:layout_gravity="right"/>
+
+   </LinearLayout>
