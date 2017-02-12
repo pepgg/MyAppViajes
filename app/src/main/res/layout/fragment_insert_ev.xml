@@ -84,7 +84,7 @@
                     android:id="@+id/spinner_mod_pag"
                     android:prompt="@string/spin_mp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height= "wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:drawSelectorOnTop="true" />
@@ -95,7 +95,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:drawSelectorOnTop="true" />
+                    android:drawSelectorOnTop="true"
+                    />
             </LinearLayout>
 
             <LinearLayout

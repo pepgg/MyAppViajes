@@ -10,9 +10,9 @@ import gg.pp.myappviajes.R;
 /**
  * Created by pepe on 14/03/16.
  */
-public class InsertEvento extends AppCompatActivity {
+public class InsertEv extends AppCompatActivity {
 
-    public static final String TAG = "En InsertEvento: ";
+    public static final String TAG = "En InsertEv: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

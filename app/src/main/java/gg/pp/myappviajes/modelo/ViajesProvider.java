@@ -108,7 +108,8 @@ public class ViajesProvider extends ContentProvider {
         /////////////////////////////////////////aqui cambiaba la uri y pone categorias  por qué¿¿¿¿¿¿¿¿¿¿¿¿
         Log.i(TAG, "ViajecitosProvider primero QUERY 109 uri un poquito con la uri: " + uri);
         // Abrir base de datos
-        SQLiteDatabase bd = databaseHelper.getReadableDatabase();
+        SQLiteDatabase bd = databaseHelper.getWritableDatabase();
+        //SQLiteDatabase bd = databaseHelper.getWritableDatabase(); asíestaba hasta 21-01.2017
     //   final SQLiteDatabase db = databaseHelper.getWritableDatabase();
         // Comparar Uri
         int match = uriMatcher.match(uri);
@@ -363,14 +364,12 @@ public class ViajesProvider extends ContentProvider {
         String id = null;
         Log.d(TAG, "Esty en 362 UPDATE con " + uri );
         switch (uriMatcher.match(uri)) {
-
             case EVENTOS_ID:
                 id = EventosEntry.obtenerIdEvento(uri);
                 Log.d(TAG, "Esty en 364 UPDATE con case EVENTOS_ID uri:" + uri );
                 afectados = bd.update(Tablas.EVENTOS, values,
                         EventosEntry.E_ID + " = ?", new String[]{id});
                 notificarCambio(uri);
-
                 break;
 
             case VIAJES_ID:

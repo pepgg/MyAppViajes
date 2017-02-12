@@ -239,9 +239,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 mDb.query(true, TABLE_V, new String[] {V_ID, V_NOM, V_DATAIN, V_DATAFI,
                                 V_KMIN, V_KMFI, V_TIPO, V_DESC}, V_ID + "=" + mId, null,
                         null, null, null, null);
-
         if (mCursor != null) {
-
             mCursor.moveToFirst();
         }
         return mCursor;
@@ -251,7 +249,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //esto funciona?
         //  Cursor idVactiv = mDb.rawQuery("SELECT " + V_ID + " from "+ TABLE_V + " where "+ V_DATAFI +"=''", null);
         //  Cursor idVactiv = mDb.rawQuery("SELECT " + V_ID + " from " + TABLE_V ", null);
-
         Cursor idVactiv = mDb.rawQuery("SELECT * from viajes", null);
         int numvidViajes;
         numvidViajes = idVactiv.getCount();

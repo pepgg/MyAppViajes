@@ -47,7 +47,7 @@ public class MainFragment extends ListFragment implements
     public static final String TAG = "En MainFragment: ";
 
     private ActivitiesAdapterCt adaptador;
-    SimpleCursorAdapter viajeActAdapter;
+    SimpleCursorAdapter viajeActAdapter ;
     private static final int V_CREA = 0;
     private Spinner nomViaje;
     private TextView totalKm;
@@ -56,7 +56,9 @@ public class MainFragment extends ListFragment implements
     private String nombreViaje;
     private int idviaje;
     private String id_viaje;
+    private String po_viaje;
     private String id_categ;
+    private String po_categ;
     private long idcate;
     private Float totaGasto;
     private int kmini;
@@ -64,7 +66,6 @@ public class MainFragment extends ListFragment implements
     private int kmparcial;
     private String strKmp;
     private String strTotalGast;
-
     public static final String nomTabla = null;
     public static final String nomTabl = null;
     public static final int LOADER_MCATEG = 1; // Loader identifier for Categorias
@@ -80,10 +81,10 @@ public class MainFragment extends ListFragment implements
 
         // Habilitar al fragmento para contribuir en la action bar
         setHasOptionsMenu(true);         /////añado esto por la barra de titulo y actionbar
-        nombrViaje();
-            Log.i(TAG, "MainFragmentito OnCrete 61 NOMBRE VIAJE " + nombreViaje); //si este está bien
-        viajesAct();
-            Log.i(TAG, "MainFragmentito OnCrete 63 IDDDD VIAJE " + idviaje); //sale 1 en lugar de 2
+     //   nombrViaje();
+       //     Log.i(TAG, "MainFragmentito OnCrete 61 NOMBRE VIAJE " + nombreViaje); //si este está bien
+      //  viajesAct();
+        //    Log.i(TAG, "MainFragmentito OnCrete 63 IDDDD VIAJE " + idviaje); //sale 1 en lugar de 2
         totaGast();
             Log.i(TAG, "MainFragmentito OnCrete 65 TOTAL GASTO " + totaGasto);// este está bien
         totaKM();
@@ -121,16 +122,8 @@ public class MainFragment extends ListFragment implements
         //  totaGasto = Float.valueOf(to_gast);
 
        strTotalGast = Float.toString(totaGasto);
-
-        //////
-     //   double d = 2.3d;
         NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.FRANCE)     ;
         strTotalGast = formatter.format(totaGasto);
-       // totaGasto = Float.valueOf(formatter.format(d));
-
-
-      //  NumberFormat formatter = NumberFormat.getCurrencyInstance();
-       // String output = formatter.format(d);
         /////////////
         Log.i(TAG, "ennnnnn 134 TOTAGAST: "+ strTotalGast + "totagssto: " + totaGasto);
 
@@ -159,6 +152,7 @@ public class MainFragment extends ListFragment implements
             Log.i(TAG, "ennnnnn IDVIAJE: idviaje: 138 moveToFirst");
             int id_viaj = cu.getColumnIndex(ViajesContract.ViajesEntry.V_NOM);
             nombreViaje = cu.getString(id_viaj) ; //
+            Log.i(TAG, "ennnnnn 155 nombreviaje: "+ nombreViaje);
         }
         if (!cu.isClosed()){
             cu.close();
@@ -279,7 +273,6 @@ public class MainFragment extends ListFragment implements
                         ViajesContract.ViajesEntry.V_ID
                 };
                 return new CursorLoader(
-
                         getActivity(),                              // Parent activity context
                         ViajesContract.ViajesEntry.URI_CONTENIDO,    // Table to query
                         projection,      // Projection to return
@@ -352,12 +345,20 @@ public class MainFragment extends ListFragment implements
         nomViaje.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
             @Override
+            /*
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        Log.d(TAG, "onItemSelected id_viaje -> position: " + position + " id: = " + id);
-                Cursor nomv = (Cursor) parent.getItemAtPosition(position);
+        // On selecting a spinner item
+        String label = parent.getItemAtPosition(position).toString();
+            */
+            public void onItemSelected(AdapterView<?> parent, View view, int positi, long id) {
+                //onListItemClick(ListView l, View v, int posit, long idc)
+                        Log.d(TAG, "onItemSelected 357 id_viaje -> position: " + positi + " id: = " + id);
+                Cursor nomv = (Cursor) parent.getItemAtPosition(positi);
                 id_viaje = nomv.getString(nomv.getColumnIndexOrThrow(ViajesContract.ViajesEntry.V_ID));
-                //idviaje = Integer.valueOf(id_viaje);
-                        Log.d(TAG, "onItemSelected 300 (.adaspter id viajes..) -> id_viaje: = " + id_viaje);
+                po_viaje = String.valueOf(positi);
+                String label = parent.getItemAtPosition(positi).toString();
+         Log.d(TAG, "onItemSelected 360 (.nombViaje: " + label );
+                        Log.d(TAG, "onItemSelected 362 (.position: " + po_viaje + " .) -> id_viaje: = " + id_viaje);
 /////////////////////////////este ^ es el bueno
                 totaGast();
                 totaKM();
@@ -372,12 +373,10 @@ public class MainFragment extends ListFragment implements
         });
         // aquí el adapter de la listaCateg
 
-
         Log.d(TAG, "aquí el adapter de la listaCateg 376 OnCreateView");
         adaptador = new ActivitiesAdapterCt(getActivity());
         // Relacionar adaptador a la lista
         setListAdapter(adaptador);
-
 
         // Iniciar Loader
 
@@ -467,8 +466,6 @@ public class MainFragment extends ListFragment implements
             case R.id.action_vermapa:
                 Intent it = new Intent(getActivity(), PolylineActivity.class);
                 it.putExtra("idv", String.valueOf(id_viaje));
-
-
                 startActivity(it);
                 return true;
             default:
@@ -484,7 +481,6 @@ public class MainFragment extends ListFragment implements
 
     /** Envía los datos de la actividad hacia el formulario de actualización     */
     private void beginUpdate() {
-
     }
 
     @Override
@@ -498,12 +494,12 @@ public class MainFragment extends ListFragment implements
         totalGast.setText(strTotalGast);
         Log.i(TAG, "MainFragmentito onActivityCreated 422 " + strTotalGast);
 
-
         // Iniciar adaptador
         Log.d(TAG, "aquí el adapter de la listaCateg 503 OnActivityCreated");
         adaptador = new ActivitiesAdapterCt(getActivity());
         // Relacionar adaptador a la lista
         setListAdapter(adaptador);
+    //    viajeActAdapter = new SimpleCursorAdapter(getActivity())   ;
         // Iniciar Loader
         getLoaderManager().initLoader(LOADER_MCATEG, null, this);
       //  getLoaderManager().restartLoader(LOADER_MCATEG, null, this);
@@ -515,7 +511,6 @@ public class MainFragment extends ListFragment implements
             super.onResume();
         totaGast();
         totaKM();
-
         totalKm.setText(strKmp);
         //totalGast.setText(totaGasto.toString());
         totalGast.setText(strTotalGast);
@@ -528,21 +523,27 @@ public class MainFragment extends ListFragment implements
         setListAdapter(adaptador);
         // Iniciar Loader
         getLoaderManager().initLoader(LOADER_MCATEG, null, this);
-
     }
 
     @Override   //on list item click se va con el id a Insertar Evento<<<<<<<<<<<<
-    public void onListItemClick(ListView l, View v, int position, long idc) {
+    public void onListItemClick(ListView l, View v, int posit, long idc) {
         Log.i(TAG, "MainFragmentito onListItemClick SEIS");
         Log.d(TAG, "onListItemClick(.---530--..:-)))));-) -> id_viajeee: = " + id_viaje);
         Log.d(TAG, "onListItemClick(.---531--..:-)))));-) -> id_categgg: = " + idc);
         id_categ = String.valueOf(idc);
+        po_categ = String.valueOf(posit);
+        //po_viaje = String.valueOf(positi);
+
+        Log.d(TAG, "onListItemClick(.--- 547 --..:-)))));-) -> pos_categgg: = " + po_categ);
 
         Bundle bundle = new Bundle();
        getActivity().startActivity(new Intent(getActivity(), EditEv.class)
             //   .putExtra(ViajesContract.CategoriasEntry.CAT_ID, idc)
                .putExtra("idc", id_categ)// este pasa bien el idcateg
-               .putExtra("idv", id_viaje));
+               .putExtra("idv", id_viaje)
+               .putExtra("poct", po_categ)
+               .putExtra("povj", po_viaje));
+        Log.d(TAG, "SALE del main id_categ: "+ id_categ + " po_categ: "+ po_categ +" id_viaje: "+ id_viaje +" po_viaje: "+ po_viaje );
            }
 
     public void iraNouViaje(View view) {
@@ -552,16 +553,22 @@ public class MainFragment extends ListFragment implements
     @Override
     public void onDestroy() {
         super.onDestroy();
-        try {
-            getLoaderManager().destroyLoader(0);
-            if (adaptador != null) {
-                adaptador.changeCursor(null);
-                adaptador = null;
-            }
-        } catch (Throwable localThrowable) {
-            // Proyectar la excepción
+                try {
+                    getLoaderManager().destroyLoader(1);
+                    if (adaptador != null) {
+                        adaptador.changeCursor(null);
+                        adaptador = null;
+                    }
+                    getLoaderManager().destroyLoader(2);
+                    if (viajeActAdapter != null) {
+                        viajeActAdapter.changeCursor(null);
+                        viajeActAdapter = null;
+                    }
+                } catch (Throwable localThrowable) {
+                    // Proyectar la excepción
+                }
         }
-    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);

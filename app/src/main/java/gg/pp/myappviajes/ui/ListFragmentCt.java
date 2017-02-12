@@ -152,10 +152,10 @@ public class ListFragmentCt extends ListFragment implements
         registerForContextMenu(this.getListView());
     }
 
-    @Override   //on list item click se va con el id a InsertEvento<<<<<<<<<<<<
+    @Override   //on list item click se va con el id a InsertEv<<<<<<<<<<<<
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.i(TAG, " onListItemClick ===> id: " + id);
-        getActivity().startActivity(new Intent(getActivity(), InsertEvento.class)
+        getActivity().startActivity(new Intent(getActivity(), InsertEv.class)
                 .putExtra(ViajesContract.CategoriasEntry.CAT_ID, id));
     }
 

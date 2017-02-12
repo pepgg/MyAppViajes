@@ -61,7 +61,7 @@
                 android:value=".ui.DetailActivity" />
         </activity>
         <activity
-            android:name=".ui.InsertEvento"
+            android:name=".ui.InsertEv"
             android:label="@string/title_insert_evento"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
