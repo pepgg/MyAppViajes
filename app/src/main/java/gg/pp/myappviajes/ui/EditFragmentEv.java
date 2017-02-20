@@ -92,7 +92,8 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
     static final int DATE_DIALOG = 0;
     Calendar c = Calendar.getInstance();
     private String id_catego;
-    private String id_viaje;
+    private int id_viaje;
+    private int id_categ;
     private String id_modopag;
     private String id_monedas;
     private String nomFoto;
@@ -148,13 +149,13 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         es_Edit = getActivity().getIntent().getBooleanExtra(esEdit, false);
-        Log.i(TAG, "EditFragmentEvvvv  132 onCreate un es_Edit: " + es_Edit); //bien
+        Log.i(TAG, "EditFragmentEvvvv  151 onCreate un es_Edit: " + es_Edit); //bien
         if (es_Edit) {
             id_item = getActivity().getIntent().getLongExtra(ViajesContract.EventosEntry.E_ID, -1);
-            Log.d(TAG, "--- 135 --onCreate-ES updateeeeeeeeeeeeeee id : " + id_item); //llegsa bien
+            Log.d(TAG, "--- 154 --onCreate-ES updateeeeeeeeeeeeeee id : " + id_item); //llegsa bien
 
         } else { //es nuevo
-            Log.d(TAG, "---onCreate--136-ES NUEVOOOOOOO ");
+            Log.d(TAG, "---onCreate--157-ES NUEVOOOOOOO ");
             id_viaj = getActivity().getIntent().getStringExtra("idv");
             id_cate = getActivity().getIntent().getStringExtra("idc");
             po_cate = getActivity().getIntent().getStringExtra("poct");
@@ -421,8 +422,8 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
                 new int[]{android.R.id.text1});
             nomviajAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             nomviaj.setAdapter(nomviajAdapter);
-            Log.d(TAG, "onActivityCreated(.EV..) 414 id_viaj_ed es: = " + id_viaj_ed);
-            Log.d(TAG, "onActivityCreated(.EV..) 415 id_viaj es: = " + id_viaj);
+            Log.d(TAG, "onActivityCreated(.EV..) 414 id_viaj_ed es: = " + id_viaj_ed); // null si EDIT SI
+            Log.d(TAG, "onActivityCreated(.EV..) 415 id_viaj es: = " + id_viaj); // null si EDIT SI
         nomviaj.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
@@ -442,8 +443,8 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
                 new int[]{android.R.id.text1});
             nomcatgAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             nomcatg.setAdapter(nomcatgAdapter);
-            Log.d(TAG, "onActivityCreated(.EV..) 449 id_cate_ed es: = " + id_cate_ed);
-            Log.d(TAG, "onActivityCreated(.EV..) 450 id_cate es: = " + id_cate); //si
+            Log.d(TAG, "onActivityCreated(.EV..) 449 id_cate_ed es: = " + id_cate_ed); // null si EDIT SI
+            Log.d(TAG, "onActivityCreated(.EV..) 450 id_cate es: = " + id_cate); //s // null si EDIT SI
         nomcatg.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
@@ -628,16 +629,18 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< aquí rellenar spiners categ y viaje
 
             Log.i(TAG, "onResume NUEVO 666  antes del setSelection int n_cgt: " + id_cate);
+            /*
             nomcatg.post(new Runnable() {
                 @Override
                 public void run() {
                     nomcatg.setSelection(Integer.parseInt(po_cate), true);
                 }
             });
+            */
             Log.i(TAG, "onResume NUEVO 676  despues del setSelection int n_cgt: " + (Integer.parseInt(id_cate)-1));
             Log.i(TAG, "onResume NUEVO 660  antes del setSelection int n_v: " + id_viaj);
             Log.d(TAG, "setSelection 648 viaje nuevo es: = " + po_viaj);
-
+            /*
             nomviaj.post(new Runnable() {
                 @Override
                 public void run() {
@@ -645,6 +648,7 @@ public class EditFragmentEv extends android.support.v4.app.Fragment
                     Log.d(TAG, "setSelection 655 viaje nuevo es: = " + Integer.parseInt(po_viaj));
                 }
             });
+            */
         }
     }
 
@@ -755,61 +759,78 @@ private void onLoadFinishedModopag(Cursor data) {
         }
     }
     private void onLoadFinishedNomViaje(Cursor data)  {
-        Log.d(TAG, "----652--onLoadFinishednomviaje<> "  + id_viaj );
+        Log.d(TAG, "----652--onLoadFinishednomviaje<> "  + id_viaj ); // null si edit
         nomviajAdapter.swapCursor(data);
+        // si nuevo es id_viaj, si edit es id_viajee
         if (es_Edit == true) {
+            id_viaje = id_viajee;
+        } else {
+            id_viaje = Integer.parseInt(id_viaj);
+        }
             Cursor micursor = nomviajAdapter.getCursor();
             micursor.moveToFirst();
             int row_count = 0;
             int spinner_row = 0;
             while (spinner_row < 0 || row_count < micursor.getCount()){ // loop until end of cursor or the ID is found
                 int cursorItemID = micursor.getInt(micursor.getColumnIndexOrThrow(ViajesEntry.V_ID));
-                if (id_viajee==cursorItemID){
+             //   if (id_viajee==cursorItemID){
+                if (id_viaje==cursorItemID){
                     spinner_row  = row_count;  //set the spinner row value to the same value as the cursor row
                 }
                 micursor.moveToNext();
                 row_count++;
             }
             nomviaj.setSelection(spinner_row); //set the selected item in the spinner
-        }
+
     }
     private void onLoadFinishedNomCateg(Cursor data)  {
-        Log.d(TAG, "---656---onLoadFinishednomCateg<> "  + id_cate );
+        Log.d(TAG, "---656---onLoadFinishednomCateg<> "  + id_cate ); // null si EDIT SI
         nomcatgAdapter.swapCursor(data);
+        // si nuevo es id_cate, si edit es id_catee
 
         if (es_Edit == true) {
+            id_categ = id_viajee;
+        } else {
+            id_categ = Integer.parseInt(id_cate);
+        }
             Cursor micursor = nomcatgAdapter.getCursor();
             micursor.moveToFirst();
-            Log.d(TAG, "1145 ---onLoadFinishednomCateg<> idcatee "  + id_catee + " idcate_e: " +id_cate_e);
+            Log.d(TAG, "783 ---onLoadFinishednomCateg<> idcatee "  + id_catee + " idcate_e: " +id_cate_e);
+            Log.d(TAG, "784 ---onLoadFinishednomCateg<> micursor.getCount() "  + micursor.getCount());
             int row_count = 0;
             int spinner_row = 0;
             while (spinner_row < 0 || row_count < micursor.getCount()){ // loop until end of cursor or the ID is found
                 Log.d(TAG, "1148 ---onLoadFinishednomCateg<> spin row "  + spinner_row );
                 int cursorItemID = micursor.getInt(micursor.getColumnIndexOrThrow(CategoriasEntry.CAT_ID));
                 Log.d(TAG, "1150 ---onLoadFinishednomCateg<> cursorItemID "  + cursorItemID );
-                if (id_catee==cursorItemID){
+                // if (id_catee==cursorItemID){
+                if (id_categ==cursorItemID){
                     spinner_row  = row_count;  //set the spinner row value to the same value as the cursor row
                 }
                 micursor.moveToNext();
                 row_count++;
             }
             nomcatg.setSelection(spinner_row); //set the selected item in the spinner
-        }
+
     }
 
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId())
         {
             case LOADER_MODPAG:
+                Log.d(TAG, "--804--onLoaderReset Modopag<> "   );
                 mModPagAdapter.swapCursor(null);
                 break;
             case LOADER_MONED:
+                Log.d(TAG, "---808---onLoaderReset Monedas<> "   );
                 mMonedAdapter.swapCursor(null);
                 break;
             case LOADER_NOMVIAJ:
+                Log.d(TAG, "----812--onLoaderReset nomviaje<> "  + id_viaj );
                 nomviajAdapter.swapCursor(null);
                 break;
             case LOADER_NOMCATG:
+                Log.d(TAG, "---816---onLoaderReset nomCateg<> "  + id_cate );
                 nomcatgAdapter.swapCursor(null);
                 break;
         }
