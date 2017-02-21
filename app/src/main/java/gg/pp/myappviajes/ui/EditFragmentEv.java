@@ -789,13 +789,13 @@ private void onLoadFinishedModopag(Cursor data) {
         // si nuevo es id_cate, si edit es id_catee
 
         if (es_Edit == true) {
-            id_categ = id_viajee;
+            id_categ = id_catee;
         } else {
             id_categ = Integer.parseInt(id_cate);
         }
             Cursor micursor = nomcatgAdapter.getCursor();
             micursor.moveToFirst();
-            Log.d(TAG, "783 ---onLoadFinishednomCateg<> idcatee "  + id_catee + " idcate_e: " +id_cate_e);
+            Log.d(TAG, "783 ---onLoadFinishednomCateg<> idcatee "  + id_categ );
             Log.d(TAG, "784 ---onLoadFinishednomCateg<> micursor.getCount() "  + micursor.getCount());
             int row_count = 0;
             int spinner_row = 0;
